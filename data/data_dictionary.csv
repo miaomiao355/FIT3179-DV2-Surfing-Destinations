@@ -1,0 +1,37 @@
+Dataset,Field,Type,Unit,Description,Cleaning_or_Derivation,Source
+wave_january_2026_clean.csv,Location,text,,Monitoring location / station label,Added during merge,Queensland Government
+wave_january_2026_clean.csv,DateTime_AEST,datetime,AEST,Half-hourly observation timestamp,Source Date/Time retained in ISO-like format,Queensland Government
+wave_january_2026_clean.csv,Date,date,,Observation date,Derived from DateTime_AEST,Queensland Government
+wave_january_2026_clean.csv,Time_AEST,time,AEST,Observation time,Derived from DateTime_AEST,Queensland Government
+wave_january_2026_clean.csv,Hs_m,number,m,Significant wave height,-99.9 converted to blank/null,Queensland Government
+wave_january_2026_clean.csv,Hmax_m,number,m,Maximum wave height,-99.9 converted to blank/null,Queensland Government
+wave_january_2026_clean.csv,Tz_s,number,s,Zero-crossing wave period,-99.9 converted to blank/null,Queensland Government
+wave_january_2026_clean.csv,Tp_s,number,s,Peak wave period,-99.9 converted to blank/null,Queensland Government
+wave_january_2026_clean.csv,Peak_Direction_deg,number,degrees,Peak wave direction,-99.9 converted to blank/null; do not average naively for circular statistics,Queensland Government
+wave_january_2026_clean.csv,SST_C,number,°C,Sea-surface temperature,-99.9 converted to blank/null,Queensland Government
+nsw_buoy_locations.csv,Location,text,,Deployment/location name,Copied from shapefile attribute,NSW Government
+nsw_buoy_locations.csv,NodeID,integer,,Station/node identifier,Copied from shapefile attribute,NSW Government
+nsw_buoy_locations.csv,StartDate,date,,Deployment start date,Source string retained,NSW Government
+nsw_buoy_locations.csv,EndDate,date,,Deployment end date,Source string retained,NSW Government
+nsw_buoy_locations.csv,Lat,number,decimal degrees,Latitude,Copied from shapefile attribute,NSW Government
+nsw_buoy_locations.csv,Lon,number,decimal degrees,Longitude,Copied from shapefile attribute,NSW Government
+nsw_buoy_locations.csv,Depth_m_Source,number,m,Source depth value,Preserved exactly; source values are negative,NSW Government
+nsw_buoy_locations.csv,Data_Days,integer,days,Number of data days,Copied from shapefile attribute,NSW Government
+ausplay_surfing_2025_clean.csv,Table_Number,integer,,Original AusPlay table number,Preserved from workbook,Australian Sports Commission
+ausplay_surfing_2025_clean.csv,Table_Name,text,,Original AusPlay table name,Preserved from workbook,Australian Sports Commission
+ausplay_surfing_2025_clean.csv,Population,text,,Adults or Children,Derived from source table,Australian Sports Commission
+ausplay_surfing_2025_clean.csv,Breakdown_Type,text,,Demographic / organised participation / organising entity / year-on-year,Derived to make tidy data,Australian Sports Commission
+ausplay_surfing_2025_clean.csv,Category,text,,"Sex, age group, entity type, or Total",Preserves source category wording where practical,Australian Sports Commission
+ausplay_surfing_2025_clean.csv,Year,integer,year,Reference year,2025 tables plus 2024/2025 comparison tables,Australian Sports Commission
+ausplay_surfing_2025_clean.csv,Measure,text,,Participation rate or Estimated number of participants,Preserved source measure,Australian Sports Commission
+ausplay_surfing_2025_clean.csv,Value,number,varies,Raw measure value,Rate remains as proportion; counts remain estimated people,Australian Sports Commission
+ausplay_surfing_2025_clean.csv,Value_Percent,number,%,Participation rate expressed as percentage,Derived as Value × 100 for rate rows,Australian Sports Commission
+surfing_australia_events_2026.csv,Event,text,,Official event name,Transcribed from official 2026 calendar,Surfing Australia
+surfing_australia_events_2026.csv,Event_Type,text,,Short event category,Derived from event name for charting,Surfing Australia
+surfing_australia_events_2026.csv,Location,text,,Official calendar location,Transcribed from official 2026 calendar,Surfing Australia
+surfing_australia_events_2026.csv,State,text,,Australian state abbreviation,Derived from official location,Surfing Australia
+surfing_australia_events_2026.csv,Start_Date,date,,Calendar start date,Transcribed from official 2026 calendar,Surfing Australia
+surfing_australia_events_2026.csv,End_Date,date,,Calendar end date,Transcribed from official 2026 calendar,Surfing Australia
+surfing_australia_events_2026.csv,Latitude,number,decimal degrees,Named-place point used for mapping,Blank for Online and broad Tweed Coast region,Surfing Australia + coordinate source
+surfing_australia_events_2026.csv,Longitude,number,decimal degrees,Named-place point used for mapping,Blank for Online and broad Tweed Coast region,Surfing Australia + coordinate source
+surfing_australia_events_2026.csv,Coordinate_Note,text,,Explains coordinate precision/choice,Added for transparency,Derived
