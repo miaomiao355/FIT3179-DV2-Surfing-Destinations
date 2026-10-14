@@ -1,0 +1,376 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "January 2026 daily mean significant wave height, arranged as a Monday-first calendar. Grey marks dates with no valid Hs readings.",
+  "data": {
+    "values": []
+  },
+  "width": "container",
+  "height": 218,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "layer": [
+    {
+      "transform": [
+        {
+          "filter": "datum.RowType === 'outside'"
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "fill": "#f2f5f5",
+        "stroke": "#ffffff",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "X0",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              7
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              0.5,
+              1.5,
+              2.5,
+              3.5,
+              4.5,
+              5.5,
+              6.5
+            ],
+            "labelExpr": "datum.value === 0.5 ? 'Mon' : datum.value === 1.5 ? 'Tue' : datum.value === 2.5 ? 'Wed' : datum.value === 3.5 ? 'Thu' : datum.value === 4.5 ? 'Fri' : datum.value === 5.5 ? 'Sat' : 'Sun'",
+            "labelFont": "Arial",
+            "labelFontSize": 10,
+            "labelColor": "#52616a",
+            "labelPadding": 7,
+            "tickSize": 0,
+            "domain": false,
+            "grid": false,
+            "title": null
+          }
+        },
+        "x2": {
+          "field": "X1"
+        },
+        "y": {
+          "field": "Y0",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              5
+            ],
+            "nice": false,
+            "reverse": true
+          },
+          "axis": null
+        },
+        "y2": {
+          "field": "Y1"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.RowType === 'no-data'"
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "fill": "#d5dcde",
+        "stroke": "#ffffff",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "X0",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              7
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              0.5,
+              1.5,
+              2.5,
+              3.5,
+              4.5,
+              5.5,
+              6.5
+            ],
+            "labelExpr": "datum.value === 0.5 ? 'Mon' : datum.value === 1.5 ? 'Tue' : datum.value === 2.5 ? 'Wed' : datum.value === 3.5 ? 'Thu' : datum.value === 4.5 ? 'Fri' : datum.value === 5.5 ? 'Sat' : 'Sun'",
+            "labelFont": "Arial",
+            "labelFontSize": 10,
+            "labelColor": "#52616a",
+            "labelPadding": 7,
+            "tickSize": 0,
+            "domain": false,
+            "grid": false,
+            "title": null
+          }
+        },
+        "x2": {
+          "field": "X1"
+        },
+        "y": {
+          "field": "Y0",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              5
+            ],
+            "nice": false,
+            "reverse": true
+          },
+          "axis": null
+        },
+        "y2": {
+          "field": "Y1"
+        },
+        "tooltip": [
+          {
+            "field": "Location",
+            "type": "nominal",
+            "title": "Monitoring site"
+          },
+          {
+            "field": "DateDisplay",
+            "type": "nominal",
+            "title": "Date"
+          },
+          {
+            "field": "HsDisplay",
+            "type": "nominal",
+            "title": "Daily mean Hs"
+          },
+          {
+            "field": "ValidReadings",
+            "type": "quantitative",
+            "title": "Valid readings",
+            "format": ",d"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.RowType === 'day' && datum.HasData === true"
+        }
+      ],
+      "mark": {
+        "type": "rect",
+        "stroke": "#ffffff",
+        "strokeWidth": 2
+      },
+      "encoding": {
+        "x": {
+          "field": "X0",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              7
+            ],
+            "nice": false
+          },
+          "axis": {
+            "values": [
+              0.5,
+              1.5,
+              2.5,
+              3.5,
+              4.5,
+              5.5,
+              6.5
+            ],
+            "labelExpr": "datum.value === 0.5 ? 'Mon' : datum.value === 1.5 ? 'Tue' : datum.value === 2.5 ? 'Wed' : datum.value === 3.5 ? 'Thu' : datum.value === 4.5 ? 'Fri' : datum.value === 5.5 ? 'Sat' : 'Sun'",
+            "labelFont": "Arial",
+            "labelFontSize": 10,
+            "labelColor": "#52616a",
+            "labelPadding": 7,
+            "tickSize": 0,
+            "domain": false,
+            "grid": false,
+            "title": null
+          }
+        },
+        "x2": {
+          "field": "X1"
+        },
+        "y": {
+          "field": "Y0",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              5
+            ],
+            "nice": false,
+            "reverse": true
+          },
+          "axis": null
+        },
+        "y2": {
+          "field": "Y1"
+        },
+        "color": {
+          "field": "Mean_Hs_m",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              3
+            ],
+            "clamp": true,
+            "range": [
+              "#edf4f7",
+              "#176b76"
+            ]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "Location",
+            "type": "nominal",
+            "title": "Monitoring site"
+          },
+          {
+            "field": "DateDisplay",
+            "type": "nominal",
+            "title": "Date"
+          },
+          {
+            "field": "HsDisplay",
+            "type": "nominal",
+            "title": "Daily mean Hs"
+          },
+          {
+            "field": "ValidReadings",
+            "type": "quantitative",
+            "title": "Valid readings",
+            "format": ",d"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.InMonth === true"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Arial",
+        "fontSize": 11,
+        "fontWeight": "bold",
+        "baseline": "middle",
+        "dy": -7
+      },
+      "encoding": {
+        "x": {
+          "field": "XCenter",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              7
+            ],
+            "nice": false
+          },
+          "axis": null
+        },
+        "y": {
+          "field": "YCenter",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              5
+            ],
+            "nice": false,
+            "reverse": true
+          },
+          "axis": null
+        },
+        "text": {
+          "field": "DayLabel",
+          "type": "nominal"
+        },
+        "color": {
+          "condition": {
+            "test": "datum.HasData === true && datum.Mean_Hs_m >= 1.95",
+            "value": "#ffffff"
+          },
+          "value": "#314d55"
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.RowType === 'no-data'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Arial",
+        "fontSize": 7,
+        "fontWeight": "bold",
+        "baseline": "middle",
+        "dy": 8,
+        "color": "#46585e"
+      },
+      "encoding": {
+        "x": {
+          "field": "XCenter",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              7
+            ],
+            "nice": false
+          },
+          "axis": null
+        },
+        "y": {
+          "field": "YCenter",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              5
+            ],
+            "nice": false,
+            "reverse": true
+          },
+          "axis": null
+        },
+        "text": {
+          "field": "NoDataLabel",
+          "type": "nominal"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

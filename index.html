@@ -94,9 +94,24 @@
             <h3 id="chart04-heading" class="wave-chart-heading">Where were waves taller on average?</h3>
             <p class="wave-chart-deck">The circle areas compare each station’s mean Hs during the common January 2026 period. Hover a site for its mean peak period and observation counts.</p>
             <figure class="wave-chart-figure">
-              <div id="chart4" class="wave-site-map" role="img" aria-label="Regional map of Gold Coast, Palm Beach and Tweed Offshore monitoring sites. Circle area shows January 2026 mean significant wave height; hover for site statistics."></div>
+              <div class="wave-site-dashboard">
+                <div class="wave-site-map-panel">
+                  <div class="wave-site-map-topline">
+                    <span class="wave-site-map-label">Gold Coast–Tweed regional map</span>
+                    <span class="wave-site-map-context">LOCAL GSHHG COASTLINE</span>
+                  </div>
+                  <div id="chart4" class="wave-site-map" role="img" aria-label="Regional map of the Gold Coast–Tweed coastline and three monitoring sites. Circle area shows January 2026 mean significant wave height; hover a marker for site statistics."></div>
+                </div>
+                <aside class="wave-site-panel" aria-labelledby="chart04-panel-heading">
+                  <p class="wave-site-panel__eyebrow">Three monitoring sites · 1–31 January</p>
+                  <h4 id="chart04-panel-heading">January 2026 Wave Conditions</h4>
+                  <p class="wave-site-panel__measure">Mean significant wave height (Hs)</p>
+                  <dl id="chart04-site-list" class="wave-site-list" aria-label="Mean significant wave height by monitoring site"></dl>
+                  <p id="chart04-insight" class="wave-site-insight" aria-live="polite">Calculating the January site averages…</p>
+                  <p class="wave-site-panel__note">Circle area on the map represents mean Hs. Hover a marker for peak period and observation counts.</p>
+                </aside>
+              </div>
               <figcaption class="wave-chart-caption">
-                <p id="chart04-insight" class="wave-chart-insight" aria-live="polite">Calculating the January site averages…</p>
                 <p class="wave-chart-note">Published monitoring-site reference coordinates are shown; a reference point does not imply a buoy stayed at one exact position throughout January.</p>
                 <p class="wave-chart-source">Wave observations: Queensland Government <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>. Site coordinates: official <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a> monitoring pages. Coastline context: <a href="https://www.ngdc.noaa.gov/mgg/shorelines/shorelines.html" target="_blank" rel="noopener noreferrer">GSHHG shoreline data (intermediate resolution)</a>, locally clipped for Gold Coast–Tweed; ©/licensing details are in <a href="data/GSHHG_SOURCE_AND_LICENSE.txt">the geographic data notice</a>. Land polygons depict a regional reference, not detailed beach or surf-break boundaries.</p>
               </figcaption>
@@ -115,15 +130,104 @@
               </figcaption>
             </figure>
           </section>
-          <div class="chart-placeholder" id="chart6" aria-label="Chart 6 placeholder">
-            <p>Chart 6 placeholder</p>
-          </div>
-          <div class="chart-placeholder" id="chart7" aria-label="Chart 7 placeholder">
-            <p>Chart 7 placeholder</p>
-          </div>
-          <div class="chart-placeholder" id="chart8" aria-label="Chart 8 placeholder">
-            <p>Chart 8 placeholder</p>
-          </div>
+          <section class="wave-chart-section wave-chart-section--rose" aria-labelledby="chart06-heading">
+            <p class="section-eyebrow">06 · Wave direction</p>
+            <h3 id="chart06-heading" class="wave-chart-heading">Where do peak waves come from?</h3>
+            <p class="wave-chart-deck">Each rose groups January peak-wave bearings into eight 45° compass sectors. The radial length shows the share of valid direction readings, using one scale across all three sites.</p>
+            <figure class="wave-chart-figure">
+              <div class="wave-small-multiple-grid wave-rose-grid">
+                <article class="wave-small-panel">
+                  <h4>Gold Coast</h4>
+                  <p id="chart06-gold-note" class="wave-panel-stat">Calculating valid direction readings…</p>
+                  <div id="chart06-gold" class="wave-rose-chart" role="img" aria-label="Gold Coast wave rose. North is at the top; compass bearings proceed clockwise. Radial length shows percent of valid readings."></div>
+                </article>
+                <article class="wave-small-panel">
+                  <h4>Palm Beach</h4>
+                  <p id="chart06-palm-note" class="wave-panel-stat">Calculating valid direction readings…</p>
+                  <div id="chart06-palm" class="wave-rose-chart" role="img" aria-label="Palm Beach wave rose. North is at the top; compass bearings proceed clockwise. Radial length shows percent of valid readings."></div>
+                </article>
+                <article class="wave-small-panel">
+                  <h4>Tweed Offshore</h4>
+                  <p id="chart06-tweed-note" class="wave-panel-stat">Calculating valid direction readings…</p>
+                  <div id="chart06-tweed" class="wave-rose-chart" role="img" aria-label="Tweed Offshore wave rose. North is at the top; compass bearings proceed clockwise. Radial length shows percent of valid readings."></div>
+                </article>
+              </div>
+              <figcaption class="wave-chart-caption">
+                <p id="chart06-insight" class="wave-chart-insight" aria-live="polite">Calculating the most frequent compass sectors…</p>
+                <p class="wave-chart-note">Concentric guides mark 25%, 50% and 75%; the outside ring is 100% of valid direction readings. Bearings follow the Queensland Government’s <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/how-to-read-the-graphs" target="_blank" rel="noopener noreferrer">wave-graph guide</a> (clockwise from true north: 0° North, 90° East); its <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-glossary" target="_blank" rel="noopener noreferrer">glossary</a> defines wave direction as where peak waves come from.</p>
+                <p class="wave-chart-source">Source: Queensland Government Coastal Data System, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>.</p>
+              </figcaption>
+            </figure>
+          </section>
+
+          <section class="wave-chart-section wave-chart-section--calendar" aria-labelledby="chart07-heading">
+            <p class="section-eyebrow">07 · Daily wave height</p>
+            <h3 id="chart07-heading" class="wave-chart-heading">When did daily wave heights rise and fall?</h3>
+            <p class="wave-chart-deck">Each Monday-first January 2026 calendar cell shows a day’s mean significant wave height (Hs). All panels share the same metre scale so daily conditions can be compared across stations.</p>
+            <figure class="wave-chart-figure">
+              <div class="wave-small-multiple-grid wave-calendar-grid">
+                <article class="wave-small-panel">
+                  <h4>Gold Coast</h4>
+                  <div id="chart07-gold" class="wave-calendar-chart" role="img" aria-label="Gold Coast January 2026 calendar heatmap of daily mean significant wave height in metres."></div>
+                </article>
+                <article class="wave-small-panel">
+                  <h4>Palm Beach</h4>
+                  <div id="chart07-palm" class="wave-calendar-chart" role="img" aria-label="Palm Beach January 2026 calendar heatmap of daily mean significant wave height in metres."></div>
+                </article>
+                <article class="wave-small-panel">
+                  <h4>Tweed Offshore</h4>
+                  <div id="chart07-tweed" class="wave-calendar-chart" role="img" aria-label="Tweed Offshore January 2026 calendar heatmap of daily mean significant wave height in metres."></div>
+                </article>
+              </div>
+              <div class="wave-scale-key" aria-label="Common daily mean wave-height colour scale from 0 to 3 metres; grey means no data">
+                <span class="wave-scale-key__label">0 m</span>
+                <span class="wave-scale-key__ramp wave-scale-key__ramp--height" aria-hidden="true"></span>
+                <span class="wave-scale-key__label">3.0 m</span>
+                <span class="wave-scale-key__missing"><i aria-hidden="true"></i>No data</span>
+              </div>
+              <figcaption class="wave-chart-caption">
+                <p id="chart07-insight" class="wave-chart-insight" aria-live="polite">Calculating the daily highs and lows…</p>
+                <p class="wave-chart-note">18 January is marked in grey as “No data” for all three stations because no valid Hs readings were recorded that day. Other dates with valid Hs are shaded from lower (pale blue) to higher (dark blue).</p>
+                <p class="wave-chart-source">Daily summaries derived from Queensland Government Coastal Data System observations: <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>.</p>
+              </figcaption>
+            </figure>
+          </section>
+
+          <section class="wave-chart-section wave-chart-section--pairs" aria-labelledby="chart08-heading">
+            <p class="section-eyebrow">08 · Height and period together</p>
+            <h3 id="chart08-heading" class="wave-chart-heading">Which height–period combinations occur most often?</h3>
+            <p class="wave-chart-deck">Each cell counts January 2026 half-hourly records with both a valid significant wave height (Hs) and peak period (Tp). Shared bins are 0.25 m wide by 2 s high; the count colour scale is common to every station.</p>
+            <figure class="wave-chart-figure">
+              <div class="wave-small-multiple-grid wave-pair-grid">
+                <article class="wave-small-panel">
+                  <h4>Gold Coast</h4>
+                  <p id="chart08-gold-note" class="wave-panel-stat">Calculating paired observations…</p>
+                  <div id="chart08-gold" class="wave-pair-chart" role="img" aria-label="Gold Coast binned heatmap of paired significant wave height in metres and peak period in seconds."></div>
+                </article>
+                <article class="wave-small-panel">
+                  <h4>Palm Beach</h4>
+                  <p id="chart08-palm-note" class="wave-panel-stat">Calculating paired observations…</p>
+                  <div id="chart08-palm" class="wave-pair-chart" role="img" aria-label="Palm Beach binned heatmap of paired significant wave height in metres and peak period in seconds."></div>
+                </article>
+                <article class="wave-small-panel">
+                  <h4>Tweed Offshore</h4>
+                  <p id="chart08-tweed-note" class="wave-panel-stat">Calculating paired observations…</p>
+                  <div id="chart08-tweed" class="wave-pair-chart" role="img" aria-label="Tweed Offshore binned heatmap of paired significant wave height in metres and peak period in seconds."></div>
+                </article>
+              </div>
+              <div class="wave-scale-key wave-scale-key--counts" aria-label="Shared colour scale for paired observation counts">
+                <span class="wave-scale-key__label">0</span>
+                <span class="wave-scale-key__ramp wave-scale-key__ramp--counts" aria-hidden="true"></span>
+                <span id="chart08-count-max" class="wave-scale-key__label">Highest bin</span>
+                <span class="wave-scale-key__caption">paired observations</span>
+              </div>
+              <figcaption class="wave-chart-caption">
+                <p id="chart08-insight" class="wave-chart-insight" aria-live="polite">Calculating each station’s most frequent Hs–Tp range…</p>
+                <p class="wave-chart-note">Tooltips report the exact Hs range, Tp range and number of paired observations in a bin. Empty cells indicate no paired records in that range.</p>
+                <p class="wave-chart-source">Source: Queensland Government Coastal Data System, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>.</p>
+              </figcaption>
+            </figure>
+          </section>
         </div>
       </section>
 

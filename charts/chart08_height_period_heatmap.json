@@ -1,0 +1,127 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Counts of valid paired significant wave height and peak period readings, grouped into common bins across all three sites.",
+  "data": {
+    "values": []
+  },
+  "width": "container",
+  "height": 265,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "mark": {
+    "type": "rect",
+    "stroke": "#ffffff",
+    "strokeWidth": 0.65
+  },
+  "encoding": {
+    "x": {
+      "field": "HsStart",
+      "type": "quantitative",
+      "scale": {
+        "domain": [
+          0,
+          3.5
+        ],
+        "nice": false
+      },
+      "axis": {
+        "title": "Significant wave height Hs (m)",
+        "values": [
+          0,
+          1,
+          2,
+          3
+        ],
+        "labelFont": "Arial",
+        "labelFontSize": 10,
+        "titleFont": "Arial",
+        "titleFontSize": 11,
+        "grid": true,
+        "gridColor": "#e7edef",
+        "tickSize": 3
+      }
+    },
+    "x2": {
+      "field": "HsEnd",
+      "type": "quantitative"
+    },
+    "y": {
+      "field": "TpStart",
+      "type": "quantitative",
+      "scale": {
+        "domain": [
+          0,
+          20
+        ],
+        "nice": false
+      },
+      "axis": {
+        "title": "Peak period Tp (s)",
+        "values": [
+          0,
+          5,
+          10,
+          15,
+          20
+        ],
+        "labelFont": "Arial",
+        "labelFontSize": 10,
+        "titleFont": "Arial",
+        "titleFontSize": 11,
+        "grid": true,
+        "gridColor": "#e7edef",
+        "tickSize": 3
+      }
+    },
+    "y2": {
+      "field": "TpEnd",
+      "type": "quantitative"
+    },
+    "color": {
+      "field": "Count",
+      "type": "quantitative",
+      "scale": {
+        "domain": [
+          0,
+          179
+        ],
+        "clamp": true,
+        "range": [
+          "#e8f2f4",
+          "#176b76"
+        ]
+      },
+      "legend": null
+    },
+    "tooltip": [
+      {
+        "field": "Location",
+        "type": "nominal",
+        "title": "Monitoring site"
+      },
+      {
+        "field": "HsRange",
+        "type": "nominal",
+        "title": "Hs bin"
+      },
+      {
+        "field": "TpRange",
+        "type": "nominal",
+        "title": "Tp bin"
+      },
+      {
+        "field": "Count",
+        "type": "quantitative",
+        "title": "Observations",
+        "format": ",d"
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

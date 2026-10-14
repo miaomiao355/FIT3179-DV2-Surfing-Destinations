@@ -362,8 +362,26 @@ function calculateWaveSummaries(observations, stations) {
 function renderWaveInsights(summaries, boxStats) {
   const format = (value, digits = 3) => value.toFixed(digits);
   const highestMean = summaries.reduce((best, row) => row.Mean_Hs_m > best.Mean_Hs_m ? row : best);
+  const siteList = document.getElementById("chart04-site-list");
+  siteList.replaceChildren();
+
+  for (const row of summaries) {
+    const isHighest = row.Location === highestMean.Location;
+    const item = makeElement("div", "wave-site-summary" + (isHighest ? " is-highest" : ""));
+    const name = makeElement("dt", "wave-site-summary__name", row.Location);
+    const value = makeElement("dd", "wave-site-summary__value");
+    value.append(
+      makeElement("strong", "", format(row.Mean_Hs_m)),
+      makeElement("span", "", "m")
+    );
+    if (isHighest) name.appendChild(makeElement("span", "wave-site-summary__badge", "Highest"));
+    item.append(name, value);
+    siteList.appendChild(item);
+  }
+
   document.getElementById("chart04-insight").textContent =
-    `${highestMean.Location} recorded the highest January mean Hs (${format(highestMean.Mean_Hs_m)} m), compared with Gold Coast ${format(summaries[0].Mean_Hs_m)} m and Palm Beach ${format(summaries[1].Mean_Hs_m)} m.`;
+    highestMean.Location + " recorded the highest mean significant wave height in January 2026 (" +
+    format(highestMean.Mean_Hs_m) + " m).";
 
   const highestMedian = boxStats.reduce((best, row) => row.median > best.median ? row : best);
   const widestSpread = boxStats.reduce((best, row) => row.iqr > best.iqr ? row : best);
@@ -430,9 +448,472 @@ async function initializeWaveCharts() {
   }
 }
 
+const WAVE_CHART_SITE_ORDER = ["Gold Coast", "Palm Beach", "Tweed Offshore"];
+const WAVE_CHART_PANEL_IDS = {
+  "Gold Coast": {rose: "chart06-gold", roseNote: "chart06-gold-note", calendar: "chart07-gold", pairs: "chart08-gold", pairsNote: "chart08-gold-note"},
+  "Palm Beach": {rose: "chart06-palm", roseNote: "chart06-palm-note", calendar: "chart07-palm", pairs: "chart08-palm", pairsNote: "chart08-palm-note"},
+  "Tweed Offshore": {rose: "chart06-tweed", roseNote: "chart06-tweed-note", calendar: "chart07-tweed", pairs: "chart08-tweed", pairsNote: "chart08-tweed-note"}
+};
+const WAVE_COMPASS_SECTORS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
+const WAVE_CHART_START = "2026-01-01";
+const WAVE_CHART_END = "2026-02-01";
+const WAVE_HS_BIN_WIDTH = 0.25;
+const WAVE_TP_BIN_WIDTH = 2;
+
+async function readWaveChartCsv(path, label) {
+  const response = await fetch(path);
+  if (!response.ok) throw new Error("Cannot load " + label + " (HTTP " + response.status + ").");
+  return window.vega.read(await response.text(), {type: "csv"});
+}
+
+async function readWaveChartSpec(path, label) {
+  const response = await fetch(path, {cache: "no-store"});
+  if (!response.ok) throw new Error("Cannot load the " + label + " specification (HTTP " + response.status + ").");
+  return response.json();
+}
+
+function cloneWaveChartSpecWithValues(template, values, label) {
+  if (!template || typeof template !== "object" ||
+      !template.data || typeof template.data !== "object" ||
+      !Array.isArray(template.data.values)) {
+    throw new Error(label + " must declare an explicit root-level data.values array.");
+  }
+  if (Array.isArray(template.layer) && template.layer.some(layer => layer.data)) {
+    throw new Error(label + " layers must inherit the shared root-level data source.");
+  }
+  const specification = JSON.parse(JSON.stringify(template));
+  if (!Array.isArray(specification.data.values)) {
+    throw new Error(label + " root-level data.values could not be cloned.");
+  }
+  specification.data.values = values;
+  return specification;
+}
+
+function displayWaveError(targetIds, message) {
+  for (const targetId of targetIds) showChartError(targetId, message);
+}
+
+function verifyWaveChartSites(rows, label, expectedRowsPerSite = null) {
+  const names = new Set(rows.map(row => row.Location));
+  if (names.size !== WAVE_CHART_SITE_ORDER.length ||
+      WAVE_CHART_SITE_ORDER.some(site => !names.has(site))) {
+    throw new Error(label + " must contain exactly Gold Coast, Palm Beach and Tweed Offshore.");
+  }
+  if (expectedRowsPerSite !== null) {
+    for (const site of WAVE_CHART_SITE_ORDER) {
+      const count = rows.filter(row => row.Location === site).length;
+      if (count !== expectedRowsPerSite) {
+        throw new Error(site + " has " + count + " " + label + " rows; expected " + expectedRowsPerSite + ".");
+      }
+    }
+  }
+}
+
+function buildWaveRoseRows(observations) {
+  verifyWaveChartSites(observations, "January wave-observation");
+  for (const site of WAVE_CHART_SITE_ORDER) {
+    const count = observations.filter(row => row.Location === site &&
+      row.Date >= WAVE_CHART_START && row.Date < WAVE_CHART_END).length;
+    if (count !== EXPECTED_WAVE_RECORDS_PER_SITE) {
+      throw new Error(site + " has " + count + " January observations; expected " + EXPECTED_WAVE_RECORDS_PER_SITE + ".");
+    }
+  }
+  const output = new Map();
+  const halfSectors = new Map([
+    ["Gold Coast", Array(8).fill(0)],
+    ["Palm Beach", Array(8).fill(0)],
+    ["Tweed Offshore", Array(8).fill(0)]
+  ]);
+  const validBySite = new Map(WAVE_CHART_SITE_ORDER.map(site => [site, 0]));
+
+  for (const row of observations) {
+    if (!WAVE_CHART_SITE_ORDER.includes(row.Location) ||
+        row.Date < WAVE_CHART_START || row.Date >= WAVE_CHART_END) continue;
+    if (row.Peak_Direction_deg === null || row.Peak_Direction_deg === undefined ||
+        String(row.Peak_Direction_deg).trim() === "") continue;
+    const bearing = Number(row.Peak_Direction_deg);
+    if (!Number.isFinite(bearing) || bearing < 0 || bearing > 360) continue;
+    const normalized = ((bearing % 360) + 360) % 360;
+    const sectorIndex = Math.floor((normalized + 22.5) / 45) % 8;
+    halfSectors.get(row.Location)[sectorIndex] += 1;
+    validBySite.set(row.Location, validBySite.get(row.Location) + 1);
+  }
+
+  const centerAngles = [0, 45, 90, 135, 180, 225, 270, 315];
+  for (const site of WAVE_CHART_SITE_ORDER) {
+    const counts = halfSectors.get(site);
+    const validCount = validBySite.get(site);
+    if (!validCount) throw new Error(site + " has no valid January peak-direction readings.");
+    if (counts.reduce((sum, count) => sum + count, 0) !== validCount) {
+      throw new Error(site + " directional sector counts do not reconcile.");
+    }
+    const maximum = Math.max(...counts);
+    const rows = [];
+    for (let i = 0; i < WAVE_COMPASS_SECTORS.length; i += 1) {
+      const sector = WAVE_COMPASS_SECTORS[i];
+      const percentage = counts[i] / validCount * 100;
+      const common = {
+        Location: site,
+        Sector: sector,
+        Count: counts[i],
+        Percentage: percentage,
+        IsDominant: counts[i] === maximum,
+        InnerRadiusPct: 0,
+        OuterRadiusPct: percentage
+      };
+      if (sector === "N") {
+        rows.push({RowType: "sector", ...common, StartDeg: 0, EndDeg: 22.5});
+        rows.push({RowType: "sector", ...common, StartDeg: 337.5, EndDeg: 360});
+      } else {
+        rows.push({
+          RowType: "sector",
+          ...common,
+          StartDeg: centerAngles[i] - 22.5,
+          EndDeg: centerAngles[i] + 22.5
+        });
+      }
+    }
+    for (const guide of [25, 50, 75, 100]) {
+      rows.push({
+        RowType: "guide",
+        Location: site,
+        StartDeg: 0,
+        EndDeg: 360,
+        InnerRadiusPct: Math.max(0, guide - 0.8),
+        OuterRadiusPct: guide
+      });
+    }
+    for (let i = 0; i < WAVE_COMPASS_SECTORS.length; i += 1) {
+      rows.push({
+        RowType: "label",
+        Location: site,
+        Sector: WAVE_COMPASS_SECTORS[i],
+        CenterDeg: centerAngles[i],
+        LabelRadius: 113
+      });
+    }
+    output.set(site, {rows, counts, validCount, maximum});
+  }
+  return output;
+}
+
+async function initializeChart06WaveRose() {
+  const targetIds = WAVE_CHART_SITE_ORDER.map(site => WAVE_CHART_PANEL_IDS[site].rose);
+  try {
+    const [observations, template] = await Promise.all([
+      readWaveChartCsv(WAVE_DATA_CSV, "the January wave observations"),
+      readWaveChartSpec("charts/chart06_wave_rose.json", "Chart 06")
+    ]);
+    const perSite = buildWaveRoseRows(observations);
+    const embeds = WAVE_CHART_SITE_ORDER.map(async site => {
+      const summary = perSite.get(site);
+      const panel = WAVE_CHART_PANEL_IDS[site];
+      const leadIndex = summary.counts.indexOf(summary.maximum);
+      document.getElementById(panel.roseNote).textContent =
+        "n = " + summary.validCount.toLocaleString("en-AU") + " valid readings · " +
+        WAVE_COMPASS_SECTORS[leadIndex] + " leads (" +
+        (summary.maximum / summary.validCount * 100).toFixed(1) + "%)";
+      const specification = cloneWaveChartSpecWithValues(template, summary.rows, "Chart 06");
+      await window.vegaEmbed("#" + panel.rose, specification, {actions: false});
+    });
+    const results = await Promise.allSettled(embeds);
+    results.forEach((result, index) => {
+      if (result.status === "rejected") {
+        const site = WAVE_CHART_SITE_ORDER[index];
+        console.error("Chart 06 could not render for " + site + ":", result.reason);
+        showChartError(WAVE_CHART_PANEL_IDS[site].rose, "The wave rose could not load for this site. Check the chart specification and browser console.");
+      }
+    });
+
+    const leaders = WAVE_CHART_SITE_ORDER.map(site => {
+      const summary = perSite.get(site);
+      const index = summary.counts.indexOf(summary.maximum);
+      return {
+        site,
+        sector: WAVE_COMPASS_SECTORS[index],
+        percentage: (summary.maximum / summary.validCount * 100).toFixed(1)
+      };
+    });
+    document.getElementById("chart06-insight").textContent =
+      "The " + ({N: "north", NE: "northeast", E: "east", SE: "southeast", S: "south", SW: "southwest", W: "west", NW: "northwest"}[leaders[0].sector]) +
+      " sector was most frequent at " + leaders[0].site + " (" + leaders[0].percentage +
+      "%) and " + leaders[1].site + " (" + leaders[1].percentage + "%); the " +
+      ({N: "north", NE: "northeast", E: "east", SE: "southeast", S: "south", SW: "southwest", W: "west", NW: "northwest"}[leaders[2].sector]) +
+      " sector led at " + leaders[2].site + " (" + leaders[2].percentage + "%).";
+  } catch (error) {
+    console.error("Chart 06 wave-direction data could not be prepared:", error);
+    displayWaveError(targetIds, "The January direction data or wave-rose specification could not be loaded. Check the data path and browser console.");
+  }
+}
+
+function buildWaveCalendarRows(dailyRows) {
+  verifyWaveChartSites(dailyRows, "daily-summary");
+  if (dailyRows.length !== 93) throw new Error("The daily summary must contain 93 rows for January 2026.");
+  const perSite = new Map();
+  const janFirst = new Date(WAVE_CHART_START + "T12:00:00Z");
+  const mondayFirstOffset = (janFirst.getUTCDay() + 6) % 7;
+  const gridCellCount = Math.ceil((mondayFirstOffset + 31) / 7) * 7;
+
+  for (const site of WAVE_CHART_SITE_ORDER) {
+    const siteRows = dailyRows.filter(row => row.Location === site &&
+      row.Date >= WAVE_CHART_START && row.Date < WAVE_CHART_END);
+    if (siteRows.length !== 31) {
+      throw new Error(site + " has " + siteRows.length + " daily rows; expected 31.");
+    }
+    const byDay = new Map();
+    for (const row of siteRows) {
+      const date = new Date(row.Date + "T12:00:00Z");
+      if (!Number.isFinite(date.getTime()) || date.getUTCFullYear() !== 2026 ||
+          date.getUTCMonth() !== 0) {
+        throw new Error(site + " contains an invalid January date: " + row.Date);
+      }
+      const day = date.getUTCDate();
+      if (byDay.has(day)) throw new Error(site + " contains duplicate daily summary for " + row.Date + ".");
+      const validReadings = Number(row.Records_Valid_Hs);
+      if (!Number.isInteger(validReadings) || validReadings < 0) {
+        throw new Error(site + " has an invalid valid-Hs count for " + row.Date + ".");
+      }
+      const meanHs = parseWaveMeasurement(row.Mean_Hs_m, true);
+      if ((validReadings > 0 && meanHs === null) || (validReadings === 0 && meanHs !== null)) {
+        throw new Error(site + " has inconsistent Hs data and valid-reading count for " + row.Date + ".");
+      }
+      const hasData = validReadings > 0 && meanHs !== null;
+      const summary = {
+        Location: site,
+        Date: row.Date,
+        DateDisplay: String(day).padStart(2, "0") + " Jan 2026",
+        DayNumber: day,
+        Mean_Hs_m: hasData ? meanHs : null,
+        HsDisplay: hasData ? meanHs.toFixed(2) + " m" : "No data",
+        ValidReadings: validReadings,
+        HasData: hasData
+      };
+      byDay.set(day, summary);
+    }
+    if (byDay.size !== 31 || Array.from({length: 31}, (_, i) => i + 1).some(day => !byDay.has(day))) {
+      throw new Error(site + " is missing one or more January calendar dates.");
+    }
+
+    const cells = [];
+    for (let cell = 0; cell < gridCellCount; cell += 1) {
+      const week = Math.floor(cell / 7);
+      const weekday = cell % 7;
+      const day = cell - mondayFirstOffset + 1;
+      if (day < 1 || day > 31) {
+        cells.push({
+          RowType: "outside",
+          Location: site,
+          InMonth: false,
+          HasData: false,
+          X0: weekday,
+          X1: weekday + 1,
+          XCenter: weekday + 0.5,
+          Y0: week,
+          Y1: week + 1,
+          YCenter: week + 0.5,
+          DayLabel: "",
+          NoDataLabel: "",
+          Mean_Hs_m: null
+        });
+        continue;
+      }
+      const summary = byDay.get(day);
+      const rowType = summary.HasData ? "day" : "no-data";
+      cells.push({
+        ...summary,
+        RowType: rowType,
+        InMonth: true,
+        X0: weekday,
+        X1: weekday + 1,
+        XCenter: weekday + 0.5,
+        Y0: week,
+        Y1: week + 1,
+        YCenter: week + 0.5,
+        DayLabel: String(day),
+        NoDataLabel: summary.HasData ? "" : "No data"
+      });
+    }
+    if (cells.filter(cell => cell.RowType === "no-data").length !== 1 ||
+        cells.find(cell => cell.Date === "2026-01-18")?.RowType !== "no-data") {
+      throw new Error(site + " must show 18 January as the one no-data calendar cell.");
+    }
+    perSite.set(site, {cells, summaries: Array.from(byDay.values())});
+  }
+  return perSite;
+}
+
+async function initializeChart07WaveCalendar() {
+  const targetIds = WAVE_CHART_SITE_ORDER.map(site => WAVE_CHART_PANEL_IDS[site].calendar);
+  try {
+    const [dailyRows, template] = await Promise.all([
+      readWaveChartCsv("data/wave_january_2026_daily_summary.csv", "the daily wave-height summaries"),
+      readWaveChartSpec("charts/chart07_wave_calendar.json", "Chart 07")
+    ]);
+    const perSite = buildWaveCalendarRows(dailyRows);
+    const results = await Promise.allSettled(WAVE_CHART_SITE_ORDER.map(async site => {
+      const specification = cloneWaveChartSpecWithValues(template, perSite.get(site).cells, "Chart 07");
+      await window.vegaEmbed("#" + WAVE_CHART_PANEL_IDS[site].calendar, specification, {actions: false});
+    }));
+    results.forEach((result, index) => {
+      if (result.status === "rejected") {
+        const site = WAVE_CHART_SITE_ORDER[index];
+        console.error("Chart 07 could not render for " + site + ":", result.reason);
+        showChartError(WAVE_CHART_PANEL_IDS[site].calendar, "The January calendar could not load for this site. Check the chart specification and browser console.");
+      }
+    });
+
+    const perSiteStats = WAVE_CHART_SITE_ORDER.map(site => {
+      const validDays = perSite.get(site).summaries.filter(row => row.HasData);
+      const high = validDays.reduce((best, row) => row.Mean_Hs_m > best.Mean_Hs_m ? row : best);
+      const low = validDays.reduce((best, row) => row.Mean_Hs_m < best.Mean_Hs_m ? row : best);
+      return {site, high, low};
+    });
+    const overallLow = Math.min(...perSiteStats.map(row => row.low.Mean_Hs_m));
+    const overallHighLow = Math.max(...perSiteStats.map(row => row.low.Mean_Hs_m));
+    const commonPeak = perSiteStats.every(row => row.high.Date === perSiteStats[0].high.Date);
+    const highestPeak = perSiteStats.reduce((best, row) =>
+      row.high.Mean_Hs_m > best.high.Mean_Hs_m ? row : best);
+    const lowerDates = Array.from(new Set(perSiteStats.map(row => Number(row.low.Date.slice(-2))))).sort((a, b) => a - b);
+    const lowDateText = lowerDates.length === 1
+      ? String(lowerDates[0]) + " Jan"
+      : lowerDates[0] + "–" + lowerDates[lowerDates.length - 1] + " Jan";
+    const peakDate = Number(perSiteStats[0].high.Date.slice(-2));
+    document.getElementById("chart07-insight").textContent =
+      "Daily means were lowest on " + lowDateText + " (" + overallLow.toFixed(2) + "–" +
+      overallHighLow.toFixed(2) + " m); " +
+      (commonPeak ? "all three peaked on " + peakDate + " Jan" : "their highest days varied") +
+      ", with " + highestPeak.site + " reaching " + highestPeak.high.Mean_Hs_m.toFixed(2) + " m.";
+  } catch (error) {
+    console.error("Chart 07 daily wave data could not be prepared:", error);
+    displayWaveError(targetIds, "The January daily summaries or calendar specification could not be loaded. Check the data path and browser console.");
+  }
+}
+
+function buildWaveHeightPeriodBins(observations) {
+  verifyWaveChartSites(observations, "January wave-observation");
+  for (const site of WAVE_CHART_SITE_ORDER) {
+    const count = observations.filter(row => row.Location === site &&
+      row.Date >= WAVE_CHART_START && row.Date < WAVE_CHART_END).length;
+    if (count !== EXPECTED_WAVE_RECORDS_PER_SITE) {
+      throw new Error(site + " has " + count + " January observations; expected " + EXPECTED_WAVE_RECORDS_PER_SITE + ".");
+    }
+  }
+  const binsBySite = new Map(WAVE_CHART_SITE_ORDER.map(site => [site, new Map()]));
+  const pairCountBySite = new Map(WAVE_CHART_SITE_ORDER.map(site => [site, 0]));
+  const hsDomainMax = 3.5;
+  const tpDomainMax = 20;
+
+  for (const row of observations) {
+    if (!WAVE_CHART_SITE_ORDER.includes(row.Location) ||
+        row.Date < WAVE_CHART_START || row.Date >= WAVE_CHART_END) continue;
+    const hs = parseWaveMeasurement(row.Hs_m, true);
+    const tp = parseWaveMeasurement(row.Tp_s, false);
+    if (hs === null || tp === null) continue;
+    if (hs > hsDomainMax || tp > tpDomainMax) {
+      throw new Error("A valid Hs–Tp pair falls outside the common January chart domain.");
+    }
+    const hsIndex = Math.min(Math.floor(hs / WAVE_HS_BIN_WIDTH), hsDomainMax / WAVE_HS_BIN_WIDTH - 1);
+    const tpIndex = Math.min(Math.floor(tp / WAVE_TP_BIN_WIDTH), tpDomainMax / WAVE_TP_BIN_WIDTH - 1);
+    const key = hsIndex + ":" + tpIndex;
+    const siteBins = binsBySite.get(row.Location);
+    siteBins.set(key, (siteBins.get(key) || 0) + 1);
+    pairCountBySite.set(row.Location, pairCountBySite.get(row.Location) + 1);
+  }
+
+  const perSite = new Map();
+  let commonMaxCount = 0;
+  let totalPairs = 0;
+  for (const site of WAVE_CHART_SITE_ORDER) {
+    const binMap = binsBySite.get(site);
+    const pairCount = pairCountBySite.get(site);
+    const bins = [];
+    for (const [key, count] of binMap) {
+      const [hsIndexText, tpIndexText] = key.split(":");
+      const hsIndex = Number(hsIndexText);
+      const tpIndex = Number(tpIndexText);
+      const hsStart = Number((hsIndex * WAVE_HS_BIN_WIDTH).toFixed(2));
+      const hsEnd = Number((hsStart + WAVE_HS_BIN_WIDTH).toFixed(2));
+      const tpStart = tpIndex * WAVE_TP_BIN_WIDTH;
+      const tpEnd = tpStart + WAVE_TP_BIN_WIDTH;
+      const bin = {
+        Location: site,
+        HsStart: hsStart,
+        HsEnd: hsEnd,
+        TpStart: tpStart,
+        TpEnd: tpEnd,
+        HsRange: hsStart.toFixed(2) + "–" + hsEnd.toFixed(2) + " m",
+        TpRange: tpStart + "–" + tpEnd + " s",
+        Count: count
+      };
+      bins.push(bin);
+      if (count > commonMaxCount) commonMaxCount = count;
+    }
+    const countedPairs = bins.reduce((sum, bin) => sum + bin.Count, 0);
+    if (!pairCount || countedPairs !== pairCount) {
+      throw new Error(site + " paired Hs–Tp bin counts do not reconcile.");
+    }
+    bins.sort((a, b) => a.HsStart - b.HsStart || a.TpStart - b.TpStart);
+    const mode = bins.reduce((best, bin) => !best || bin.Count > best.Count ? bin : best, null);
+    perSite.set(site, {bins, pairCount, mode});
+    totalPairs += pairCount;
+  }
+  return {perSite, commonMaxCount, totalPairs};
+}
+
+async function initializeChart08HeightPeriod() {
+  const targetIds = WAVE_CHART_SITE_ORDER.map(site => WAVE_CHART_PANEL_IDS[site].pairs);
+  try {
+    const [observations, template] = await Promise.all([
+      readWaveChartCsv(WAVE_DATA_CSV, "the January wave observations"),
+      readWaveChartSpec("charts/chart08_height_period_heatmap.json", "Chart 08")
+    ]);
+    const {perSite, commonMaxCount, totalPairs} = buildWaveHeightPeriodBins(observations);
+    if (!template.encoding || !template.encoding.color || !template.encoding.color.scale) {
+      throw new Error("Chart 08 must define a shared quantitative color scale in its top-level encoding.");
+    }
+    template.encoding.color.scale.domain = [0, commonMaxCount];
+    document.getElementById("chart08-count-max").textContent = commonMaxCount.toLocaleString("en-AU");
+
+    const results = await Promise.allSettled(WAVE_CHART_SITE_ORDER.map(async site => {
+      const summary = perSite.get(site);
+      const panel = WAVE_CHART_PANEL_IDS[site];
+      document.getElementById(panel.pairsNote).textContent =
+        summary.pairCount.toLocaleString("en-AU") + " paired readings · most frequent: Hs " +
+        summary.mode.HsRange + " with Tp " + summary.mode.TpRange + " (" +
+        summary.mode.Count.toLocaleString("en-AU") + ")";
+      const specification = cloneWaveChartSpecWithValues(template, summary.bins, "Chart 08");
+      await window.vegaEmbed("#" + panel.pairs, specification, {actions: false});
+    }));
+    results.forEach((result, index) => {
+      if (result.status === "rejected") {
+        const site = WAVE_CHART_SITE_ORDER[index];
+        console.error("Chart 08 could not render for " + site + ":", result.reason);
+        showChartError(WAVE_CHART_PANEL_IDS[site].pairs, "The Hs–Tp heatmap could not load for this site. Check the chart specification and browser console.");
+      }
+    });
+
+    const modes = WAVE_CHART_SITE_ORDER.map(site => perSite.get(site).mode);
+    const sameHeightRange = modes.every(mode => mode.HsStart === modes[0].HsStart);
+    document.getElementById("chart08-insight").textContent = sameHeightRange
+      ? WAVE_CHART_SITE_ORDER[0] + " and " + WAVE_CHART_SITE_ORDER[1] +
+        " most often paired Hs " + modes[0].HsRange + " with Tp " + modes[0].TpRange +
+        "; " + WAVE_CHART_SITE_ORDER[2] + " had the same most frequent Hs range but a " +
+        modes[2].TpRange + " Tp range. The panels show " + totalPairs.toLocaleString("en-AU") +
+        " valid pairs in total."
+      : "The most frequent Hs–Tp bins differed across sites; the panels show " +
+        totalPairs.toLocaleString("en-AU") + " valid pairs in total.";
+  } catch (error) {
+    console.error("Chart 08 paired wave data could not be prepared:", error);
+    displayWaveError(targetIds, "The January paired Hs–Tp data or heatmap specification could not be loaded. Check the data path and browser console.");
+  }
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   initializeEventMap();
   initializeStateCountMap();
   initializeEventTimeline();
   initializeWaveCharts();
+  initializeChart06WaveRose();
+  initializeChart07WaveCalendar();
+  initializeChart08HeightPeriod();
 });

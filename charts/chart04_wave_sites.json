@@ -9,16 +9,16 @@
   },
   "background": "#e8f3f6",
   "padding": {
-    "left": 12,
-    "right": 12,
-    "top": 12,
-    "bottom": 35
+    "left": 8,
+    "right": 8,
+    "top": 8,
+    "bottom": 28
   },
   "projection": {
     "type": "mercator",
     "center": [
-      153.52,
-      -28.1
+      153.56,
+      -28.09
     ],
     "rotate": [
       0,
@@ -26,7 +26,7 @@
       0
     ],
     "scale": {
-      "expr": "min(width * 31, height * 50)"
+      "expr": "min(width * 100, height * 145)"
     }
   },
   "data": {
@@ -49,48 +49,6 @@
         "fill": "#f9f7ef",
         "stroke": "#7f9ea7",
         "strokeWidth": 1.2
-      }
-    },
-    {
-      "name": "state-context-labels",
-      "data": {
-        "values": [
-          {
-            "label": "QUEENSLAND",
-            "Longitude": 153.1,
-            "Latitude": -27.91
-          },
-          {
-            "label": "NEW SOUTH WALES",
-            "Longitude": 153.1,
-            "Latitude": -28.3
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "interactive": false,
-        "font": "Arial",
-        "fontSize": 11,
-        "fontWeight": "bold",
-        "letterSpacing": 0.5,
-        "color": "#607d83",
-        "opacity": 0.9,
-        "align": "center"
-      },
-      "encoding": {
-        "longitude": {
-          "field": "Longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "Latitude",
-          "type": "quantitative"
-        },
-        "text": {
-          "field": "label",
-          "type": "nominal"
-        }
       }
     },
     {
@@ -207,12 +165,12 @@
       "mark": {
         "type": "text",
         "interactive": false,
-        "dx": 16,
-        "dy": -19,
-        "align": "left",
+        "dx": -20,
+        "dy": -16,
+        "align": "right",
         "baseline": "middle",
         "font": "Arial",
-        "fontSize": 13,
+        "fontSize": 12,
         "fontWeight": "bold",
         "color": "#164856"
       },
@@ -245,12 +203,12 @@
       "mark": {
         "type": "text",
         "interactive": false,
-        "dx": 16,
-        "dy": 22,
+        "dx": 20,
+        "dy": 20,
         "align": "left",
         "baseline": "middle",
         "font": "Arial",
-        "fontSize": 13,
+        "fontSize": 12,
         "fontWeight": "bold",
         "color": "#164856"
       },
@@ -283,12 +241,12 @@
       "mark": {
         "type": "text",
         "interactive": false,
-        "dx": 18,
-        "dy": 1,
+        "dx": 20,
+        "dy": -16,
         "align": "left",
         "baseline": "middle",
         "font": "Arial",
-        "fontSize": 13,
+        "fontSize": 12,
         "fontWeight": "bold",
         "color": "#164856"
       },

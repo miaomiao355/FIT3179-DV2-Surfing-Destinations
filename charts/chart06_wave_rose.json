@@ -1,0 +1,238 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "January 2026 peak wave directions grouped into compass sectors for each monitoring site. North is at the top and angles progress clockwise.",
+  "data": {
+    "values": []
+  },
+  "width": 280,
+  "height": 260,
+  "padding": 8,
+  "layer": [
+    {
+      "transform": [
+        {
+          "filter": "datum.RowType === 'sector'"
+        }
+      ],
+      "mark": {
+        "type": "arc",
+        "stroke": "#ffffff",
+        "strokeWidth": 1
+      },
+      "encoding": {
+        "theta": {
+          "field": "StartDeg",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              360
+            ],
+            "range": [
+              0,
+              6.283185307179586
+            ]
+          }
+        },
+        "theta2": {
+          "field": "EndDeg",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              360
+            ],
+            "range": [
+              0,
+              6.283185307179586
+            ]
+          }
+        },
+        "radius": {
+          "field": "OuterRadiusPct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              100
+            ],
+            "range": [
+              0,
+              100
+            ]
+          }
+        },
+        "radius2": {
+          "field": "InnerRadiusPct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              100
+            ],
+            "range": [
+              0,
+              100
+            ]
+          }
+        },
+        "color": {
+          "condition": {
+            "test": "datum.IsDominant === true",
+            "value": "#e69f00"
+          },
+          "value": "#176b76",
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "Location",
+            "type": "nominal",
+            "title": "Monitoring site"
+          },
+          {
+            "field": "Sector",
+            "type": "nominal",
+            "title": "Direction sector"
+          },
+          {
+            "field": "Count",
+            "type": "quantitative",
+            "title": "Frequency",
+            "format": ",d"
+          },
+          {
+            "field": "Percentage",
+            "type": "quantitative",
+            "title": "Valid observations (%)",
+            "format": ".1f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.RowType === 'guide'"
+        }
+      ],
+      "mark": {
+        "type": "arc",
+        "fill": "#d7e2e5",
+        "stroke": "#d7e2e5",
+        "strokeWidth": 0.4
+      },
+      "encoding": {
+        "theta": {
+          "field": "StartDeg",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              360
+            ],
+            "range": [
+              0,
+              6.283185307179586
+            ]
+          }
+        },
+        "theta2": {
+          "field": "EndDeg",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              360
+            ],
+            "range": [
+              0,
+              6.283185307179586
+            ]
+          }
+        },
+        "radius": {
+          "field": "OuterRadiusPct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              100
+            ],
+            "range": [
+              0,
+              100
+            ]
+          }
+        },
+        "radius2": {
+          "field": "InnerRadiusPct",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              100
+            ],
+            "range": [
+              0,
+              100
+            ]
+          }
+        }
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.RowType === 'label'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "font": "Arial",
+        "fontSize": 10,
+        "fontWeight": "bold",
+        "color": "#52616a"
+      },
+      "encoding": {
+        "theta": {
+          "field": "CenterDeg",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              360
+            ],
+            "range": [
+              0,
+              6.283185307179586
+            ]
+          }
+        },
+        "radius": {
+          "field": "LabelRadius",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              120
+            ],
+            "range": [
+              0,
+              120
+            ]
+          }
+        },
+        "text": {
+          "field": "Sector",
+          "type": "nominal"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

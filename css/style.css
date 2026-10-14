@@ -95,9 +95,7 @@ h1 { max-width: 900px; margin-bottom: 20px; font-size: clamp(2.5rem, 6vw, 5rem);
 .wave-chart-deck { max-width: 790px; margin: 0 0 15px; color: #667780; font-size: .94rem; line-height: 1.6; }
 .wave-chart-figure { min-width: 0; margin: 0; }
 .wave-site-map, .wave-distribution { width: 100%; min-width: 0; overflow: hidden; border: 1px solid #dce8e7; border-radius: 12px; }
-.wave-site-map { height: 460px; background: #edf4f5; }
 @media (max-width: 640px) {
-  .wave-site-map { height: clamp(220px, 56vw, 380px); }
 }
 .wave-distribution { height: 390px; background: #fff; }
 .wave-site-map .vega-embed, .wave-site-map .vega-embed > div,
@@ -122,7 +120,6 @@ h1 { max-width: 900px; margin-bottom: 20px; font-size: clamp(2.5rem, 6vw, 5rem);
   .event-list { max-height: 260px; }
   .state-count-map { height: 490px; }
   .event-timeline { height: 430px; }
-  .wave-site-map { height: 420px; }
   .wave-distribution { height: 380px; }
 }
 @media (max-width: 600px) {
@@ -135,11 +132,293 @@ h1 { max-width: 900px; margin-bottom: 20px; font-size: clamp(2.5rem, 6vw, 5rem);
   .map-legend { font-size: .67rem; gap: 8px; }
   .state-count-map { height: 460px; }
   .event-timeline { height: 450px; }
-  .wave-site-map { height: 310px; }
   .wave-distribution { height: 360px; }
   .event-chart-deck { font-size: .9rem; }
   .wave-story-intro { font-size: .94rem; }
   .wave-chart-deck { font-size: .9rem; }
   .event-chart-caption { padding-inline: 0; }
   .footer-content { display: grid; gap: 20px; }
+}
+
+/* Chart 04 pairs the regional proportional symbol map with a concise site comparison. */
+.wave-site-dashboard {
+  display: grid;
+  grid-template-columns: minmax(0, 1.35fr) minmax(310px, 1fr);
+  min-width: 0;
+  overflow: hidden;
+  border: 1px solid #d8e6e6;
+  border-radius: 16px;
+  background: #fff;
+  box-shadow: 0 14px 38px rgba(35, 65, 77, .065);
+}
+.wave-site-map-panel {
+  min-width: 0;
+  padding: 18px 16px 14px;
+  background: #eef5f5;
+}
+.wave-site-map-topline {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  padding: 0 8px 5px;
+}
+.wave-site-map-label {
+  color: #2b5660;
+  font-size: .72rem;
+  font-weight: 800;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+}
+.wave-site-map-context {
+  color: #658189;
+  font-size: .66rem;
+  letter-spacing: .06em;
+  white-space: nowrap;
+}
+.wave-site-dashboard .wave-site-map {
+  height: clamp(350px, 38vw, 460px);
+  border: 0;
+  border-radius: 0;
+  background: #e8f3f6;
+}
+.wave-site-panel {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  padding: 26px 24px 22px;
+  border-left: 1px solid #d8e6e6;
+  background: #fff;
+}
+.wave-site-panel__eyebrow {
+  margin: 0 0 6px;
+  color: #317d84;
+  font-size: .68rem;
+  font-weight: 800;
+  letter-spacing: .11em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+.wave-site-panel h4 {
+  margin: 0 0 16px;
+  color: #263d42;
+  font-size: clamp(1.25rem, 1.8vw, 1.55rem);
+  letter-spacing: -.03em;
+  line-height: 1.15;
+}
+.wave-site-panel__measure {
+  margin: 0;
+  padding-bottom: 7px;
+  color: #687d82;
+  font-size: .75rem;
+  font-weight: 700;
+  letter-spacing: .035em;
+}
+.wave-site-list {
+  display: grid;
+  gap: 3px;
+  margin: 0;
+}
+.wave-site-summary {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+  padding: 11px 9px;
+  border-bottom: 1px solid #edf2f2;
+}
+.wave-site-summary:last-child { border-bottom-color: transparent; }
+.wave-site-summary.is-highest {
+  padding-inline: 11px;
+  border: 1px solid #dcebe8;
+  border-radius: 9px;
+  background: #f3f8f7;
+}
+.wave-site-summary__name {
+  display: flex;
+  min-width: 0;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 6px;
+  color: #244d56;
+  font-size: .9rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+.wave-site-summary__value {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+  margin: 0;
+  color: #1d6370;
+  white-space: nowrap;
+}
+.wave-site-summary__value strong {
+  font-size: 1.26rem;
+  letter-spacing: -.04em;
+  line-height: 1.1;
+}
+.wave-site-summary__value span { color: #61777d; font-size: .76rem; }
+.wave-site-summary__badge {
+  padding: 2px 6px;
+  border-radius: 99px;
+  background: #dcefeb;
+  color: #276b68;
+  font-size: .57rem;
+  font-weight: 800;
+  letter-spacing: .05em;
+  text-transform: uppercase;
+}
+.wave-site-insight {
+  margin: 15px 0 0;
+  padding: 11px 12px;
+  border-left: 3px solid #27818a;
+  border-radius: 0 8px 8px 0;
+  background: #eef6f4;
+  color: #314d55;
+  font-size: .8rem;
+  font-weight: 700;
+  line-height: 1.5;
+}
+.wave-site-panel__note {
+  margin: 12px 0 0;
+  color: #71848a;
+  font-size: .72rem;
+  line-height: 1.5;
+}
+@media (max-width: 910px) {
+  .wave-site-dashboard { grid-template-columns: minmax(0, 1fr); }
+  .wave-site-panel {
+    padding: 22px 22px 20px;
+    border-top: 1px solid #d8e6e6;
+    border-left: 0;
+  }
+  .wave-site-dashboard .wave-site-map { height: clamp(340px, 56vw, 440px); }
+}
+@media (max-width: 600px) {
+  .wave-site-map-panel { padding: 14px 8px 10px; }
+  .wave-site-map-topline { padding-inline: 8px; }
+  .wave-site-map-label { font-size: .65rem; letter-spacing: .06em; }
+  .wave-site-map-context { font-size: .58rem; }
+  .wave-site-panel { padding: 20px 16px; }
+  .wave-site-dashboard .wave-site-map { height: clamp(290px, 82vw, 370px); }
+}
+
+/* Charts 06–08: compact, aligned station comparisons with shared scales. */
+.wave-small-multiple-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 16px;
+  min-width: 0;
+}
+.wave-small-panel {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: stretch;
+  padding: 13px 12px 10px;
+  border: 1px solid #d8e6e6;
+  border-radius: 12px;
+  background: #fff;
+}
+.wave-small-panel h4 {
+  margin: 0 0 3px;
+  color: #2b5660;
+  font-size: .9rem;
+  font-weight: 800;
+  line-height: 1.35;
+}
+.wave-panel-stat {
+  min-height: 1.45em;
+  margin: 0 0 3px;
+  color: #6a7d82;
+  font-size: .7rem;
+  line-height: 1.45;
+}
+.wave-rose-chart,
+.wave-calendar-chart,
+.wave-pair-chart {
+  width: 100%;
+  min-width: 0;
+  align-self: center;
+}
+.wave-rose-chart {
+  display: flex;
+  justify-content: center;
+  overflow: hidden;
+}
+.wave-rose-chart .vega-embed,
+.wave-rose-chart .vega-embed > div,
+.wave-calendar-chart .vega-embed,
+.wave-calendar-chart .vega-embed > div,
+.wave-pair-chart .vega-embed,
+.wave-pair-chart .vega-embed > div {
+  max-width: 100%;
+}
+.wave-calendar-chart { min-height: 245px; }
+.wave-pair-chart { min-height: 300px; }
+.wave-scale-key {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 14px 0 2px;
+  color: #5e747a;
+  font-size: .72rem;
+}
+.wave-scale-key__label {
+  color: #435e65;
+  font-size: .69rem;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.wave-scale-key__ramp {
+  display: inline-block;
+  width: min(34vw, 160px);
+  height: 10px;
+  border: 1px solid rgba(38, 61, 66, .12);
+  border-radius: 99px;
+}
+.wave-scale-key__ramp--height {
+  background: linear-gradient(90deg, #edf4f7, #176b76);
+}
+.wave-scale-key__ramp--counts {
+  background: linear-gradient(90deg, #e8f2f4, #176b76);
+}
+.wave-scale-key__missing {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 7px;
+  color: #596d72;
+  white-space: nowrap;
+}
+.wave-scale-key__missing i {
+  width: 12px;
+  height: 12px;
+  border: 1px solid #c5d0d2;
+  border-radius: 2px;
+  background: #d5dcde;
+}
+.wave-scale-key__caption {
+  color: #71848a;
+  font-size: .67rem;
+}
+.wave-chart-section--pairs .wave-chart-caption { padding-top: 10px; }
+
+@media (max-width: 910px) {
+  .wave-small-multiple-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .wave-small-panel { padding-inline: 14px; }
+}
+@media (max-width: 600px) {
+  .wave-small-multiple-grid { grid-template-columns: minmax(0, 1fr); gap: 12px; }
+  .wave-small-panel { padding: 12px 10px 8px; }
+  .wave-rose-chart { min-height: 250px; }
+  .wave-calendar-chart { min-height: 235px; }
+  .wave-pair-chart { min-height: 290px; }
+  .wave-scale-key { justify-content: flex-start; gap: 7px; }
+  .wave-scale-key__ramp { width: min(40vw, 150px); }
 }
