@@ -1,0 +1,144 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Distribution of valid half-hourly significant wave height (Hs) measurements recorded at three monitoring sites in January 2026. Boxplots use the conventional Tukey 1.5 × IQR whisker rule; values beyond the whiskers are displayed as outlier points.",
+  "width": "container",
+  "height": 370,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "background": "#ffffff",
+  "padding": {
+    "left": 8,
+    "right": 18,
+    "top": 14,
+    "bottom": 8
+  },
+  "data": {
+    "values": []
+  },
+  "mark": {
+    "type": "boxplot",
+    "extent": 1.5,
+    "size": 58,
+    "box": {
+      "fillOpacity": 0.62,
+      "strokeWidth": 1.5
+    },
+    "median": {
+      "color": "#263d42",
+      "strokeWidth": 2.2
+    },
+    "rule": {
+      "strokeWidth": 1.5
+    },
+    "whisker": {
+      "strokeWidth": 1.5
+    },
+    "outliers": {
+      "filled": true,
+      "opacity": 0.82,
+      "size": 34,
+      "stroke": "#ffffff",
+      "strokeWidth": 0.8
+    }
+  },
+  "encoding": {
+    "x": {
+      "field": "Location",
+      "type": "nominal",
+      "sort": [
+        "Gold Coast",
+        "Palm Beach",
+        "Tweed Offshore"
+      ],
+      "axis": {
+        "title": null,
+        "labelAngle": 0,
+        "labelFontSize": 12,
+        "labelColor": "#344f57",
+        "labelPadding": 10,
+        "ticks": false,
+        "domain": false
+      }
+    },
+    "y": {
+      "field": "Hs_m",
+      "type": "quantitative",
+      "scale": {
+        "domain": [
+          0,
+          3.4
+        ],
+        "zero": true,
+        "nice": false
+      },
+      "axis": {
+        "title": "Significant wave height (m)",
+        "values": [
+          0,
+          0.5,
+          1,
+          1.5,
+          2,
+          2.5,
+          3
+        ],
+        "format": ".1f",
+        "grid": true,
+        "gridColor": "#e7eeee",
+        "labelColor": "#52616a",
+        "titleColor": "#344f57"
+      }
+    },
+    "color": {
+      "field": "Location",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "Gold Coast",
+          "Palm Beach",
+          "Tweed Offshore"
+        ],
+        "range": [
+          "#0072b2",
+          "#56b4e9",
+          "#176b76"
+        ]
+      },
+      "legend": null
+    },
+    "tooltip": [
+      {
+        "field": "Hs_m",
+        "aggregate": "q1",
+        "type": "quantitative",
+        "title": "Q1 (m)",
+        "format": ".2f"
+      },
+      {
+        "field": "Hs_m",
+        "aggregate": "median",
+        "type": "quantitative",
+        "title": "Median (m)",
+        "format": ".2f"
+      },
+      {
+        "field": "Hs_m",
+        "aggregate": "q3",
+        "type": "quantitative",
+        "title": "Q3 (m)",
+        "format": ".2f"
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelFont": "Arial",
+      "titleFont": "Arial"
+    }
+  }
+}

@@ -70,6 +70,44 @@ h1 { max-width: 900px; margin-bottom: 20px; font-size: clamp(2.5rem, 6vw, 5rem);
 .event-map-caption .event-map-note, .event-map-caption .event-map-source { font-size: .8rem; color: #6d7e82; }
 .event-map-source a { color: var(--color-accent); }
 
+/* Charts 02 and 03 continue the event story without changing later placeholders. */
+.event-chart-section { min-width: 0; padding-top: clamp(20px, 3vw, 30px); border-top: 1px solid #e2ebeb; }
+.event-chart-section:first-of-type { border-top: 0; }
+.event-chart-heading { margin: 0 0 8px; color: #263d42; font-size: clamp(1.35rem, 2.4vw, 1.8rem); letter-spacing: -.025em; line-height: 1.2; }
+.event-chart-deck { max-width: 780px; margin: 0 0 17px; color: #667780; font-size: .95rem; line-height: 1.6; }
+.event-chart-figure { min-width: 0; margin: 0; }
+.state-count-map, .event-timeline { width: 100%; min-width: 0; }
+.state-count-map { height: 510px; border: 1px solid #dce8e7; border-radius: 12px; overflow: hidden; background: #f4f8f7; }
+.event-timeline { height: 430px; padding: 8px; overflow: hidden; border: 1px solid #e2ebeb; border-radius: 12px; background: #fff; }
+.state-count-map .vega-embed, .state-count-map .vega-embed > div,
+.event-timeline .vega-embed, .event-timeline .vega-embed > div { width: 100%; height: 100%; }
+.event-chart-caption { display: grid; gap: 5px; padding: 12px 3px 0; }
+.event-chart-caption p { margin: 0; }
+.chart-insight { color: #314d55; font-size: .92rem; font-weight: 700; line-height: 1.55; }
+.event-chart-note, .event-chart-source { color: #6d7e82; font-size: .79rem; line-height: 1.55; }
+.event-chart-source a { color: var(--color-accent); }
+.chart-error { margin: 0; padding: 32px 20px; color: #8a3d2d; font-size: .9rem; text-align: center; }
+
+/* Charts 04 and 05 introduce the measured Gold Coast–Tweed wave conditions. */
+.wave-story-intro { max-width: 850px; margin: -6px 0 28px; color: #667780; font-size: 1.02rem; line-height: 1.7; }
+.wave-chart-section { min-width: 0; padding-top: clamp(22px, 3vw, 32px); border-top: 1px solid #e2ebeb; }
+.wave-chart-heading { margin: 0 0 8px; color: #263d42; font-size: clamp(1.3rem, 2.2vw, 1.7rem); letter-spacing: -.025em; line-height: 1.2; }
+.wave-chart-deck { max-width: 790px; margin: 0 0 15px; color: #667780; font-size: .94rem; line-height: 1.6; }
+.wave-chart-figure { min-width: 0; margin: 0; }
+.wave-site-map, .wave-distribution { width: 100%; min-width: 0; overflow: hidden; border: 1px solid #dce8e7; border-radius: 12px; }
+.wave-site-map { height: 460px; background: #edf4f5; }
+@media (max-width: 640px) {
+  .wave-site-map { height: clamp(220px, 56vw, 380px); }
+}
+.wave-distribution { height: 390px; background: #fff; }
+.wave-site-map .vega-embed, .wave-site-map .vega-embed > div,
+.wave-distribution .vega-embed, .wave-distribution .vega-embed > div { width: 100%; height: 100%; }
+.wave-chart-caption { display: grid; gap: 5px; padding: 12px 3px 0; }
+.wave-chart-caption p { margin: 0; }
+.wave-chart-insight { color: #314d55; font-size: .92rem; font-weight: 700; line-height: 1.55; }
+.wave-chart-note, .wave-chart-source { color: #6d7e82; font-size: .79rem; line-height: 1.55; }
+.wave-chart-source a { color: var(--color-accent); }
+
 .conclusion { max-width: 780px; }
 .conclusion p { max-width: 68ch; margin-bottom: 0; color: var(--color-muted); font-size: 1.1rem; }
 .site-footer { padding-block: 40px 48px; border-top: 1px solid var(--color-border); background: var(--color-surface); }
@@ -82,6 +120,10 @@ h1 { max-width: 900px; margin-bottom: 20px; font-size: clamp(2.5rem, 6vw, 5rem);
   .event-sidebar { border-left: 0; border-top: 1px solid #d8e6e6; }
   .event-map { height: 435px; }
   .event-list { max-height: 260px; }
+  .state-count-map { height: 490px; }
+  .event-timeline { height: 430px; }
+  .wave-site-map { height: 420px; }
+  .wave-distribution { height: 380px; }
 }
 @media (max-width: 600px) {
   .hero { padding-top: 56px; }
@@ -91,5 +133,13 @@ h1 { max-width: 900px; margin-bottom: 20px; font-size: clamp(2.5rem, 6vw, 5rem);
   .event-sidebar { padding: 20px 16px; }
   .event-stat__value { font-size: 1.32rem; }
   .map-legend { font-size: .67rem; gap: 8px; }
+  .state-count-map { height: 460px; }
+  .event-timeline { height: 450px; }
+  .wave-site-map { height: 310px; }
+  .wave-distribution { height: 360px; }
+  .event-chart-deck { font-size: .9rem; }
+  .wave-story-intro { font-size: .94rem; }
+  .wave-chart-deck { font-size: .9rem; }
+  .event-chart-caption { padding-inline: 0; }
   .footer-content { display: grid; gap: 20px; }
 }

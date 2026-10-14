@@ -1,0 +1,174 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Chronological Gantt timeline of the nine entries in Surfing Australia’s 2026 national competition calendar. Bars span each event’s listed start and inclusive end date.",
+  "width": "container",
+  "height": 400,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "padding": {
+    "left": 4,
+    "right": 8,
+    "top": 8,
+    "bottom": 6
+  },
+  "background": "#ffffff",
+  "data": {
+    "values": []
+  },
+  "params": [
+    {
+      "name": "timeline_hover",
+      "select": {
+        "type": "point",
+        "fields": [
+          "Event"
+        ],
+        "on": "pointerover",
+        "clear": "pointerout"
+      }
+    }
+  ],
+  "mark": {
+    "type": "bar",
+    "height": 22,
+    "cornerRadius": 2,
+    "cursor": "pointer"
+  },
+  "encoding": {
+    "x": {
+      "field": "Start_ms",
+      "type": "temporal",
+      "scale": {
+        "type": "utc",
+        "domain": [
+          1767225600000,
+          1798761600000
+        ]
+      },
+      "axis": {
+        "title": "2026 calendar",
+        "format": "%b",
+        "values": [
+          1767225600000,
+          1769904000000,
+          1772323200000,
+          1775001600000,
+          1777593600000,
+          1780272000000,
+          1782864000000,
+          1785542400000,
+          1788220800000,
+          1790812800000,
+          1793491200000,
+          1796083200000
+        ],
+        "labelAngle": 0,
+        "labelFontSize": 10,
+        "grid": true,
+        "labelPadding": 4
+      }
+    },
+    "x2": {
+      "field": "Bar_End_ms"
+    },
+    "y": {
+      "field": "Event",
+      "type": "nominal",
+      "sort": {
+        "field": "Start_ms",
+        "op": "min",
+        "order": "ascending"
+      },
+      "axis": {
+        "title": null,
+        "labelLimit": 265,
+        "labelFontSize": 11,
+        "labelPadding": 7,
+        "ticks": false,
+        "domain": false
+      }
+    },
+    "color": {
+      "condition": {
+        "param": "timeline_hover",
+        "value": "#e69f00"
+      },
+      "field": "State_label",
+      "type": "nominal",
+      "scale": {
+        "domain": [
+          "NSW",
+          "VIC",
+          "QLD",
+          "WA",
+          "Online / no state"
+        ],
+        "range": [
+          "#176b76",
+          "#56b4e9",
+          "#0072b2",
+          "#4d8793",
+          "#7a858b"
+        ]
+      },
+      "legend": {
+        "title": "Listed state",
+        "orient": "bottom",
+        "direction": "horizontal",
+        "symbolType": "square",
+        "labelLimit": 140
+      }
+    },
+    "tooltip": [
+      {
+        "field": "Event",
+        "type": "nominal",
+        "title": "Event"
+      },
+      {
+        "field": "Location",
+        "type": "nominal",
+        "title": "Location"
+      },
+      {
+        "field": "State_label",
+        "type": "nominal",
+        "title": "State"
+      },
+      {
+        "field": "Start_label",
+        "type": "nominal",
+        "title": "Start"
+      },
+      {
+        "field": "End_label",
+        "type": "nominal",
+        "title": "End (inclusive)"
+      },
+      {
+        "field": "Duration_days",
+        "type": "quantitative",
+        "title": "Listed days",
+        "format": "d"
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelColor": "#52616a",
+      "titleColor": "#344f57",
+      "gridColor": "#e4eceb",
+      "domainColor": "#c8d4d5",
+      "tickColor": "#c8d4d5"
+    },
+    "legend": {
+      "labelColor": "#52616a",
+      "titleColor": "#344f57"
+    }
+  }
+}

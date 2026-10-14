@@ -1,0 +1,20 @@
+[
+  {
+    "Location": "Gold Coast",
+    "Latitude": -27.9649,
+    "Longitude": 153.44095,
+    "Coordinate_source": "https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/gold-coast"
+  },
+  {
+    "Location": "Palm Beach",
+    "Latitude": -28.099867,
+    "Longitude": 153.486367,
+    "Coordinate_source": "https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/palm-beach"
+  },
+  {
+    "Location": "Tweed Offshore",
+    "Latitude": -28.212,
+    "Longitude": 153.680283,
+    "Coordinate_source": "https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/tweed-offshore"
+  }
+]

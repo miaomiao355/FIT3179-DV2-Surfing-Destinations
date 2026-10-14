@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="An exploration of Australia's surfing destinations, wave conditions, competitions and participation.">
     <title>Australia: A Nation Built Around the Waves</title>
-    <link rel="stylesheet" href="css/style.css?v=chart01-layout-20261014">
+    <link rel="stylesheet" href="css/style.css?v=wave-charts-20261014">
   </head>
   <body>
     <header class="hero">
@@ -55,24 +55,66 @@
               <p class="event-map-source">Sources: <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/" target="_blank" rel="noopener noreferrer">Surfing Australia national calendar</a> · <a href="https://github.com/FIT3179/Vega-Lite/tree/main/2_symbol_map" target="_blank" rel="noopener noreferrer">FIT3179 Week 8 map data</a> · <a href="https://github.com/anthwri/GeoJson-Data/blob/master/australian-states.json" target="_blank" rel="noopener noreferrer">Australian state boundary GeoJSON</a>.</p>
             </figcaption>
           </figure>
-          <div class="chart-placeholder" id="chart2" aria-label="Chart 2 placeholder">
-            <p>Chart 2 placeholder</p>
-          </div>
-          <div class="chart-placeholder" id="chart3" aria-label="Chart 3 placeholder">
-            <p>Chart 3 placeholder</p>
-          </div>
+          <section class="event-chart-section" aria-labelledby="chart02-heading">
+            <p class="section-eyebrow">02 · State distribution</p>
+            <h3 id="chart02-heading" class="event-chart-heading">Where do the state-assigned events take place?</h3>
+            <p class="event-chart-deck">Each shaded state records one state-assigned entry in Surfing Australia's 2026 national calendar.</p>
+            <figure class="event-chart-figure">
+              <div id="chart2" class="state-count-map" role="img" aria-label="Interactive choropleth of 2026 Surfing Australia event counts by Australian state and territory. Hover over a region for its event count."></div>
+              <figcaption class="event-chart-caption">
+                <p id="chart02-insight" class="chart-insight" aria-live="polite">Loading state counts…</p>
+                <p class="event-chart-note">Tweed Coast counts under NSW despite lacking a precise map point; the online entry has no assigned state.</p>
+                <p class="event-chart-source">State boundaries: <a href="https://github.com/anthwri/GeoJson-Data/blob/master/australian-states.json" target="_blank" rel="noopener noreferrer">Australian state boundary GeoJSON</a>. Event source: <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/" target="_blank" rel="noopener noreferrer">Surfing Australia 2026 national calendar</a>.</p>
+              </figcaption>
+            </figure>
+          </section>
+          <section class="event-chart-section" aria-labelledby="chart03-heading">
+            <p class="section-eyebrow">03 · Competition calendar</p>
+            <h3 id="chart03-heading" class="event-chart-heading">When are the events scheduled?</h3>
+            <p class="event-chart-deck">All nine 2026 entries appear in chronological order. Each bar spans its listed dates on a continuous calendar scale.</p>
+            <figure class="event-chart-figure">
+              <div id="chart3" class="event-timeline" role="img" aria-label="Interactive chronological Gantt timeline showing all nine 2026 national calendar entries. Hover an event bar for dates, location, state, and inclusive duration."></div>
+              <figcaption class="event-chart-caption">
+                <p class="chart-insight">Wollongong starts 24 Aug, two days after Newcastle ends; the next listed event begins on 17 Nov.</p>
+                <p class="event-chart-note">This shows the Surfing Australia national competition calendar, not a general surfing season or local surf conditions.</p>
+                <p class="event-chart-source">Dates and event details: <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/" target="_blank" rel="noopener noreferrer">Surfing Australia 2026 national calendar</a>.</p>
+              </figcaption>
+            </figure>
+          </section>
         </div>
       </section>
 
-      <section class="story-section" aria-labelledby="waves-heading">
-        <h2 id="waves-heading">What are the waves like?</h2>
-        <div class="chart-stack">
-          <div class="chart-placeholder" id="chart4" aria-label="Chart 4 placeholder">
-            <p>Chart 4 placeholder</p>
-          </div>
-          <div class="chart-placeholder" id="chart5" aria-label="Chart 5 placeholder">
-            <p>Chart 5 placeholder</p>
-          </div>
+      <section class="story-section wave-story" aria-labelledby="waves-heading">
+        <p class="section-eyebrow">02 · Wave conditions</p>
+        <h2 id="waves-heading">What are the waves like around the Gold Coast–Tweed region?</h2>
+        <p class="wave-story-intro">The first section followed Australia’s national event calendar; this one turns to measured conditions at three nearby monitoring sites. Wave buoys record ocean conditions. Significant wave height (Hs) is the average height of the highest third of waves in a recording interval; it describes wave size, not surfing quality.</p>
+        <div class="chart-stack wave-chart-stack">
+          <section class="wave-chart-section" aria-labelledby="chart04-heading">
+            <p class="section-eyebrow">04 · Mean wave height by site</p>
+            <h3 id="chart04-heading" class="wave-chart-heading">Where were waves taller on average?</h3>
+            <p class="wave-chart-deck">The circle areas compare each station’s mean Hs during the common January 2026 period. Hover a site for its mean peak period and observation counts.</p>
+            <figure class="wave-chart-figure">
+              <div id="chart4" class="wave-site-map" role="img" aria-label="Regional map of Gold Coast, Palm Beach and Tweed Offshore monitoring sites. Circle area shows January 2026 mean significant wave height; hover for site statistics."></div>
+              <figcaption class="wave-chart-caption">
+                <p id="chart04-insight" class="wave-chart-insight" aria-live="polite">Calculating the January site averages…</p>
+                <p class="wave-chart-note">Published monitoring-site reference coordinates are shown; a reference point does not imply a buoy stayed at one exact position throughout January.</p>
+                <p class="wave-chart-source">Wave observations: Queensland Government <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>. Site coordinates: official <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a> monitoring pages. Coastline context: <a href="https://www.ngdc.noaa.gov/mgg/shorelines/shorelines.html" target="_blank" rel="noopener noreferrer">GSHHG shoreline data (intermediate resolution)</a>, locally clipped for Gold Coast–Tweed; ©/licensing details are in <a href="data/GSHHG_SOURCE_AND_LICENSE.txt">the geographic data notice</a>. Land polygons depict a regional reference, not detailed beach or surf-break boundaries.</p>
+              </figcaption>
+            </figure>
+          </section>
+          <section class="wave-chart-section" aria-labelledby="chart05-heading">
+            <p class="section-eyebrow">05 · Wave-height distribution</p>
+            <h3 id="chart05-heading" class="wave-chart-heading">How much did wave heights vary?</h3>
+            <p class="wave-chart-deck">Each box summarizes valid half-hourly Hs readings from 1–31 January 2026, rather than just the site average.</p>
+            <figure class="wave-chart-figure">
+              <div id="chart5" class="wave-distribution" role="img" aria-label="Box-and-whisker plots comparing all valid January 2026 significant wave-height measurements at Gold Coast, Palm Beach and Tweed Offshore."></div>
+              <figcaption class="wave-chart-caption">
+                <p id="chart05-insight" class="wave-chart-insight" aria-live="polite">Calculating the January wave-height distributions…</p>
+                <p class="wave-chart-note">The middle line is the median; the box covers the middle half of readings. Whiskers extend to the most extreme readings within 1.5 × the interquartile range (IQR); values beyond them appear as points.</p>
+                <p class="wave-chart-source">Source: Queensland Government Coastal Data System, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>.</p>
+              </figcaption>
+            </figure>
+          </section>
           <div class="chart-placeholder" id="chart6" aria-label="Chart 6 placeholder">
             <p>Chart 6 placeholder</p>
           </div>
@@ -127,6 +169,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vega@5" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6" defer></script>
-    <script src="js/main.js" defer></script>
+    <script src="js/main.js?v=chart04-local-coast-20261015" defer></script>
   </body>
 </html>

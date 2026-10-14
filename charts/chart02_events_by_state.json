@@ -1,0 +1,110 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Count of state-assigned entries in the Surfing Australia 2026 national event calendar, joined to Australian state boundary GeoJSON.",
+  "width": "container",
+  "height": 430,
+  "padding": 12,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "background": "#f4f8f7",
+  "projection": {
+    "type": "equalEarth",
+    "center": [134, -27],
+    "rotate": [0, 0],
+    "scale": {
+      "expr": "min(width * 1.25, height * 1.38)"
+    }
+  },
+  "data": {
+    "values": []
+  },
+  "params": [
+    {
+      "name": "state_hover",
+      "select": {
+        "type": "point",
+        "fields": ["state_name"],
+        "on": "pointerover",
+        "clear": "pointerout"
+      }
+    }
+  ],
+  "transform": [
+    {
+      "calculate": "datum.properties.STATE_NAME",
+      "as": "state_name"
+    },
+    {
+      "calculate": "datum.properties.event_count",
+      "as": "event_count"
+    }
+  ],
+  "mark": {
+    "type": "geoshape",
+    "cursor": "pointer",
+    "stroke": "#ffffff",
+    "strokeWidth": 1.15
+  },
+  "encoding": {
+    "color": {
+      "field": "event_count",
+      "type": "ordinal",
+      "scale": {
+        "domain": [0, 1, 2, 3, 4],
+        "range": ["#eaf1f4", "#bfd5df", "#83b3c5", "#438aa3", "#155b78"]
+      },
+      "legend": {
+        "title": "National events",
+        "orient": "bottom",
+        "direction": "horizontal",
+        "values": [0, 1, 2, 3, 4],
+        "columns": 5,
+        "symbolType": "square",
+        "symbolSize": 110
+      }
+    },
+    "stroke": {
+      "condition": {
+        "param": "state_hover",
+        "value": "#e69f00"
+      },
+      "value": "#ffffff"
+    },
+    "strokeWidth": {
+      "condition": {
+        "param": "state_hover",
+        "value": 1.8
+      },
+      "value": 1.15
+    },
+    "tooltip": [
+      {
+        "field": "state_name",
+        "type": "nominal",
+        "title": "State / territory"
+      },
+      {
+        "field": "event_count",
+        "type": "quantitative",
+        "title": "National calendar events",
+        "format": "d"
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "axis": {
+      "labelColor": "#52616a",
+      "titleColor": "#344f57",
+      "gridColor": "#e4eceb"
+    },
+    "legend": {
+      "labelColor": "#52616a",
+      "titleColor": "#344f57"
+    }
+  }
+}

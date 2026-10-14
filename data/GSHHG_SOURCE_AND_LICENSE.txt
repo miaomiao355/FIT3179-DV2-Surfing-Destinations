@@ -1,0 +1,21 @@
+Chart 04 Geographic Land Context — GSHHG / GSHHS
+
+The local file gold_coast_tweed_land.geojson was exported from the GSHHG/GSHHS
+intermediate-resolution coastline database supplied with the Basemap Python
+package, clipped to the geographic extent 151.00°E–155.00°E,
+30.00°S–26.00°S (WGS84 latitude/longitude). Polygon geometry was exported
+without tracing, manual redrawing, or movement of measurement stations.
+
+Source: Wessel, P. and Smith, W. H. F. (1996), A global, self-consistent,
+hierarchical, high-resolution shoreline database, Journal of Geophysical
+Research, 101(B4), 8741–8743. doi:10.1029/96JB00104
+GSHHG information and distribution: https://www.ngdc.noaa.gov/mgg/shorelines/shorelines.html
+
+GSHHG is distributed under the GNU Lesser General Public License.
+The unmodified GNU LGPL v3 license text is provided alongside this notice as
+GSHHG_LICENSE_LGPL-3.txt. Derived geographic boundary data retain applicable
+GSHHG licensing obligations.
+
+This regional map is a general geographic context layer. It does not locate
+specific surf breaks or prove the precise buoy position at all times.
+The station coordinates are separately attributed to the Queensland Government.
