@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="An exploration of Australia's surfing destinations, wave conditions, competitions and participation.">
     <title>Australia: A Nation Built Around the Waves</title>
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/style.css?v=chart01-layout-20261014">
   </head>
   <body>
     <header class="hero">
@@ -19,7 +19,7 @@
       <section class="story-section" aria-labelledby="destinations-heading">
         <p class="section-eyebrow">01 · Destinations &amp; competitions</p>
         <h2 id="destinations-heading" class="chart01-heading">Where does Australia's national surfing circuit travel?</h2>
-        <p class="chart01-deck">From Margaret River in the west to the breaks of the east coast, Australia's 2026 national events connect surfing communities across the country.</p>
+        <p class="chart01-deck">Six of the seven mapped venue references are on the east or south coast; Margaret River is the western outlier.</p>
         <div class="chart-stack">
           <figure class="event-map-figure">
             <div class="event-dashboard">
@@ -28,7 +28,7 @@
                   <span class="event-panel-label">Australian surfing event venues</span>
                   <span class="event-panel-year">2026 SEASON</span>
                 </div>
-                <div id="chart1" class="event-map" role="img" aria-label="Interactive map showing seven documented 2026 national surfing event locations across Australia. Hover a marker to read the event details."></div>
+                <div id="chart1" class="event-map" role="img" aria-label="Map of 2026 event venue references across Australia. Select an event from the list to highlight its marker; markers also show details on hover."></div>
                 <div class="map-legend" aria-label="Map legend">
                   <span class="map-legend__item"><i class="legend-dot" aria-hidden="true"></i> Mapped venue</span>
                   <span class="map-legend__item"><i class="legend-dot legend-dot--hover" aria-hidden="true"></i> Selected / hovered</span>
@@ -39,9 +39,9 @@
                 <p class="event-sidebar__eyebrow">Explore the 2026 circuit</p>
                 <h3>Coast to coast.</h3>
                 <div class="event-stats">
-                  <div class="event-stat"><span id="mapped-event-count" class="event-stat__value">7</span><span class="event-stat__label">Mapped venues</span></div>
-                  <div class="event-stat"><span id="mapped-state-count" class="event-stat__value">4</span><span class="event-stat__label">States with venues</span></div>
-                  <div class="event-stat"><span id="unmapped-event-count" class="event-stat__value">2</span><span class="event-stat__label">Not precisely mapped</span></div>
+                  <div class="event-stat"><span id="mapped-event-count" class="event-stat__value">—</span><span class="event-stat__label">Mapped venues</span></div>
+                  <div class="event-stat"><span id="mapped-state-count" class="event-stat__value">—</span><span class="event-stat__label">States with venues</span></div>
+                  <div class="event-stat"><span id="unmapped-event-count" class="event-stat__value">—</span><span class="event-stat__label">Not precisely mapped</span></div>
                 </div>
                 <p id="event-filter-label" class="event-filter-label">Explore mapped venues</p>
                 <div id="event-state-filters" class="state-filters" role="group" aria-label="Filter event locations by state"></div>
@@ -50,8 +50,8 @@
               </aside>
             </div>
             <figcaption class="event-map-caption">
-              <p>2026 national events are distributed across NSW, VIC, QLD and WA. The seven mapped points represent event venues or locality reference coordinates, not every surf beach in Australia.</p>
-              <p class="event-map-note">Two events are not mapped precisely: the Australian Junior Online Surf Championships and Australian Longboard Titles (Tweed Coast, a broad event region). Points represent locality references where the exact surf break is not specified.</p>
+              <p>Points show listed event venues or locality references, not every surf beach in Australia.</p>
+              <p class="event-map-note">The online event and Tweed Coast event remain unplotted because their supplied locations are not precise coordinates.</p>
               <p class="event-map-source">Sources: <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/" target="_blank" rel="noopener noreferrer">Surfing Australia national calendar</a> · <a href="https://github.com/FIT3179/Vega-Lite/tree/main/2_symbol_map" target="_blank" rel="noopener noreferrer">FIT3179 Week 8 map data</a> · <a href="https://github.com/anthwri/GeoJson-Data/blob/master/australian-states.json" target="_blank" rel="noopener noreferrer">Australian state boundary GeoJSON</a>.</p>
             </figcaption>
           </figure>

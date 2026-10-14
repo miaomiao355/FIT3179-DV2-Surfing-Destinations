@@ -58,7 +58,9 @@ async function addStateBoundariesWhenAvailable(specification) {
 
 function addFilterButtons(events, onStateChange) {
   const filters = document.getElementById("event-state-filters");
-  const allStates = ["All", "NSW", "VIC", "QLD", "WA"];
+  const states = [...new Set(events.map(event => event.State).filter(Boolean))]
+    .sort((a, b) => a.localeCompare(b));
+  const allStates = ["All", ...states];
   const counts = Object.fromEntries(allStates.map(state => [state,
     events.filter(event => state === "All" || event.State === state).length]));
   for (const state of allStates) {

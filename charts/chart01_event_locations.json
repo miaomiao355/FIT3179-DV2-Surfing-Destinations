@@ -101,8 +101,8 @@
         "font": "Arial",
         "fontSize": 13,
         "fontWeight": "bold",
-        "color": "#77969b",
-        "opacity": 0.8
+        "color": "#54777d",
+        "opacity": 0.95
       },
       "encoding": {
         "longitude": {
