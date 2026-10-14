@@ -17,14 +17,42 @@
 
     <main class="content-width">
       <section class="story-section" aria-labelledby="destinations-heading">
-        <h2 id="destinations-heading">Where are Australia’s surfing destinations?</h2>
+        <p class="section-eyebrow">01 · Destinations &amp; competitions</p>
+        <h2 id="destinations-heading" class="chart01-heading">Where does Australia's national surfing circuit travel?</h2>
+        <p class="chart01-deck">From Margaret River in the west to the breaks of the east coast, Australia's 2026 national events connect surfing communities across the country.</p>
         <div class="chart-stack">
           <figure class="event-map-figure">
-            <div id="chart1" class="event-map" aria-label="Map of Surfing Australia’s 2026 national event locations"></div>
+            <div class="event-dashboard">
+              <div class="event-map-panel">
+                <div class="event-panel-topline">
+                  <span class="event-panel-label">Australian surfing event venues</span>
+                  <span class="event-panel-year">2026 SEASON</span>
+                </div>
+                <div id="chart1" class="event-map" role="img" aria-label="Interactive map showing seven documented 2026 national surfing event locations across Australia. Hover a marker to read the event details."></div>
+                <div class="map-legend" aria-label="Map legend">
+                  <span class="map-legend__item"><i class="legend-dot" aria-hidden="true"></i> Mapped venue</span>
+                  <span class="map-legend__item"><i class="legend-dot legend-dot--hover" aria-hidden="true"></i> Selected / hovered</span>
+                  <span id="map-boundary-note" class="map-boundary-note">Loading boundaries…</span>
+                </div>
+              </div>
+              <aside class="event-sidebar" aria-label="Event locations and filters">
+                <p class="event-sidebar__eyebrow">Explore the 2026 circuit</p>
+                <h3>Coast to coast.</h3>
+                <div class="event-stats">
+                  <div class="event-stat"><span id="mapped-event-count" class="event-stat__value">7</span><span class="event-stat__label">Mapped venues</span></div>
+                  <div class="event-stat"><span id="mapped-state-count" class="event-stat__value">4</span><span class="event-stat__label">States with venues</span></div>
+                  <div class="event-stat"><span id="unmapped-event-count" class="event-stat__value">2</span><span class="event-stat__label">Not precisely mapped</span></div>
+                </div>
+                <p id="event-filter-label" class="event-filter-label">Explore mapped venues</p>
+                <div id="event-state-filters" class="state-filters" role="group" aria-label="Filter event locations by state"></div>
+                <div id="event-list" class="event-list" aria-live="polite"></div>
+                <p class="sidebar-help">Choose a state to filter the map, or select an event to highlight its venue. Hover the map markers for full details.</p>
+              </aside>
+            </div>
             <figcaption class="event-map-caption">
-              <p>Australia’s 2026 national surfing events span the east, south and west coasts, with several events concentrated in New South Wales.</p>
-              <p class="event-map-note">The online event and broad Tweed Coast location are not shown as precise map points.</p>
-              <p class="event-map-source">Source: <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/">Surfing Australia, 2026 National Events Calendar.</a></p>
+              <p>2026 national events are distributed across NSW, VIC, QLD and WA. The seven mapped points represent event venues or locality reference coordinates, not every surf beach in Australia.</p>
+              <p class="event-map-note">Two events are not mapped precisely: the Australian Junior Online Surf Championships and Australian Longboard Titles (Tweed Coast, a broad event region). Points represent locality references where the exact surf break is not specified.</p>
+              <p class="event-map-source">Sources: <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/" target="_blank" rel="noopener noreferrer">Surfing Australia national calendar</a> · <a href="https://github.com/FIT3179/Vega-Lite/tree/main/2_symbol_map" target="_blank" rel="noopener noreferrer">FIT3179 Week 8 map data</a> · <a href="https://github.com/anthwri/GeoJson-Data/blob/master/australian-states.json" target="_blank" rel="noopener noreferrer">Australian state boundary GeoJSON</a>.</p>
             </figcaption>
           </figure>
           <div class="chart-placeholder" id="chart2" aria-label="Chart 2 placeholder">
@@ -95,10 +123,10 @@
       </div>
     </footer>
 
-    <!-- Vega libraries are loaded now so future Vega-Lite charts can be embedded. -->
-    <script src="https://cdn.jsdelivr.net/npm/vega@6" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-lite@6" defer></script>
-    <script src="https://cdn.jsdelivr.net/npm/vega-embed@7" defer></script>
+    <!-- Keep the FIT3179 Vega-Lite v5 stack in dependency order. -->
+    <script src="https://cdn.jsdelivr.net/npm/vega@5" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-lite@5" defer></script>
+    <script src="https://cdn.jsdelivr.net/npm/vega-embed@6" defer></script>
     <script src="js/main.js" defer></script>
   </body>
 </html>
