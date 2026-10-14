@@ -99,6 +99,42 @@ h1 {
   font-size: 0.95rem;
 }
 
+.event-map-figure {
+  min-width: 0;
+  margin: 0;
+}
+
+.event-map {
+  width: 100%;
+  min-height: 540px;
+  background: var(--color-page);
+}
+
+.event-map .vega-embed,
+.event-map .vega-embed > div {
+  width: 100%;
+}
+
+.event-map-caption {
+  max-width: 78ch;
+  padding-top: 16px;
+}
+
+.event-map-caption p {
+  margin-bottom: 8px;
+  color: var(--color-muted);
+  font-size: 1.05rem;
+}
+
+.event-map-caption .event-map-note,
+.event-map-caption .event-map-source {
+  font-size: 0.92rem;
+}
+
+.event-map-source a {
+  color: var(--color-accent);
+}
+
 .conclusion {
   max-width: 780px;
 }
@@ -145,6 +181,10 @@ h1 {
 
   .chart-placeholder {
     min-height: 300px;
+  }
+
+  .event-map {
+    min-height: 420px;
   }
 
   .footer-content {

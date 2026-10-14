@@ -1,0 +1,135 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v6.json",
+  "description": "Locations of Surfing Australia's 2026 national surfing events with valid latitude and longitude coordinates.",
+  "title": {
+    "text": "Where Are Australia’s 2026 National Surfing Events?",
+    "anchor": "start",
+    "font": "Arial, Helvetica, sans-serif",
+    "fontSize": 24,
+    "fontWeight": 600,
+    "color": "#263238",
+    "offset": 14
+  },
+  "width": "container",
+  "height": 520,
+  "background": "#ffffff",
+  "padding": { "left": 8, "right": 8, "top": 8, "bottom": 8 },
+  "autosize": { "type": "fit", "contains": "padding" },
+  "projection": {
+    "type": "conicEqualArea",
+    "center": [134, -27],
+    "parallels": [-18, -36],
+    "scale": { "expr": "min(width * 1.4, height * 1.8)" }
+  },
+  "params": [
+    {
+      "name": "event_hover",
+      "select": {
+        "type": "point",
+        "fields": ["Event"],
+        "on": "pointerover",
+        "clear": "pointerout"
+      }
+    }
+  ],
+  "layer": [
+    {
+      "name": "australia-outline",
+      "data": {
+        "url": "https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json",
+        "format": {
+          "type": "topojson",
+          "feature": "countries"
+        }
+      },
+      "transform": [
+        { "filter": "datum.id == '036'" }
+      ],
+      "mark": {
+        "type": "geoshape",
+        "fill": "#f1f2ef",
+        "stroke": "#aeb8ba",
+        "strokeWidth": 1
+      }
+    },
+    {
+      "name": "event-locations",
+      "data": {
+        "url": "data/surfing_australia_events_2026.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "Latitude": "number",
+            "Longitude": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "isValid(datum.Latitude) && isValid(datum.Longitude)"
+        }
+      ],
+      "mark": {
+        "type": "circle",
+        "color": "#176b76",
+        "size": 125,
+        "opacity": 0.88,
+        "stroke": "#ffffff",
+        "strokeWidth": 1.2
+      },
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "size": {
+          "condition": {
+            "param": "event_hover",
+            "value": 210
+          },
+          "value": 125
+        },
+        "opacity": {
+          "condition": {
+            "param": "event_hover",
+            "value": 1
+          },
+          "value": 0.82
+        },
+        "strokeWidth": {
+          "condition": {
+            "param": "event_hover",
+            "value": 2
+          },
+          "value": 1.2
+        },
+        "tooltip": [
+          { "field": "Event", "type": "nominal", "title": "Event" },
+          { "field": "Location", "type": "nominal", "title": "Location" },
+          { "field": "State", "type": "nominal", "title": "State" },
+          {
+            "field": "Start_Date",
+            "type": "temporal",
+            "title": "Start_Date",
+            "format": "%d %b %Y"
+          },
+          {
+            "field": "End_Date",
+            "type": "temporal",
+            "title": "End_Date",
+            "format": "%d %b %Y"
+          },
+          { "field": "Event_Type", "type": "nominal", "title": "Event_Type" }
+        ]
+      }
+    }
+  ],
+  "config": {
+    "view": { "stroke": null },
+    "title": { "font": "Arial, Helvetica, sans-serif" }
+  }
+}
