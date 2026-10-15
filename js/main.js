@@ -2,6 +2,7 @@
 const EVENT_CSV = "data/surfing_australia_events_2026.csv";
 const STATE_BOUNDARY_SOURCE =
   "https://cdn.jsdelivr.net/gh/anthwri/GeoJson-Data@master/australian-states.json";
+const CHART02_STATE_BOUNDARY_SOURCE = "data/australian-states.geojson";
 const STATE_NAME_BY_CODE = {
   NSW: "New South Wales",
   VIC: "Victoria",
@@ -15,6 +16,7 @@ const STATE_NAME_BY_CODE = {
 const DAY_MS = 24 * 60 * 60 * 1000;
 let eventDataPromise;
 let stateBoundaryPromise;
+let chart02StateBoundaryPromise;
 
 function withValidCoordinates(record) {
   return record.Latitude?.trim() !== "" && record.Longitude?.trim() !== "" &&
@@ -67,6 +69,25 @@ function loadStateBoundaries() {
     })();
   }
   return stateBoundaryPromise;
+}
+
+function loadChart02StateBoundaries() {
+  if (!chart02StateBoundaryPromise) {
+    chart02StateBoundaryPromise = (async () => {
+      const response = await fetch(CHART02_STATE_BOUNDARY_SOURCE);
+      if (!response.ok) throw new Error(`Chart 02 state boundary request failed (HTTP ${response.status}).`);
+      const geojson = await response.json();
+      if (geojson.type !== "FeatureCollection" || !Array.isArray(geojson.features)) {
+        throw new Error("Unexpected Chart 02 state boundary GeoJSON schema.");
+      }
+      const states = geojson.features.map(feature => feature.properties?.STATE_NAME);
+      if (geojson.features.length !== 8 || Object.values(STATE_NAME_BY_CODE).some(name => !states.includes(name))) {
+        throw new Error("Chart 02 boundary data does not contain all eight Australian states and territories.");
+      }
+      return geojson.features;
+    })();
+  }
+  return chart02StateBoundaryPromise;
 }
 
 // A secondary, optional geographic layer. If a network blocks the state dataset,
@@ -185,7 +206,7 @@ function showChartError(targetId, message) {
 async function initializeStateCountMap() {
   try {
     const [events, features, specificationResponse] = await Promise.all([
-      readEventData(), loadStateBoundaries(), fetch("charts/chart02_events_by_state.json")
+    readEventData(), loadChart02StateBoundaries(), fetch("charts/chart02_events_by_state.json")
     ]);
     if (!specificationResponse.ok) throw new Error("Cannot load the Chart 02 Vega-Lite specification.");
     const counts = Object.fromEntries(Object.keys(STATE_NAME_BY_CODE).map(code => [code, 0]));
