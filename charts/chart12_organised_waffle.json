@@ -1,0 +1,25 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A deterministic 10 by 10 waffle chart approximating the share of 2025 estimated adult surfing participants in organised activity.",
+  "data": { "values": [] },
+  "width": "container",
+  "height": "container",
+  "mark": { "type": "rect", "stroke": "#ffffff", "strokeWidth": 2, "cornerRadius": 2 },
+  "encoding": {
+    "x": { "field": "Column", "type": "ordinal", "sort": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "axis": null, "scale": { "paddingInner": 0.04, "paddingOuter": 0.02 } },
+    "y": { "field": "Row", "type": "ordinal", "sort": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10], "axis": null, "scale": { "paddingInner": 0.04, "paddingOuter": 0.02 } },
+    "color": { "field": "ParticipationGroup", "type": "nominal", "scale": { "domain": ["Organised", "Remainder"], "range": ["#D97721", "#C8DDE1"] }, "legend": null },
+    "tooltip": [
+      { "field": "ParticipationGroup", "type": "nominal", "title": "Part of estimate" },
+      { "field": "Cell", "type": "ordinal", "title": "Cell" },
+      { "field": "CellShareApprox", "type": "quantitative", "title": "Approximate cell share (percentage points)", "format": ".0f" },
+      { "field": "GroupParticipants", "type": "quantitative", "title": "Group estimate (people)", "format": ",.0f" },
+      { "field": "TotalParticipants", "type": "quantitative", "title": "Total estimate (people)", "format": ",.0f" },
+      { "field": "OrganisedSharePercent", "type": "quantitative", "title": "Calculated organised share (%)", "format": ".2f" }
+    ]
+  },
+  "config": {
+    "view": { "stroke": null },
+    "axis": { "labelFont": "Arial", "titleFont": "Arial", "titleFontWeight": 700, "labelFontSize": 11, "domainColor": "#9fb4b8", "tickColor": "#9fb4b8" }
+  }
+}

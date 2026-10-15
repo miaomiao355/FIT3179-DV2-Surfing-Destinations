@@ -1,0 +1,52 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A mirrored butterfly chart comparing 2025 male and female surfing participation rates for the AusPlay Adults and Children populations.",
+  "data": { "values": [] },
+  "width": "container",
+  "height": 188,
+  "layer": [
+    {
+      "mark": { "type": "bar", "size": 42, "cornerRadiusEnd": 4 },
+      "encoding": {
+        "x": { "field": "ZeroRate", "type": "quantitative", "scale": { "domain": [-2.1, 2.1], "nice": false }, "axis": { "title": "Participation rate (%) · equal scale on both sides", "values": [-2, -1.5, -1, -0.5, 0, 0.5, 1, 1.5, 2], "labelExpr": "format(abs(datum.value), '.1f') + '%'", "grid": true, "gridColor": "#e7eef0", "labelColor": "#526a72", "titleColor": "#314d55", "titlePadding": 12 } },
+        "x2": { "field": "PlotRate" },
+        "y": { "field": "PopulationLabel", "type": "ordinal", "sort": ["Adults", "Children"], "axis": { "title": null, "labelColor": "#314d55", "labelFontSize": 12, "labelPadding": 9, "domain": false, "ticks": false } },
+        "color": { "field": "Sex", "type": "nominal", "scale": { "domain": ["Female", "Male"], "range": ["#2878A0", "#D97721"] }, "legend": { "title": null, "orient": "bottom", "direction": "horizontal", "labelColor": "#526a72", "labelFontSize": 11, "symbolType": "square", "symbolSize": 100 } },
+        "tooltip": [
+          { "field": "PopulationLabel", "type": "ordinal", "title": "AusPlay population" },
+          { "field": "Sex", "type": "nominal", "title": "Sex" },
+          { "field": "RatePercent", "type": "quantitative", "title": "Participation rate (%)", "format": ".3f" }
+        ]
+      }
+    },
+    {
+      "transform": [{ "aggregate": [{ "op": "count", "as": "rows" }] }],
+      "mark": { "type": "rule", "color": "#263d42", "strokeWidth": 1.5 },
+      "encoding": { "x": { "datum": 0, "type": "quantitative", "scale": { "domain": [-2.1, 2.1], "nice": false } } }
+    },
+    {
+      "transform": [{ "filter": "datum.Sex === 'Female'" }],
+      "mark": { "type": "text", "align": "right", "baseline": "middle", "dx": -8, "fontSize": 12, "fontWeight": 700, "color": "#263d42" },
+      "encoding": {
+        "x": { "field": "PlotRate", "type": "quantitative", "scale": { "domain": [-2.1, 2.1], "nice": false } },
+        "y": { "field": "PopulationLabel", "type": "ordinal", "sort": ["Adults", "Children"] },
+        "text": { "field": "RateLabel", "type": "nominal" },
+        "color": { "value": "#263d42" }
+      }
+    },
+    {
+      "transform": [{ "filter": "datum.Sex === 'Male'" }],
+      "mark": { "type": "text", "align": "left", "baseline": "middle", "dx": 8, "fontSize": 12, "fontWeight": 700, "color": "#263d42" },
+      "encoding": {
+        "x": { "field": "PlotRate", "type": "quantitative", "scale": { "domain": [-2.1, 2.1], "nice": false } },
+        "y": { "field": "PopulationLabel", "type": "ordinal", "sort": ["Adults", "Children"] },
+        "text": { "field": "RateLabel", "type": "nominal" },
+        "color": { "value": "#263d42" }
+      }
+    }
+  ],
+  "config": {
+    "view": { "stroke": null },
+    "axis": { "labelFont": "Arial", "titleFont": "Arial", "titleFontWeight": 700, "labelFontSize": 11, "domainColor": "#9fb4b8", "tickColor": "#9fb4b8" }
+  }
+}

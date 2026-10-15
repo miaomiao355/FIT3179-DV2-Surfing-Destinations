@@ -4,8 +4,8 @@
   "data": {
     "values": []
   },
-  "width": "container",
-  "height": 265,
+  "width": 250,
+  "height": 295,
   "autosize": {
     "type": "fit",
     "contains": "padding"
@@ -27,7 +27,7 @@
         "nice": false
       },
       "axis": {
-        "title": "Significant wave height Hs (m)",
+        "title": "Significant wave height (m)",
         "values": [
           0,
           1,
@@ -58,7 +58,7 @@
         "nice": false
       },
       "axis": {
-        "title": "Peak period Tp (s)",
+        "title": "Peak period (s)",
         "values": [
           0,
           5,

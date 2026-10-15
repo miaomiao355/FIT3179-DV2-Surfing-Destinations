@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="An exploration of Australia's surfing destinations, wave conditions, competitions and participation.">
     <title>Australia: A Nation Built Around the Waves</title>
-    <link rel="stylesheet" href="css/style.css?v=wave-charts-20261014">
+    <link rel="stylesheet" href="css/style.css?v=participation-charts-20261015">
   </head>
   <body>
     <header class="hero">
@@ -233,25 +233,82 @@
 
       <section class="story-section" aria-labelledby="participation-heading">
         <h2 id="participation-heading">Who surfs in Australia?</h2>
-        <div class="chart-stack">
-          <div class="chart-placeholder" id="chart9" aria-label="Chart 9 placeholder">
-            <p>Chart 9 placeholder</p>
-          </div>
-          <div class="chart-placeholder" id="chart10" aria-label="Chart 10 placeholder">
-            <p>Chart 10 placeholder</p>
-          </div>
-          <div class="chart-placeholder" id="chart11" aria-label="Chart 11 placeholder">
-            <p>Chart 11 placeholder</p>
-          </div>
-          <div class="chart-placeholder" id="chart12" aria-label="Chart 12 placeholder">
-            <p>Chart 12 placeholder</p>
-          </div>
+        <p class="participation-intro">AusPlay estimates show how surfing participation varies across the age groups in its adult table, differs by sex, and is split between overall and organised activity.</p>
+        <div class="participation-stack">
+          <section class="participation-chart-section" aria-labelledby="chart09-heading">
+            <p class="section-eyebrow">09 · Age and participation</p>
+            <h3 class="participation-chart-heading" id="chart09-heading">Which age groups have the highest surfing participation?</h3>
+            <p class="participation-chart-deck">In 2025, the highest listed rate was among 15–17-year-olds; the rate was lowest for people aged 65 and over.</p>
+            <figure class="participation-figure">
+              <div class="participation-viz participation-viz--ages" id="chart9" role="img" aria-label="Lollipop chart comparing 2025 surfing participation rates across seven age groups from 15 to 17 through 65 and over"></div>
+              <figcaption class="participation-caption">
+                <p class="participation-insight" id="chart09-insight" aria-live="polite">Loading age-group participation rates…</p>
+                <p class="participation-note">These are rates within each age group, not participant counts. AusPlay’s Adults table includes ages 15–17; that source classification is retained here.</p>
+                <p class="participation-source">Source: Australian Sports Commission, <a href="https://www.ausport.gov.au/clearinghouse/research/ausplay/results/data-tables" target="_blank" rel="noopener noreferrer">AusPlay 2025 data tables</a>.</p>
+              </figcaption>
+            </figure>
+          </section>
+
+          <section class="participation-chart-section" aria-labelledby="chart10-heading">
+            <p class="section-eyebrow">10 · Comparing participation rates</p>
+            <h3 class="participation-chart-heading" id="chart10-heading">How do male and female rates compare?</h3>
+            <p class="participation-chart-deck">Male participation rates were higher in both AusPlay population groups in 2025.</p>
+            <figure class="participation-figure">
+              <div class="participation-viz participation-viz--butterfly" id="chart10" role="img" aria-label="Mirrored butterfly chart comparing female rates on the left and male rates on the right for Adults and Children"></div>
+              <figcaption class="participation-caption">
+                <p class="participation-insight" id="chart10-insight" aria-live="polite">Loading male and female participation rates…</p>
+                <p class="participation-note">Each percentage is a rate within its corresponding population. Adult and child rates use different population denominators, and male and female rates should not be added. “Adults” follows AusPlay’s table label, which includes ages 15–17.</p>
+                <p class="participation-source">Source: Australian Sports Commission, <a href="https://www.ausport.gov.au/clearinghouse/research/ausplay/results/data-tables" target="_blank" rel="noopener noreferrer">AusPlay 2025 data tables</a>.</p>
+              </figcaption>
+            </figure>
+          </section>
+
+          <section class="participation-chart-section" aria-labelledby="chart11-heading">
+            <p class="section-eyebrow">11 · Year-on-year change</p>
+            <h3 class="participation-chart-heading" id="chart11-heading">How did participant estimates change from 2024 to 2025?</h3>
+            <p class="participation-chart-deck">Indexing each population to 100 in 2024 makes the two-year change readable despite the very different group sizes.</p>
+            <figure class="participation-figure">
+              <div class="participation-viz participation-viz--slope" id="chart11" role="img" aria-label="Indexed slope chart connecting 2024 and 2025 estimated participant counts for Adults and Children, with 2024 set to 100 for each group"></div>
+              <figcaption class="participation-caption">
+                <p class="participation-insight" id="chart11-insight" aria-live="polite">Loading the year-on-year comparison…</p>
+                <p class="participation-note">Direct labels name each population and show estimated people alongside the index value. Adults follows AusPlay’s category, which includes ages 15–17. These are changes in estimated participant counts, not percentage-point changes in participation rates; two years do not establish a long-term trend.</p>
+                <p class="participation-source">Source: Australian Sports Commission, <a href="https://www.ausport.gov.au/clearinghouse/research/ausplay/results/data-tables" target="_blank" rel="noopener noreferrer">AusPlay 2024–25 data tables</a>.</p>
+              </figcaption>
+            </figure>
+          </section>
+
+          <section class="participation-chart-section" aria-labelledby="chart12-heading">
+            <p class="section-eyebrow">12 · Organised participation</p>
+            <h3 class="participation-chart-heading" id="chart12-heading">What share of adult surfing is organised?</h3>
+            <p class="participation-chart-deck">The organised participation estimate is compared with the total adult surfing participant estimate for 2025.</p>
+            <figure class="participation-figure">
+              <div class="participation-waffle-layout">
+                <div class="participation-waffle-visual">
+                  <div class="participation-viz participation-viz--waffle" id="chart12" role="img" aria-label="Ten by ten waffle chart with 14 orange cells approximating the organised share of adult surfing participants"></div>
+                  <div class="participation-key" aria-label="Chart legend">
+                    <span class="participation-key-item"><i class="participation-key-swatch participation-key-swatch--organised"></i>Organised</span>
+                    <span class="participation-key-item"><i class="participation-key-swatch participation-key-swatch--remainder"></i>Remainder</span>
+                  </div>
+                </div>
+                <aside class="participation-callout" aria-label="Organised participation takeaway">
+                  <p class="participation-callout-label">2025 adult estimates</p>
+                  <p class="participation-share"><strong id="chart12-share">≈14.2%</strong><span>of estimated adult surfing participants</span></p>
+                  <p class="participation-insight" id="chart12-insight">About one in seven estimated adult surfing participants took part in organised surfing activities.</p>
+                  <p class="participation-counts" id="chart12-counts">44,381 organised participants of 313,396 estimated participants.</p>
+                </aside>
+              </div>
+              <figcaption class="participation-caption">
+                <p class="participation-note">Each square represents about one percentage point; 14 filled cells round the calculated 14.16% share to a whole percentage point. The remainder is total adult participants minus organised participants.</p>
+                <p class="participation-source">Source: Australian Sports Commission, <a href="https://www.ausport.gov.au/clearinghouse/research/ausplay/results/data-tables" target="_blank" rel="noopener noreferrer">AusPlay 2025 data tables</a>.</p>
+              </figcaption>
+            </figure>
+          </section>
         </div>
       </section>
 
       <section class="story-section conclusion" aria-labelledby="conclusion-heading">
         <h2 id="conclusion-heading">Why Australia Stands Out</h2>
-        <p>This section will bring together the story of Australia’s surfing destinations, wave conditions, competitions and participation.</p>
+        <p>Australia’s competition calendar spans established coastal destinations, while January measurements at three Gold Coast–Tweed stations show how wave height, period and direction varied across those monitored sites. AusPlay adds a national participation view: rates differ by age and sex, adult and child participant estimates moved in opposite directions from 2024 to 2025, and about one in seven estimated adult surfers took part in organised activity. The monitored stations and event locations offer focused views of Australia’s surf story, not a complete picture of every coast or destination.</p>
       </section>
     </main>
 
@@ -273,6 +330,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vega@5" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6" defer></script>
-    <script src="js/main.js?v=chart04-local-coast-20261015" defer></script>
+    <script src="js/main.js?v=participation-charts-20261015" defer></script>
   </body>
 </html>

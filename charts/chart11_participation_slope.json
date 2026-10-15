@@ -1,0 +1,81 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "An indexed slope chart of 2024 to 2025 estimated surfing participants, with each population indexed to 100 in 2024.",
+  "data": { "values": [] },
+  "width": "container",
+  "height": 278,
+  "layer": [
+    {
+      "transform": [{ "aggregate": [{ "op": "count", "as": "rows" }] }],
+      "mark": { "type": "rule", "color": "#b5c7ca", "strokeDash": [4, 4], "strokeWidth": 1.5 },
+      "encoding": { "y": { "datum": 100, "type": "quantitative", "scale": { "domain": [95.5, 103.5], "nice": false } } }
+    },
+    {
+      "mark": { "type": "line", "strokeWidth": 3, "point": false },
+      "encoding": {
+        "x": { "field": "Year", "type": "quantitative", "scale": { "domain": [2024, 2025.48], "nice": false }, "axis": { "title": null, "values": [2024, 2025], "format": "d", "labelColor": "#526a72", "labelFontSize": 12, "grid": false, "domain": false, "ticks": false, "labelPadding": 9 } },
+        "y": { "field": "Index", "type": "quantitative", "scale": { "domain": [95.5, 103.5], "nice": false, "zero": false }, "axis": { "title": "Indexed estimated participants (2024 = 100)", "values": [96, 98, 100, 102], "format": ".0f", "grid": true, "gridColor": "#e7eef0", "labelColor": "#526a72", "titleColor": "#314d55", "titlePadding": 12 } },
+        "order": { "field": "Year", "type": "quantitative" },
+        "detail": { "field": "Population", "type": "nominal" },
+        "color": { "field": "Population", "type": "nominal", "scale": { "domain": ["Adults", "Children"], "range": ["#176B76", "#D97721"] }, "legend": null },
+        "tooltip": [
+          { "field": "Population", "type": "nominal", "title": "AusPlay population" },
+          { "field": "Year", "type": "quantitative", "title": "Year", "format": "d" },
+          { "field": "Participants", "type": "quantitative", "title": "Estimated participants (people)", "format": ",.0f" },
+          { "field": "Index", "type": "quantitative", "title": "Index (2024 = 100)", "format": ".2f" },
+          { "field": "ChangePercent", "type": "quantitative", "title": "2024–25 change (%)", "format": "+.2f" }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "point", "filled": true, "size": 105, "stroke": "#ffffff", "strokeWidth": 2 },
+      "encoding": {
+        "x": { "field": "Year", "type": "quantitative", "scale": { "domain": [2024, 2025.48], "nice": false } },
+        "y": { "field": "Index", "type": "quantitative", "scale": { "domain": [95.5, 103.5], "nice": false, "zero": false } },
+        "color": { "field": "Population", "type": "nominal", "scale": { "domain": ["Adults", "Children"], "range": ["#176B76", "#D97721"] }, "legend": null },
+        "shape": { "field": "Population", "type": "nominal", "scale": { "domain": ["Adults", "Children"], "range": ["circle", "diamond"] }, "legend": null },
+        "tooltip": [
+          { "field": "Population", "type": "nominal", "title": "AusPlay population" },
+          { "field": "Year", "type": "quantitative", "title": "Year", "format": "d" },
+          { "field": "Participants", "type": "quantitative", "title": "Estimated participants (people)", "format": ",.0f" },
+          { "field": "Index", "type": "quantitative", "title": "Index (2024 = 100)", "format": ".2f" },
+          { "field": "ChangePercent", "type": "quantitative", "title": "2024–25 change (%)", "format": "+.2f" }
+        ]
+      }
+    },
+    {
+      "transform": [{ "filter": "datum.Population === 'Adults' && datum.Year === 2024" }],
+      "mark": { "type": "text", "align": "left", "baseline": "middle", "dx": 11, "dy": -16, "fontSize": 11, "fontWeight": 700 },
+      "encoding": {
+        "x": { "field": "Year", "type": "quantitative", "scale": { "domain": [2024, 2025.48], "nice": false } },
+        "y": { "field": "Index", "type": "quantitative", "scale": { "domain": [95.5, 103.5], "nice": false, "zero": false } },
+        "text": { "field": "EndpointLabel", "type": "nominal" },
+        "color": { "field": "Population", "type": "nominal", "scale": { "domain": ["Adults", "Children"], "range": ["#176B76", "#D97721"] }, "legend": null }
+      }
+    },
+    {
+      "transform": [{ "filter": "datum.Population === 'Children' && datum.Year === 2024" }],
+      "mark": { "type": "text", "align": "left", "baseline": "middle", "dx": 11, "dy": 17, "fontSize": 11, "fontWeight": 700 },
+      "encoding": {
+        "x": { "field": "Year", "type": "quantitative", "scale": { "domain": [2024, 2025.48], "nice": false } },
+        "y": { "field": "Index", "type": "quantitative", "scale": { "domain": [95.5, 103.5], "nice": false, "zero": false } },
+        "text": { "field": "EndpointLabel", "type": "nominal" },
+        "color": { "field": "Population", "type": "nominal", "scale": { "domain": ["Adults", "Children"], "range": ["#176B76", "#D97721"] }, "legend": null }
+      }
+    },
+    {
+      "transform": [{ "filter": "datum.Year === 2025" }],
+      "mark": { "type": "text", "align": "left", "baseline": "middle", "dx": 11, "fontSize": 11, "fontWeight": 700 },
+      "encoding": {
+        "x": { "field": "Year", "type": "quantitative", "scale": { "domain": [2024, 2025.48], "nice": false } },
+        "y": { "field": "Index", "type": "quantitative", "scale": { "domain": [95.5, 103.5], "nice": false, "zero": false } },
+        "text": { "field": "EndpointLabel", "type": "nominal" },
+        "color": { "field": "Population", "type": "nominal", "scale": { "domain": ["Adults", "Children"], "range": ["#176B76", "#D97721"] }, "legend": null }
+      }
+    }
+  ],
+  "config": {
+    "view": { "stroke": null },
+    "axis": { "labelFont": "Arial", "titleFont": "Arial", "titleFontWeight": 700, "labelFontSize": 11, "domainColor": "#9fb4b8", "tickColor": "#9fb4b8" }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "A layered lollipop chart of 2025 surfing participation rates in the seven age groups listed in AusPlay's Adults table.",
+  "data": { "values": [] },
+  "width": "container",
+  "height": 278,
+  "layer": [
+    {
+      "mark": { "type": "rule", "color": "#87B5BC", "strokeWidth": 3, "strokeCap": "round" },
+      "encoding": {
+        "x": { "datum": 0, "type": "quantitative", "scale": { "domain": [0, 2.85], "nice": false }, "axis": { "title": "Participation rate (%)", "values": [0, 0.5, 1, 1.5, 2, 2.5], "grid": true, "gridColor": "#e7eef0", "labelColor": "#526a72", "titleColor": "#314d55", "titlePadding": 12 } },
+        "x2": { "field": "RatePercent", "type": "quantitative" },
+        "y": { "field": "Age", "type": "ordinal", "sort": ["15-17", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"], "axis": { "title": null, "labelColor": "#314d55", "labelFontSize": 12, "labelPadding": 8, "domain": false, "ticks": false } }
+      }
+    },
+    {
+      "mark": { "type": "circle", "size": 150, "stroke": "#ffffff", "strokeWidth": 2 },
+      "encoding": {
+        "x": { "field": "RatePercent", "type": "quantitative", "scale": { "domain": [0, 2.85], "nice": false } },
+        "y": { "field": "Age", "type": "ordinal", "sort": ["15-17", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"] },
+        "color": { "field": "Highlight", "type": "nominal", "scale": { "domain": ["Highest", "Other age groups", "Lowest"], "range": ["#D97721", "#176B76", "#D97721"] }, "legend": null },
+        "tooltip": [
+          { "field": "Age", "type": "ordinal", "title": "Age group" },
+          { "field": "RatePercent", "type": "quantitative", "title": "Participation rate (%)", "format": ".3f" }
+        ]
+      }
+    },
+    {
+      "mark": { "type": "text", "align": "left", "baseline": "middle", "dx": 10, "fontSize": 11, "fontWeight": 700, "color": "#314d55" },
+      "encoding": {
+        "x": { "field": "RatePercent", "type": "quantitative", "scale": { "domain": [0, 2.85], "nice": false } },
+        "y": { "field": "Age", "type": "ordinal", "sort": ["15-17", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"] },
+        "text": { "field": "RateLabel", "type": "nominal" }
+      }
+    }
+  ],
+  "config": {
+    "view": { "stroke": null },
+    "axis": { "labelFont": "Arial", "titleFont": "Arial", "titleFontWeight": 700, "labelFontSize": 11, "domainColor": "#9fb4b8", "tickColor": "#9fb4b8" }
+  }
+}

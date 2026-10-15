@@ -4,8 +4,8 @@
   "data": {
     "values": []
   },
-  "width": "container",
-  "height": 218,
+  "width": 250,
+  "height": 244,
   "autosize": {
     "type": "fit",
     "contains": "padding"
@@ -329,7 +329,7 @@
       "mark": {
         "type": "text",
         "font": "Arial",
-        "fontSize": 7,
+        "fontSize": 9,
         "fontWeight": "bold",
         "baseline": "middle",
         "dy": 8,

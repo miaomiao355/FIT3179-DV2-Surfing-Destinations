@@ -908,6 +908,214 @@ async function initializeChart08HeightPeriod() {
   }
 }
 
+const AUSPLAY_PARTICIPATION_CSV = "data/ausplay_surfing_2025_clean.csv";
+const AUSPLAY_AGE_ORDER = ["15-17", "18-24", "25-34", "35-44", "45-54", "55-64", "65+"];
+let ausplayParticipationRowsPromise;
+
+async function readAusplayParticipationRows() {
+  if (!ausplayParticipationRowsPromise) {
+    ausplayParticipationRowsPromise = (async () => {
+      const response = await fetch(AUSPLAY_PARTICIPATION_CSV);
+      if (!response.ok) throw new Error("Cannot load AusPlay participation data (HTTP " + response.status + ").");
+      return window.vega.read(await response.text(), {type: "csv"}).map(row => ({
+        Table_Number: Number(row.Table_Number),
+        Population: String(row.Population).trim(),
+        Breakdown_Type: String(row.Breakdown_Type).trim(),
+        Category: String(row.Category).trim(),
+        Year: Number(row.Year),
+        Measure: String(row.Measure).trim(),
+        Value: Number(row.Value),
+        Value_Percent: row.Value_Percent === "" || row.Value_Percent == null ? null : Number(row.Value_Percent)
+      }));
+    })();
+  }
+  return ausplayParticipationRowsPromise;
+}
+
+function requireParticipationRows(rows, expectedCount, label) {
+  if (rows.length !== expectedCount) {
+    throw new Error(label + " matched " + rows.length + " rows; expected " + expectedCount + ".");
+  }
+  return rows;
+}
+
+function formatAusplayPeople(value) {
+  return Math.round(value).toLocaleString("en-AU");
+}
+
+async function loadParticipationChart(targetId, specificationPath, label, makeValues) {
+  const [rows, template] = await Promise.all([
+    readAusplayParticipationRows(),
+    readWaveChartSpec(specificationPath, label)
+  ]);
+  const values = makeValues(rows);
+  const specification = cloneWaveChartSpecWithValues(template, values, label);
+  await window.vegaEmbed("#" + targetId, specification, {actions: false});
+  return values;
+}
+
+async function initializeChart09AgeParticipation() {
+  try {
+    const values = await loadParticipationChart("chart9", "charts/chart09_age_participation.json", "Chart 09", rows => {
+      const ageRows = rows.filter(row => row.Table_Number === 1 && row.Population === "Adults" &&
+        row.Breakdown_Type === "Demographic" && row.Year === 2025 && row.Measure === "Participation rate" &&
+        AUSPLAY_AGE_ORDER.includes(row.Category));
+      requireParticipationRows(ageRows, AUSPLAY_AGE_ORDER.length, "Chart 09 age-group filter");
+      const ordered = [...ageRows].sort((a, b) => AUSPLAY_AGE_ORDER.indexOf(a.Category) - AUSPLAY_AGE_ORDER.indexOf(b.Category));
+      return ordered.map(row => {
+        if (!Number.isFinite(row.Value_Percent)) throw new Error("Chart 09 contains a missing percentage value.");
+        return {
+          Age: row.Category,
+          AgeOrder: AUSPLAY_AGE_ORDER.indexOf(row.Category),
+          RatePercent: row.Value_Percent,
+          RateLabel: row.Value_Percent.toFixed(2) + "%",
+          Highlight: row.Category === "15-17" ? "Highest" : row.Category === "65+" ? "Lowest" : "Other age groups"
+        };
+      });
+    });
+    const highest = values.reduce((best, row) => row.RatePercent > best.RatePercent ? row : best);
+    const lowest = values.reduce((best, row) => row.RatePercent < best.RatePercent ? row : best);
+    document.getElementById("chart09-insight").textContent =
+      highest.Age + " had the highest listed rate (" + highest.RatePercent.toFixed(2) + "%), while " +
+      lowest.Age + " had the lowest (" + lowest.RatePercent.toFixed(2) + "%).";
+  } catch (error) {
+    console.error("Chart 09 age participation could not be rendered:", error);
+    showChartError("chart9", "The AusPlay age-group rates or Chart 09 specification could not be loaded. Check the data path and browser console.");
+  }
+}
+
+async function initializeChart10GenderButterfly() {
+  try {
+    const values = await loadParticipationChart("chart10", "charts/chart10_gender_butterfly.json", "Chart 10", rows => {
+      const selected = rows.filter(row =>
+        ((row.Table_Number === 1 && row.Population === "Adults") || (row.Table_Number === 2 && row.Population === "Children")) &&
+        row.Breakdown_Type === "Demographic" && row.Year === 2025 && row.Measure === "Participation rate" &&
+        (row.Category === "Male" || row.Category === "Female"));
+      requireParticipationRows(selected, 4, "Chart 10 sex and population filter");
+      const seen = new Set();
+      return selected.map(row => {
+        if (!Number.isFinite(row.Value_Percent)) throw new Error("Chart 10 contains a missing percentage value.");
+        const key = row.Population + "|" + row.Category;
+        if (seen.has(key)) throw new Error("Chart 10 contains a duplicate population and sex row.");
+        seen.add(key);
+        return {
+          PopulationLabel: row.Population,
+          Sex: row.Category,
+          RatePercent: row.Value_Percent,
+          ZeroRate: 0,
+          PlotRate: row.Category === "Female" ? -row.Value_Percent : row.Value_Percent,
+          RateLabel: row.Value_Percent.toFixed(2) + "%"
+        };
+      });
+    });
+    const rate = (population, sex) => values.find(row =>
+      row.PopulationLabel === population && row.Sex === sex).RatePercent;
+    document.getElementById("chart10-insight").textContent =
+      "Male rates were higher in both groups: " + rate("Adults", "Male").toFixed(2) +
+      "% versus " + rate("Adults", "Female").toFixed(2) +
+      "% for Adults, and " + rate("Children", "Male").toFixed(2) +
+      "% versus " + rate("Children", "Female").toFixed(2) + "% for Children.";
+  } catch (error) {
+    console.error("Chart 10 gender comparison could not be rendered:", error);
+    showChartError("chart10", "The AusPlay sex-specific rates or Chart 10 specification could not be loaded. Check the data path and browser console.");
+  }
+}
+
+async function initializeChart11ParticipationSlope() {
+  try {
+    const values = await loadParticipationChart("chart11", "charts/chart11_participation_slope.json", "Chart 11", rows => {
+      const selected = rows.filter(row =>
+        ((row.Table_Number === 6 && row.Population === "Adults") || (row.Table_Number === 7 && row.Population === "Children")) &&
+        row.Breakdown_Type === "Year-on-year" && row.Category === "Total" &&
+        row.Measure === "Estimated number of participants" && (row.Year === 2024 || row.Year === 2025));
+      requireParticipationRows(selected, 4, "Chart 11 year-on-year filter");
+      const byPopulation = new Map();
+      for (const row of selected) {
+        if (!Number.isFinite(row.Value)) throw new Error("Chart 11 contains a missing participant estimate.");
+        if (!byPopulation.has(row.Population)) byPopulation.set(row.Population, new Map());
+        const years = byPopulation.get(row.Population);
+        if (years.has(row.Year)) throw new Error("Chart 11 contains a duplicate population and year row.");
+        years.set(row.Year, row.Value);
+      }
+      if (byPopulation.size !== 2 || [...byPopulation.values()].some(years => years.size !== 2 || !years.has(2024) || !years.has(2025))) {
+        throw new Error("Chart 11 must include 2024 and 2025 estimates for Adults and Children.");
+      }
+      return selected.map(row => {
+        const years = byPopulation.get(row.Population);
+        const baseline = years.get(2024);
+        const index = years.get(row.Year) / baseline * 100;
+        const changePercent = (years.get(2025) / baseline - 1) * 100;
+        return {
+          Population: row.Population,
+          Year: row.Year,
+          Participants: row.Value,
+          Index: index,
+          ChangePercent: changePercent,
+          EndpointLabel: row.Population + " · " + formatAusplayPeople(row.Value) + " · " + index.toFixed(2)
+        };
+      });
+    });
+    const adults = values.find(row => row.Population === "Adults" && row.Year === 2025).ChangePercent;
+    const children = values.find(row => row.Population === "Children" && row.Year === 2025).ChangePercent;
+    const signed = value => (value > 0 ? "+" : "−") + Math.abs(value).toFixed(2) + "%";
+    document.getElementById("chart11-insight").textContent =
+      "Estimated participants moved in opposite directions: Adults " + signed(adults) + " and Children " + signed(children) + " from 2024 to 2025.";
+  } catch (error) {
+    console.error("Chart 11 participation change could not be rendered:", error);
+    showChartError("chart11", "The AusPlay year-on-year estimates or Chart 11 specification could not be loaded. Check the data path and browser console.");
+  }
+}
+
+async function initializeChart12OrganisedWaffle() {
+  try {
+    const values = await loadParticipationChart("chart12", "charts/chart12_organised_waffle.json", "Chart 12", rows => {
+      const totalRows = rows.filter(row => row.Table_Number === 1 && row.Population === "Adults" &&
+        row.Breakdown_Type === "Demographic" && row.Category === "Total" && row.Year === 2025 &&
+        row.Measure === "Estimated number of participants");
+      const organisedRows = rows.filter(row => row.Table_Number === 3 && row.Population === "Adults" &&
+        row.Breakdown_Type === "Organised participation" && row.Category === "Total" && row.Year === 2025 &&
+        row.Measure === "Estimated number of participants");
+      requireParticipationRows(totalRows, 1, "Chart 12 total adult estimate filter");
+      requireParticipationRows(organisedRows, 1, "Chart 12 organised adult estimate filter");
+      const total = totalRows[0].Value;
+      const organised = organisedRows[0].Value;
+      if (!Number.isFinite(total) || !Number.isFinite(organised) || total <= 0 || organised < 0 || organised > total) {
+        throw new Error("Chart 12 participant estimates do not form a valid part-to-whole comparison.");
+      }
+      const sharePercent = organised / total * 100;
+      const organisedCells = Math.round(sharePercent);
+      return Array.from({length: 100}, (_, index) => {
+        const cell = index + 1;
+        const isOrganised = cell <= organisedCells;
+        return {
+          Cell: cell,
+          Column: (cell - 1) % 10 + 1,
+          Row: 10 - Math.floor((cell - 1) / 10),
+          ParticipationGroup: isOrganised ? "Organised" : "Remainder",
+          CellShareApprox: 1,
+          GroupParticipants: isOrganised ? organised : total - organised,
+          TotalParticipants: total,
+          OrganisedSharePercent: sharePercent
+        };
+      }).map(cell => Object.assign(cell, {
+        TotalParticipants: total,
+        OrganisedParticipants: organised,
+        OrganisedSharePercent: sharePercent
+      }));
+    });
+    const total = values[0].TotalParticipants;
+    const organised = values[0].OrganisedParticipants;
+    const sharePercent = values[0].OrganisedSharePercent;
+    document.getElementById("chart12-share").textContent = "≈" + sharePercent.toFixed(1) + "%";
+    document.getElementById("chart12-counts").textContent =
+      formatAusplayPeople(organised) + " organised participants of " + formatAusplayPeople(total) +
+      " total; remainder " + formatAusplayPeople(total - organised) + ".";
+  } catch (error) {
+    console.error("Chart 12 organised participation could not be rendered:", error);
+    showChartError("chart12", "The AusPlay total or organised adult estimates or Chart 12 specification could not be loaded. Check the data path and browser console.");
+  }
+}
+
 window.addEventListener("DOMContentLoaded", () => {
   initializeEventMap();
   initializeStateCountMap();
@@ -916,4 +1124,8 @@ window.addEventListener("DOMContentLoaded", () => {
   initializeChart06WaveRose();
   initializeChart07WaveCalendar();
   initializeChart08HeightPeriod();
+  initializeChart09AgeParticipation();
+  initializeChart10GenderButterfly();
+  initializeChart11ParticipationSlope();
+  initializeChart12OrganisedWaffle();
 });

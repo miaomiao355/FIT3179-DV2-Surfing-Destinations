@@ -4,8 +4,8 @@
   "data": {
     "values": []
   },
-  "width": 280,
-  "height": 260,
+  "width": 300,
+  "height": 280,
   "padding": 8,
   "layer": [
     {
@@ -58,7 +58,7 @@
             ],
             "range": [
               0,
-              100
+              115
             ]
           }
         },
@@ -72,7 +72,7 @@
             ],
             "range": [
               0,
-              100
+              115
             ]
           }
         },
@@ -190,7 +190,7 @@
       "mark": {
         "type": "text",
         "font": "Arial",
-        "fontSize": 10,
+        "fontSize": 11,
         "fontWeight": "bold",
         "color": "#52616a"
       },
@@ -219,7 +219,7 @@
             ],
             "range": [
               0,
-              120
+              130
             ]
           }
         },
