@@ -1,7 +1,6 @@
 // FIT3179 DV2 — Charts 01–03: interactive Vega-Lite v5 event views.
 const EVENT_CSV = "data/surfing_australia_events_2026.csv";
-const STATE_BOUNDARY_SOURCE =
-  "https://cdn.jsdelivr.net/gh/anthwri/GeoJson-Data@master/australian-states.json";
+const STATE_BOUNDARY_SOURCE = "data/australian-states.geojson";
 const CHART02_STATE_BOUNDARY_SOURCE = "data/australian-states.geojson";
 const STATE_NAME_BY_CODE = {
   NSW: "New South Wales",
@@ -55,7 +54,7 @@ function readEventData() {
 function loadStateBoundaries() {
   if (!stateBoundaryPromise) {
     stateBoundaryPromise = (async () => {
-      const response = await fetch(STATE_BOUNDARY_SOURCE, {signal: AbortSignal.timeout(5500)});
+      const response = await fetch(STATE_BOUNDARY_SOURCE);
       if (!response.ok) throw new Error(`State boundary request failed (HTTP ${response.status}).`);
       const geojson = await response.json();
       if (geojson.type !== "FeatureCollection" || !Array.isArray(geojson.features)) {
@@ -63,7 +62,7 @@ function loadStateBoundaries() {
       }
       const states = geojson.features.map(feature => feature.properties?.STATE_NAME);
       if (geojson.features.length !== 8 || Object.values(STATE_NAME_BY_CODE).some(name => !states.includes(name))) {
-        throw new Error("The boundary data does not contain all eight Australian states and territories.");
+        throw new Error("The local state boundary data does not contain all eight Australian states and territories.");
       }
       return geojson.features;
     })();
@@ -90,8 +89,7 @@ function loadChart02StateBoundaries() {
   return chart02StateBoundaryPromise;
 }
 
-// A secondary, optional geographic layer. If a network blocks the state dataset,
-// the locally packaged country boundary and all seven markers still render.
+// A local state boundary layer adds geographic context to the national venue map.
 async function addStateBoundariesWhenAvailable(specification) {
   try {
     const features = await loadStateBoundaries();
@@ -383,32 +381,101 @@ function calculateWaveSummaries(observations, stations) {
 function renderWaveInsights(summaries, boxStats) {
   const format = (value, digits = 3) => value.toFixed(digits);
   const highestMean = summaries.reduce((best, row) => row.Mean_Hs_m > best.Mean_Hs_m ? row : best);
-  const siteList = document.getElementById("chart04-site-list");
-  siteList.replaceChildren();
-
-  for (const row of summaries) {
-    const isHighest = row.Location === highestMean.Location;
-    const item = makeElement("div", "wave-site-summary" + (isHighest ? " is-highest" : ""));
-    const name = makeElement("dt", "wave-site-summary__name", row.Location);
-    const value = makeElement("dd", "wave-site-summary__value");
-    value.append(
-      makeElement("strong", "", format(row.Mean_Hs_m)),
-      makeElement("span", "", "m")
-    );
-    if (isHighest) name.appendChild(makeElement("span", "wave-site-summary__badge", "Highest"));
-    item.append(name, value);
-    siteList.appendChild(item);
-  }
-
+  const lowestMean = summaries.reduce((best, row) => row.Mean_Hs_m < best.Mean_Hs_m ? row : best);
   document.getElementById("chart04-insight").textContent =
-    highestMean.Location + " recorded the highest mean significant wave height in January 2026 (" +
-    format(highestMean.Mean_Hs_m) + " m).";
+    highestMean.Location + " was highest at " + format(highestMean.Mean_Hs_m) +
+    " m, " + format(highestMean.Mean_Hs_m - lowestMean.Mean_Hs_m) +
+    " m above " + lowestMean.Location + ".";
 
   const highestMedian = boxStats.reduce((best, row) => row.median > best.median ? row : best);
   const widestSpread = boxStats.reduce((best, row) => row.iqr > best.iqr ? row : best);
   document.getElementById("chart05-insight").textContent = highestMedian.Location === widestSpread.Location
     ? `${highestMedian.Location} had the highest median wave height and widest interquartile range.`
     : `${highestMedian.Location} had the highest median wave height; ${widestSpread.Location} had the widest interquartile range.`;
+}
+
+function setWaveSymbolLegend(maximumArea) {
+  for (const circle of document.querySelectorAll("[data-hs-reference]")) {
+    const value = Number(circle.dataset.hsReference);
+    const diameter = Math.sqrt((value / 2) * maximumArea * 4 / Math.PI);
+    circle.style.width = diameter.toFixed(1) + "px";
+    circle.style.height = diameter.toFixed(1) + "px";
+  }
+}
+
+async function renderAustraliaLocator() {
+  const container = document.getElementById("chart4-locator");
+  const [outlineResponse, locatorResponse] = await Promise.all([
+    fetch("data/australia_outline.geojson"),
+    fetch("charts/chart04_au_locator.json", {cache: "no-store"})
+  ]);
+  if (!outlineResponse.ok || !locatorResponse.ok) {
+    throw new Error("The Australia outline or regional extent could not be loaded.");
+  }
+
+  const outline = await outlineResponse.json();
+  const locatorSpec = await locatorResponse.json();
+  const australia = outline.features?.find(feature => feature.properties?.name === "Australia") ?? outline.features?.[0];
+  const extentLayer = locatorSpec.layer?.find(layer => layer.name === "Gold Coast Tweed map extent");
+  const extent = extentLayer?.data?.values?.[0]?.geometry;
+  if (!australia?.geometry?.coordinates || !extent?.coordinates) {
+    throw new Error("The Australia outline or Gold Coast–Tweed extent has no geometry.");
+  }
+
+  const collectPoints = (coordinates, points = []) => {
+    if (!Array.isArray(coordinates)) return points;
+    if (coordinates.length >= 2 && typeof coordinates[0] === "number" && typeof coordinates[1] === "number") {
+      points.push(coordinates);
+      return points;
+    }
+    for (const part of coordinates) collectPoints(part, points);
+    return points;
+  };
+  const collectRings = (coordinates, rings = []) => {
+    if (!Array.isArray(coordinates)) return rings;
+    if (coordinates.length && Array.isArray(coordinates[0]) && typeof coordinates[0][0] === "number") {
+      rings.push(coordinates);
+      return rings;
+    }
+    for (const part of coordinates) collectRings(part, rings);
+    return rings;
+  };
+
+  const rings = collectRings(australia.geometry.coordinates);
+  const allPoints = collectPoints(australia.geometry.coordinates);
+  const extentPoints = collectPoints(extent.coordinates);
+  if (!rings.length || !allPoints.length || !extentPoints.length) {
+    throw new Error("The Australia outline or locator extent has no coordinates.");
+  }
+
+  const meanLatitude = allPoints.reduce((sum, point) => sum + point[1], 0) / allPoints.length;
+  const longitudeFactor = Math.cos(meanLatitude * Math.PI / 180);
+  const project = ([longitude, latitude]) => [longitude * longitudeFactor, -latitude];
+  const projected = [...allPoints, ...extentPoints].map(project);
+  const minX = Math.min(...projected.map(point => point[0]));
+  const maxX = Math.max(...projected.map(point => point[0]));
+  const minY = Math.min(...projected.map(point => point[1]));
+  const maxY = Math.max(...projected.map(point => point[1]));
+  const viewWidth = 320;
+  const viewHeight = 192;
+  const padding = 12;
+  const scale = Math.min(
+    (viewWidth - 2 * padding) / (maxX - minX),
+    (viewHeight - 2 * padding) / (maxY - minY)
+  );
+  const offsetX = (viewWidth - (maxX - minX) * scale) / 2 - minX * scale;
+  const offsetY = (viewHeight - (maxY - minY) * scale) / 2 - minY * scale;
+  const position = coordinate => {
+    const [x, y] = project(coordinate);
+    return [x * scale + offsetX, y * scale + offsetY];
+  };
+  const pathForRings = geometry => collectRings(geometry.coordinates).map(ring =>
+    ring.map((coordinate, index) => {
+      const [x, y] = position(coordinate);
+      return `${index === 0 ? "M" : "L"}${x.toFixed(2)},${y.toFixed(2)}`;
+    }).join(" ") + " Z"
+  ).join(" ");
+  container.innerHTML = `<svg viewBox="0 0 ${viewWidth} ${viewHeight}" role="presentation" aria-hidden="true" focusable="false"><path d="${pathForRings(australia.geometry)}" fill="#d8e4e2" fill-rule="evenodd" stroke="#748d92" stroke-width="1.5" vector-effect="non-scaling-stroke"></path><path d="${pathForRings(extent)}" fill="#42616a" fill-opacity=".14" stroke="#354f58" stroke-width="2.2" vector-effect="non-scaling-stroke"></path></svg>`;
 }
 
 async function initializeWaveCharts() {
@@ -431,7 +498,8 @@ async function initializeWaveCharts() {
     renderWaveInsights(summaries, boxStats);
   } catch (error) {
     console.error("Wave chart data could not be prepared:", error);
-    showChartError("chart4", "The regional wave map could not be prepared. Check the data paths and browser console.");
+    showChartError("chart4", "The regional wave map could not be prepared. Check the local basemap files and browser console.");
+    showChartError("chart4-compare", "The wave-height comparison could not be prepared.");
     showChartError("chart5", "The wave distribution chart could not be prepared. Check the data paths and browser console.");
     return;
   }
@@ -444,10 +512,31 @@ async function initializeWaveCharts() {
       if (!chart04.data || typeof chart04.data !== "object") {
         throw new Error("The Chart 04 specification has no shared top-level data source.");
       }
-      // Data-less layers, including the site labels, inherit these values.
       chart04.data.values = summaries;
-      await window.vegaEmbed("#chart4", chart04, {actions: false});
+      const mapElement = document.getElementById("chart4");
+      const symbolLayer = chart04.layer?.find(layer => layer.encoding?.size?.scale);
+      if (!symbolLayer?.encoding?.size?.scale) {
+        throw new Error("The Chart 04 symbol layer has no area scale.");
+      }
+      const maximumArea = 600;
+      symbolLayer.encoding.size.scale.range = [0, maximumArea];
+      chart04.projection.scale.expr = mapElement.clientWidth < 600
+        ? "min((width - 32) / 0.0102, (height - 42) / 0.0103)"
+        : "min((width - 42) / 0.0178, (height - 46) / 0.0103)";
+      setWaveSymbolLegend(maximumArea);
+      await window.vegaEmbed(mapElement, chart04, {actions: false});
     })(),
+    (async () => {
+      const response = await fetch("charts/chart04_wave_comparison.json", {cache: "no-store"});
+      if (!response.ok) throw new Error("Cannot load the Chart 04 comparison specification.");
+      const comparison = await response.json();
+      if (!comparison.data || typeof comparison.data !== "object") {
+        throw new Error("The Chart 04 comparison has no top-level data source.");
+      }
+      comparison.data.values = summaries;
+      await window.vegaEmbed("#chart4-compare", comparison, {actions: false});
+    })(),
+    renderAustraliaLocator(),
     (async () => {
       const response = await fetch("charts/chart05_wave_distribution.json");
       if (!response.ok) throw new Error("Cannot load the Chart 05 specification.");
@@ -461,19 +550,27 @@ async function initializeWaveCharts() {
   ]);
   if (results[0].status === "rejected") {
     console.error("Chart 04 could not be rendered:", results[0].reason);
-    showChartError("chart4", "The regional wave map could not load. Check the land-boundary service, data path, and browser console.");
+    showChartError("chart4", "The regional map could not load. Check the local basemap files and browser console.");
   }
   if (results[1].status === "rejected") {
-    console.error("Chart 05 could not be rendered:", results[1].reason);
+    console.error("Chart 04 comparison could not be rendered:", results[1].reason);
+    showChartError("chart4-compare", "The aligned wave-height comparison could not load.");
+  }
+  if (results[2].status === "rejected") {
+    console.error("Chart 04 locator could not be rendered:", results[2].reason);
+    showChartError("chart4-locator", "Australia locator not available.");
+  }
+  if (results[3].status === "rejected") {
+    console.error("Chart 05 could not be rendered:", results[3].reason);
     showChartError("chart5", "The wave distribution chart could not load. Check the event data, chart path, and browser console.");
   }
 }
 
 const WAVE_CHART_SITE_ORDER = ["Gold Coast", "Palm Beach", "Tweed Offshore"];
 const WAVE_CHART_PANEL_IDS = {
-  "Gold Coast": {rose: "chart06-gold", roseNote: "chart06-gold-note", calendar: "chart07-gold", pairs: "chart08-gold", pairsNote: "chart08-gold-note"},
-  "Palm Beach": {rose: "chart06-palm", roseNote: "chart06-palm-note", calendar: "chart07-palm", pairs: "chart08-palm", pairsNote: "chart08-palm-note"},
-  "Tweed Offshore": {rose: "chart06-tweed", roseNote: "chart06-tweed-note", calendar: "chart07-tweed", pairs: "chart08-tweed", pairsNote: "chart08-tweed-note"}
+  "Gold Coast": {direction: "chart06-gold", directionNote: "chart06-gold-note", calendar: "chart07-gold", pairs: "chart08-gold", pairsNote: "chart08-gold-note"},
+  "Palm Beach": {direction: "chart06-palm", directionNote: "chart06-palm-note", calendar: "chart07-palm", pairs: "chart08-palm", pairsNote: "chart08-palm-note"},
+  "Tweed Offshore": {direction: "chart06-tweed", directionNote: "chart06-tweed-note", calendar: "chart07-tweed", pairs: "chart08-tweed", pairsNote: "chart08-tweed-note"}
 };
 const WAVE_COMPASS_SECTORS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"];
 const WAVE_CHART_START = "2026-01-01";
@@ -530,7 +627,7 @@ function verifyWaveChartSites(rows, label, expectedRowsPerSite = null) {
   }
 }
 
-function buildWaveRoseRows(observations) {
+function buildWaveDirectionRows(observations) {
   verifyWaveChartSites(observations, "January wave-observation");
   for (const site of WAVE_CHART_SITE_ORDER) {
     const count = observations.filter(row => row.Location === site &&
@@ -539,14 +636,9 @@ function buildWaveRoseRows(observations) {
       throw new Error(site + " has " + count + " January observations; expected " + EXPECTED_WAVE_RECORDS_PER_SITE + ".");
     }
   }
-  const output = new Map();
-  const halfSectors = new Map([
-    ["Gold Coast", Array(8).fill(0)],
-    ["Palm Beach", Array(8).fill(0)],
-    ["Tweed Offshore", Array(8).fill(0)]
-  ]);
-  const validBySite = new Map(WAVE_CHART_SITE_ORDER.map(site => [site, 0]));
 
+  const countsBySite = new Map(WAVE_CHART_SITE_ORDER.map(site => [site, Array(8).fill(0)]));
+  const validBySite = new Map(WAVE_CHART_SITE_ORDER.map(site => [site, 0]));
   for (const row of observations) {
     if (!WAVE_CHART_SITE_ORDER.includes(row.Location) ||
         row.Date < WAVE_CHART_START || row.Date >= WAVE_CHART_END) continue;
@@ -556,117 +648,84 @@ function buildWaveRoseRows(observations) {
     if (!Number.isFinite(bearing) || bearing < 0 || bearing > 360) continue;
     const normalized = ((bearing % 360) + 360) % 360;
     const sectorIndex = Math.floor((normalized + 22.5) / 45) % 8;
-    halfSectors.get(row.Location)[sectorIndex] += 1;
+    countsBySite.get(row.Location)[sectorIndex] += 1;
     validBySite.set(row.Location, validBySite.get(row.Location) + 1);
   }
 
-  const centerAngles = [0, 45, 90, 135, 180, 225, 270, 315];
+  const output = new Map();
   for (const site of WAVE_CHART_SITE_ORDER) {
-    const counts = halfSectors.get(site);
+    const counts = countsBySite.get(site);
     const validCount = validBySite.get(site);
-    if (!validCount) throw new Error(site + " has no valid January peak-direction readings.");
-    if (counts.reduce((sum, count) => sum + count, 0) !== validCount) {
+    if (!validCount || counts.reduce((sum, count) => sum + count, 0) !== validCount) {
       throw new Error(site + " directional sector counts do not reconcile.");
     }
     const maximum = Math.max(...counts);
-    const rows = [];
-    for (let i = 0; i < WAVE_COMPASS_SECTORS.length; i += 1) {
-      const sector = WAVE_COMPASS_SECTORS[i];
-      const percentage = counts[i] / validCount * 100;
-      const common = {
+    const rows = WAVE_COMPASS_SECTORS.map((sector, index) => {
+      const percentage = counts[index] / validCount * 100;
+      return {
         Location: site,
         Sector: sector,
-        Count: counts[i],
+        Count: counts[index],
         Percentage: percentage,
-        IsDominant: counts[i] === maximum,
-        InnerRadiusPct: 0,
-        OuterRadiusPct: percentage
+        PercentLabel: percentage.toFixed(1) + "%",
+        ValidCount: validCount,
+        IsDominant: counts[index] === maximum
       };
-      if (sector === "N") {
-        rows.push({RowType: "sector", ...common, StartDeg: 0, EndDeg: 22.5});
-        rows.push({RowType: "sector", ...common, StartDeg: 337.5, EndDeg: 360});
-      } else {
-        rows.push({
-          RowType: "sector",
-          ...common,
-          StartDeg: centerAngles[i] - 22.5,
-          EndDeg: centerAngles[i] + 22.5
-        });
-      }
-    }
-    for (const guide of [25, 50, 75, 100]) {
-      rows.push({
-        RowType: "guide",
-        Location: site,
-        StartDeg: 0,
-        EndDeg: 360,
-        InnerRadiusPct: Math.max(0, guide - 0.8),
-        OuterRadiusPct: guide
-      });
-    }
-    for (let i = 0; i < WAVE_COMPASS_SECTORS.length; i += 1) {
-      rows.push({
-        RowType: "label",
-        Location: site,
-        Sector: WAVE_COMPASS_SECTORS[i],
-        CenterDeg: centerAngles[i],
-        LabelRadius: 113
-      });
-    }
-    output.set(site, {rows, counts, validCount, maximum});
+    });
+    const leading = rows.filter(row => row.Count === maximum);
+    output.set(site, {rows, validCount, leading, maximumPercentage: leading[0].Percentage});
   }
   return output;
 }
-
-async function initializeChart06WaveRose() {
-  const targetIds = WAVE_CHART_SITE_ORDER.map(site => WAVE_CHART_PANEL_IDS[site].rose);
+async function initializeChart06WaveDirection() {
+  const targetIds = WAVE_CHART_SITE_ORDER.map(site => WAVE_CHART_PANEL_IDS[site].direction);
   try {
     const [observations, template] = await Promise.all([
       readWaveChartCsv(WAVE_DATA_CSV, "the January wave observations"),
-      readWaveChartSpec("charts/chart06_wave_rose.json", "Chart 06")
+      readWaveChartSpec("charts/chart06_direction_bars.json", "Chart 06")
     ]);
-    const perSite = buildWaveRoseRows(observations);
+    const perSite = buildWaveDirectionRows(observations);
+    const maximumShare = Math.max(...WAVE_CHART_SITE_ORDER.map(site => perSite.get(site).maximumPercentage));
+    const axisMaximum = Math.max(20, Math.ceil(maximumShare / 10) * 10);
+    const axisStep = axisMaximum <= 20 ? 5 : axisMaximum <= 50 ? 10 : 20;
+    template.encoding.x.scale.domain = [0, axisMaximum + 5];
+    template.encoding.x.axis.values = Array.from(
+      {length: Math.floor(axisMaximum / axisStep) + 1},
+      (_, index) => index * axisStep
+    );
+
     const embeds = WAVE_CHART_SITE_ORDER.map(async site => {
       const summary = perSite.get(site);
       const panel = WAVE_CHART_PANEL_IDS[site];
-      const leadIndex = summary.counts.indexOf(summary.maximum);
-      document.getElementById(panel.roseNote).textContent =
+      const leaders = summary.leading.map(row => row.Sector).join(" / ");
+      const leadPercent = summary.leading[0].Percentage.toFixed(1);
+      document.getElementById(panel.directionNote).textContent =
         "n = " + summary.validCount.toLocaleString("en-AU") + " valid readings · " +
-        WAVE_COMPASS_SECTORS[leadIndex] + " leads (" +
-        (summary.maximum / summary.validCount * 100).toFixed(1) + "%)";
+        leaders + " leads at " + leadPercent + "%";
       const specification = cloneWaveChartSpecWithValues(template, summary.rows, "Chart 06");
-      await window.vegaEmbed("#" + panel.rose, specification, {actions: false});
+      await window.vegaEmbed("#" + panel.direction, specification, {actions: false});
     });
     const results = await Promise.allSettled(embeds);
     results.forEach((result, index) => {
       if (result.status === "rejected") {
         const site = WAVE_CHART_SITE_ORDER[index];
         console.error("Chart 06 could not render for " + site + ":", result.reason);
-        showChartError(WAVE_CHART_PANEL_IDS[site].rose, "The wave rose could not load for this site. Check the chart specification and browser console.");
+        showChartError(WAVE_CHART_PANEL_IDS[site].direction, "The wave-direction chart could not load. Check the chart specification and browser console.");
       }
     });
 
-    const leaders = WAVE_CHART_SITE_ORDER.map(site => {
-      const summary = perSite.get(site);
-      const index = summary.counts.indexOf(summary.maximum);
-      return {
-        site,
-        sector: WAVE_COMPASS_SECTORS[index],
-        percentage: (summary.maximum / summary.validCount * 100).toFixed(1)
-      };
+    const siteLeads = WAVE_CHART_SITE_ORDER.map(site => {
+      const leaders = perSite.get(site).leading;
+      const sectorText = leaders.map(row => row.Sector).join(" and ");
+      return site + " " + sectorText + " (" + leaders[0].Percentage.toFixed(1) + "%" +
+        (leaders.length > 1 ? " each" : "") + ")";
     });
-    document.getElementById("chart06-insight").textContent =
-      "The " + ({N: "north", NE: "northeast", E: "east", SE: "southeast", S: "south", SW: "southwest", W: "west", NW: "northwest"}[leaders[0].sector]) +
-      " sector was most frequent at " + leaders[0].site + " (" + leaders[0].percentage +
-      "%) and " + leaders[1].site + " (" + leaders[1].percentage + "%); the " +
-      ({N: "north", NE: "northeast", E: "east", SE: "southeast", S: "south", SW: "southwest", W: "west", NW: "northwest"}[leaders[2].sector]) +
-      " sector led at " + leaders[2].site + " (" + leaders[2].percentage + "%).";
+    document.getElementById("chart06-insight").textContent = "Most frequent sectors: " + siteLeads.join("; ") + ".";
   } catch (error) {
     console.error("Chart 06 wave-direction data could not be prepared:", error);
-    displayWaveError(targetIds, "The January direction data or wave-rose specification could not be loaded. Check the data path and browser console.");
+    displayWaveError(targetIds, "The January direction data or sector-bar specification could not be loaded. Check the data path and browser console.");
   }
 }
-
 function buildWaveCalendarRows(dailyRows) {
   verifyWaveChartSites(dailyRows, "daily-summary");
   if (dailyRows.length !== 93) throw new Error("The daily summary must contain 93 rows for January 2026.");
@@ -1142,7 +1201,7 @@ window.addEventListener("DOMContentLoaded", () => {
   initializeStateCountMap();
   initializeEventTimeline();
   initializeWaveCharts();
-  initializeChart06WaveRose();
+  initializeChart06WaveDirection();
   initializeChart07WaveCalendar();
   initializeChart08HeightPeriod();
   initializeChart09AgeParticipation();

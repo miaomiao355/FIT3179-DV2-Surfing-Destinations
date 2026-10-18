@@ -1,0 +1,184 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "Aligned horizontal comparison of January 2026 mean significant wave height at the three monitoring sites. Bars share a zero-based 0 to 2 metre scale.",
+  "width": "container",
+  "height": 170,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "padding": {
+    "left": 2,
+    "right": 26,
+    "top": 6,
+    "bottom": 2
+  },
+  "background": null,
+  "data": {
+    "values": []
+  },
+  "layer": [
+    {
+      "name": "shared-baseline-wave-height-bars",
+      "mark": {
+        "type": "bar",
+        "height": 22,
+        "cornerRadiusEnd": 3,
+        "cursor": "pointer"
+      },
+      "encoding": {
+        "y": {
+          "field": "Location",
+          "type": "nominal",
+          "sort": [
+            "Gold Coast",
+            "Palm Beach",
+            "Tweed Offshore"
+          ],
+          "axis": {
+            "title": null,
+            "labelFont": "Arial",
+            "labelFontSize": 11,
+            "labelColor": "#3f555d",
+            "labelLimit": 105,
+            "labelPadding": 9,
+            "domain": false,
+            "ticks": false
+          }
+        },
+        "x": {
+          "field": "Mean_Hs_m",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              2
+            ],
+            "nice": false,
+            "zero": true
+          },
+          "axis": {
+            "title": "Mean significant wave height (m)",
+            "titleFont": "Arial",
+            "titleFontSize": 10,
+            "titleColor": "#536970",
+            "titlePadding": 10,
+            "labelFont": "Arial",
+            "labelFontSize": 9,
+            "labelColor": "#667a80",
+            "format": ".1f",
+            "values": [
+              0,
+              0.5,
+              1,
+              1.5,
+              2
+            ],
+            "grid": true,
+            "gridColor": "#e6ecec",
+            "gridWidth": 1,
+            "domain": false,
+            "tickColor": "#bdcdcf",
+            "tickSize": 3
+          }
+        },
+        "color": {
+          "field": "Location",
+          "type": "nominal",
+          "scale": {
+            "domain": [
+              "Gold Coast",
+              "Palm Beach",
+              "Tweed Offshore"
+            ],
+            "range": [
+              "#0072b2",
+              "#0072b2",
+              "#d55e00"
+            ]
+          },
+          "legend": null
+        },
+        "tooltip": [
+          {
+            "field": "Location",
+            "type": "nominal",
+            "title": "Monitoring site"
+          },
+          {
+            "field": "Mean_Hs_m",
+            "type": "quantitative",
+            "title": "January mean Hs (m)",
+            "format": ".3f"
+          },
+          {
+            "field": "Mean_Tp_s",
+            "type": "quantitative",
+            "title": "Mean peak period (s)",
+            "format": ".2f"
+          },
+          {
+            "field": "Valid_Hs_records",
+            "type": "quantitative",
+            "title": "Valid Hs observations",
+            "format": "d"
+          },
+          {
+            "field": "Observation_period",
+            "type": "nominal",
+            "title": "Observation period"
+          }
+        ]
+      }
+    },
+    {
+      "name": "exact-three-decimal-wave-height-labels",
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 7,
+        "font": "Arial",
+        "fontSize": 10,
+        "fontWeight": 700,
+        "color": "#2c454c",
+        "clip": false
+      },
+      "encoding": {
+        "y": {
+          "field": "Location",
+          "type": "nominal",
+          "sort": [
+            "Gold Coast",
+            "Palm Beach",
+            "Tweed Offshore"
+          ],
+          "axis": null
+        },
+        "x": {
+          "field": "Mean_Hs_m",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              2
+            ],
+            "nice": false,
+            "zero": true
+          },
+          "axis": null
+        },
+        "text": {
+          "field": "Mean_Hs_m",
+          "type": "quantitative",
+          "format": ".3f"
+        }
+      }
+    }
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

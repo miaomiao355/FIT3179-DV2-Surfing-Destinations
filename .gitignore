@@ -1,0 +1,8 @@
+.chart-test-runtime/
+.chart04-qa-preview.html
+.chart04-source-audit/edge-profile*/
+.chart04-source-audit/*.js
+.chart04-source-audit/*.log
+.chart04-source-audit/*.html
+.chart04-source-audit/*.css
+.chart04-source-audit/qld-place-names.csv

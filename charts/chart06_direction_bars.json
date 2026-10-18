@@ -1,0 +1,146 @@
+{
+  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
+  "description": "January 2026 peak-wave direction readings grouped into eight compass sectors. Horizontal bars show each sector's share of valid readings; the dominant sector is highlighted.",
+  "data": {
+    "values": []
+  },
+  "width": "container",
+  "height": 250,
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
+  },
+  "padding": {
+    "left": 4,
+    "right": 24,
+    "top": 6,
+    "bottom": 4
+  },
+  "layer": [
+    {
+      "mark": {
+        "type": "bar",
+        "height": 17,
+        "cornerRadiusEnd": 3
+      }
+    },
+    {
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "dx": 5,
+        "font": "Arial",
+        "fontSize": 9,
+        "fontWeight": 700,
+        "color": "#314d55"
+      },
+      "encoding": {
+        "text": {
+          "field": "PercentLabel",
+          "type": "nominal"
+        }
+      }
+    }
+  ],
+  "encoding": {
+    "x": {
+      "field": "Percentage",
+      "type": "quantitative",
+      "scale": {
+        "domain": [
+          0,
+          45
+        ],
+        "nice": false
+      },
+      "axis": {
+        "title": "Valid readings (%)",
+        "values": [
+          0,
+          10,
+          20,
+          30,
+          40
+        ],
+        "labelExpr": "format(datum.value, '.0f') + '%'",
+        "labelFont": "Arial",
+        "labelFontSize": 9,
+        "labelColor": "#52616a",
+        "titleFont": "Arial",
+        "titleFontSize": 10,
+        "titleColor": "#344f57",
+        "titlePadding": 7,
+        "grid": true,
+        "gridColor": "#e6edef",
+        "tickSize": 3
+      }
+    },
+    "y": {
+      "field": "Sector",
+      "type": "ordinal",
+      "sort": [
+        "N",
+        "NE",
+        "E",
+        "SE",
+        "S",
+        "SW",
+        "W",
+        "NW"
+      ],
+      "axis": {
+        "title": null,
+        "labelFont": "Arial",
+        "labelFontSize": 10,
+        "labelColor": "#344f57",
+        "labelPadding": 4,
+        "ticks": false,
+        "domain": false
+      }
+    },
+    "color": {
+      "condition": {
+        "test": "datum.IsDominant === true",
+        "value": "#d97721"
+      },
+      "value": "#176b76",
+      "legend": null
+    },
+    "tooltip": [
+      {
+        "field": "Location",
+        "type": "nominal",
+        "title": "Monitoring site"
+      },
+      {
+        "field": "Sector",
+        "type": "nominal",
+        "title": "Direction sector"
+      },
+      {
+        "field": "Count",
+        "type": "quantitative",
+        "title": "Valid readings",
+        "format": ",d"
+      },
+      {
+        "field": "Percentage",
+        "type": "quantitative",
+        "title": "Share of valid readings (%)",
+        "format": ".1f"
+      },
+      {
+        "field": "ValidCount",
+        "type": "quantitative",
+        "title": "Total valid direction readings",
+        "format": ",d"
+      }
+    ]
+  },
+  "config": {
+    "view": {
+      "stroke": null
+    }
+  }
+}

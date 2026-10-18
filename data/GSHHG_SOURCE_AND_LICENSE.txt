@@ -1,21 +1,78 @@
-Chart 04 Geographic Land Context — GSHHG / GSHHS
+Chart 04 regional basemap and source record
+============================================
 
-The local file gold_coast_tweed_land.geojson was exported from the GSHHG/GSHHS
-intermediate-resolution coastline database supplied with the Basemap Python
-package, clipped to the geographic extent 151.00°E–155.00°E,
-30.00°S–26.00°S (WGS84 latitude/longitude). Polygon geometry was exported
-without tracing, manual redrawing, or movement of measurement stations.
+Map design
+----------
+Chart 04 uses a locally clipped regional excerpt of official shoreline and
+state-boundary data. The previous GSHHG polygon export is not used in the
+redesigned map: inspection found three Polygon fragments with rectangular cut
+edges, too sparse to describe this coastal region clearly. The old GeoJSON is
+retained for provenance only.
 
+Regional extent and coordinates
+-------------------------------
+The chart basemap covers 152.96–153.98°E and 27.86–28.38°S. Source queries and
+local GeoJSON use geographic positions in [longitude, latitude] order and are
+rendered in a Mercator projection centred on the Gold Coast–Tweed region. Data
+was queried and clipped on 19 October 2026. The ABS state boundary is a
+generalised cartographic representation, not a legal survey boundary.
+
+Coastline
+---------
+Queensland Government, Coastline – Queensland, Creative Commons Attribution
+4.0. The topographic polyline layer includes the Queensland coast and offshore
+islands. Regional service layer 16:
+https://spatial-gis.information.qld.gov.au/arcgis/rest/services/PlanningCadastre/LandParcelPropertyFramework/MapServer/16
+Dataset and license:
+https://www.data.qld.gov.au/dataset/coastline-queensland
+
+NSW Government, NSW Foundation Spatial Data Framework – Water – NSW Coastline,
+Creative Commons Attribution. The mapped feature is shoreline linework; its
+published positional accuracy varies by source and section. Regional service
+layer 4:
+https://portal.spatial.nsw.gov.au/arcgis/rest/services/NSW_Water_Theme/MapServer/4
+Dataset and license:
+https://data.nsw.gov.au/data/dataset/1-40762316d10e43f081ddf641f7f6e687
+
+State areas and border
+----------------------
+Australian Bureau of Statistics (ABS), Australian Statistical Geography
+Standard (ASGS), Edition 4 (2026), State and Territory Generalised (STE_GEN)
+layer. Queensland and New South Wales polygons were locally clipped to the
+chart extent; their shared border is derived from the published polygon edges.
+The service publishes the boundary as a cartographic representation, not for
+legal use, under Creative Commons Attribution 4.0:
+https://geo.abs.gov.au/arcgis/rest/services/ASGS2026/STE/MapServer/1
+https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-4-july-2026-june-2031/access-and-downloads/geospatial-web-services
+
+Place labels
+------------
+“Gold Coast” uses the approved place point in the Queensland Place Names
+Gazetteer (Creative Commons Attribution 4.0):
+https://www.data.qld.gov.au/dataset/place-names-gazetteer-queensland-txt-file
+“Tweed Heads” uses the ABS ASGS Edition 4 (2026) Suburbs and Localities point
+layer (SAL_PT):
+https://geo.abs.gov.au/arcgis/rest/services/ASGS2026/SAL/MapServer/2
+
+Australia locator
+-----------------
+The small Australia outline in the inset is from Natural Earth 1:110m, also
+used in the FIT3179 Week 8 studio. Natural Earth vector data is public domain:
+https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-land/
+
+Previous GSHHG excerpt (not displayed)
+--------------------------------------
+The unused file gold_coast_tweed_land.geojson was exported from the GSHHG/GSHHS
+intermediate-resolution coastline database supplied with Basemap. Its original
+WGS84 export extent was 151–155°E and 30–26°S. No shoreline vertices or wave
+station coordinates were moved. GSHHG is distributed under the GNU Lesser
+General Public License v3; the license text remains in GSHHG_LICENSE_LGPL-3.txt.
 Source: Wessel, P. and Smith, W. H. F. (1996), A global, self-consistent,
 hierarchical, high-resolution shoreline database, Journal of Geophysical
 Research, 101(B4), 8741–8743. doi:10.1029/96JB00104
-GSHHG information and distribution: https://www.ngdc.noaa.gov/mgg/shorelines/shorelines.html
+https://www.ngdc.noaa.gov/mgg/shorelines/shorelines.html
 
-GSHHG is distributed under the GNU Lesser General Public License.
-The unmodified GNU LGPL v3 license text is provided alongside this notice as
-GSHHG_LICENSE_LGPL-3.txt. Derived geographic boundary data retain applicable
-GSHHG licensing obligations.
-
-This regional map is a general geographic context layer. It does not locate
-specific surf breaks or prove the precise buoy position at all times.
-The station coordinates are separately attributed to the Queensland Government.
+Monitoring site reference coordinates remain in data/wave_station_locations.json
+and are attributed to the Queensland Government monitoring-site pages linked
+in Chart 04. These reference points do not claim a buoy remained at precisely
+the same location throughout January.
