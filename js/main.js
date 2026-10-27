@@ -492,9 +492,8 @@ function renderWaveInsights(summaries, boxStats) {
   const highestMean = summaries.reduce((best, row) => row.Mean_Hs_m > best.Mean_Hs_m ? row : best);
   const lowestMean = summaries.reduce((best, row) => row.Mean_Hs_m < best.Mean_Hs_m ? row : best);
   document.getElementById("chart04-insight").textContent =
-    highestMean.Location + " was highest at " + format(highestMean.Mean_Hs_m) +
-    " m, " + format(highestMean.Mean_Hs_m - lowestMean.Mean_Hs_m) +
-    " m above " + lowestMean.Location + ".";
+    highestMean.Location + " averaged " + format(highestMean.Mean_Hs_m - lowestMean.Mean_Hs_m) +
+    " m higher than " + lowestMean.Location + ".";
 
   const highestMedian = boxStats.reduce((best, row) => row.median > best.median ? row : best);
   const widestSpread = boxStats.reduce((best, row) => row.iqr > best.iqr ? row : best);
@@ -574,15 +573,21 @@ async function initializeWaveCharts() {
       const maximumArea = 600;
       symbolLayer.encoding.size.scale.range = [0, maximumArea];
       setWaveSymbolLegend(maximumArea);
-      let compact = mapElement.clientWidth < 500;
+      let lastWidth = Math.round(mapElement.clientWidth);
+      let compact = lastWidth < 500;
       chart04.height = compact ? 300 : 400;
-      let mapView = (await window.vegaEmbed(mapElement, chart04, {actions: false, renderer: "svg"})).view;
-      // A shorter viewport keeps the offshore station visible on narrow screens.
+      const mapView = (await window.vegaEmbed(mapElement, chart04, {actions: false, renderer: "svg"})).view;
+      // Resize the projection when the panel width changes, including within the same breakpoint.
       const resizeObserver = new ResizeObserver(entries => {
-        const nextCompact = entries[0].contentRect.width < 500;
-        if (nextCompact === compact) return;
-        compact = nextCompact;
-        mapView.height(compact ? 300 : 400).resize().runAsync().catch(error =>
+        const width = Math.round(entries[0].contentRect.width);
+        if (width <= 0 || width === lastWidth) return;
+        lastWidth = width;
+        const nextCompact = width < 500;
+        if (nextCompact !== compact) {
+          compact = nextCompact;
+          mapView.height(compact ? 300 : 400);
+        }
+        mapView.resize().runAsync().catch(error =>
           console.error("Chart 04 resize failed:", error));
       });
       resizeObserver.observe(mapElement);
@@ -781,18 +786,6 @@ async function initializeChart06WaveDirection() {
       }
     });
 
-    const siteLeads = WAVE_CHART_SITE_ORDER.map(site => {
-      const leaders = perSite.get(site).leading;
-      const sectorText = leaders.map(row => row.Sector).join(" and ");
-      return site + " " + sectorText + " (" + leaders[0].Percentage.toFixed(1) + "%" +
-        (leaders.length > 1 ? " each" : "") + ")";
-    });
-    const sharedLeader = perSite.get(WAVE_CHART_SITE_ORDER[0]).leading;
-    const sameSingleLeader = sharedLeader.length === 1 && WAVE_CHART_SITE_ORDER.every(site =>
-      perSite.get(site).leading.length === 1 && perSite.get(site).leading[0].Sector === sharedLeader[0].Sector);
-    document.getElementById("chart06-insight").textContent = sameSingleLeader
-      ? sharedLeader[0].Sector + " is the most common sector at all three sites: " + WAVE_CHART_SITE_ORDER.map(site => site + " " + perSite.get(site).leading[0].Percentage.toFixed(1) + "%").join("; ") + "."
-      : "Most frequent sectors: " + siteLeads.join("; ") + ".";
   } catch (error) {
     console.error("Chart 06 wave-direction data could not be prepared:", error);
     displayWaveError(targetIds, "The January direction data or wave rose specification could not be loaded. Check the data path and browser console.");
@@ -1019,7 +1012,7 @@ async function initializeChart08HeightPeriod() {
       readWaveChartCsv(WAVE_DATA_CSV, "the January wave observations"),
       readWaveChartSpec("charts/chart08_height_period_heatmap.json", "Chart 08")
     ]);
-    const {perSite, commonMaxCount, totalPairs} = buildWaveHeightPeriodBins(observations);
+    const {perSite, commonMaxCount} = buildWaveHeightPeriodBins(observations);
     if (!template.encoding || !template.encoding.color || !template.encoding.color.scale) {
       throw new Error("Chart 08 must define a shared quantitative color scale in its top-level encoding.");
     }
@@ -1045,16 +1038,6 @@ async function initializeChart08HeightPeriod() {
       }
     });
 
-    const modes = WAVE_CHART_SITE_ORDER.map(site => perSite.get(site).mode);
-    const sameHeightRange = modes.every(mode => mode.HsStart === modes[0].HsStart);
-    document.getElementById("chart08-insight").textContent = sameHeightRange
-      ? WAVE_CHART_SITE_ORDER[0] + " and " + WAVE_CHART_SITE_ORDER[1] +
-        " most often paired Hs " + modes[0].HsRange + " with Tp " + modes[0].TpRange +
-        "; " + WAVE_CHART_SITE_ORDER[2] + " had the same most frequent Hs range but a " +
-        modes[2].TpRange + " Tp range. The panels show " + totalPairs.toLocaleString("en-AU") +
-        " valid pairs in total."
-      : "The most frequent Hs–Tp bins differed across sites; the panels show " +
-        totalPairs.toLocaleString("en-AU") + " valid pairs in total.";
   } catch (error) {
     console.error("Chart 08 paired wave data could not be prepared:", error);
     displayWaveError(targetIds, "The January paired Hs–Tp data or heatmap specification could not be loaded. Check the data path and browser console.");

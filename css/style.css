@@ -418,3 +418,11 @@ h1 span { display: block; max-width: 1050px; }
 @media (min-width: 1200px) {
   .participation-pair .participation-chart-section[aria-labelledby="chart12-heading"] .participation-share strong { font-size: clamp(2.4rem, 3.5vw, 3.5rem); }
 }
+
+/* Keep the area key with the map without covering geographic labels. */
+.wave-symbol-legend { position: static; display: flex; flex-direction: row; align-items: center; flex-wrap: wrap; gap: 8px 16px; padding: 8px 12px; border: 0; border-top: 1px solid #d5dfdc; background: #f1f2ed; }
+.wave-symbol-legend__title { max-width: 140px; }
+.wave-symbol-legend__items { gap: 14px; }
+.wave-site-panel { padding: 18px; }
+.wave-site-comparison { height: 200px; }
+@media (max-width: 420px) { .wave-symbol-legend { padding: 8px; } .wave-symbol-legend__items { gap: 9px; } }

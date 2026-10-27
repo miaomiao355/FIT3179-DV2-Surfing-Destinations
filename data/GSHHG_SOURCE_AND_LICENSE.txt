@@ -94,3 +94,12 @@ Monitoring site reference coordinates remain in data/wave_station_locations.json
 and are attributed to the Queensland Government monitoring-site pages linked
 in Chart 04. These reference points do not claim a buoy remained at precisely
 the same location throughout January.
+
+Station reference and wave observation links
+--------------------------------------------
+Gold Coast station: https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/gold-coast
+Palm Beach station: https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/palm-beach
+Tweed Offshore station: https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/tweed-offshore
+Wave observations: https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast
+https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach
+https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore

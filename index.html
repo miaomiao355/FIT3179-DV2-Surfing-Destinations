@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="An exploration of Australia's surfing destinations, wave conditions, competitions and participation.">
     <title>Australia: A Nation Built Around the Waves</title>
-    <link rel="stylesheet" href="css/style.css?v=circuit-vertical-20261027">
+    <link rel="stylesheet" href="css/style.css?v=editorial-final-20261027">
   </head>
   <body>
     <header class="hero">
@@ -21,8 +21,8 @@
         <div class="story-section__inner content-width">
         <div class="story-heading story01-intro">
           <p class="section-eyebrow">Chapter 01 / The national surfing circuit</p>
-          <h2 id="destinations-heading" class="chart01-heading">Where and when do national surfing competitions take place?</h2>
-          <p class="chart01-deck">Follow the venues, state distribution and dates in Surfing Australia’s 2026 national calendar.</p>
+          <h2 id="destinations-heading" class="chart01-heading">Where does Australia's national surfing circuit travel?</h2>
+          <p class="chart01-deck">Explore venues and dates in the 2026 national calendar.</p>
         </div>
         <div class="chart-stack">
           <figure class="event-map-figure">
@@ -54,26 +54,24 @@
             </div>
             <figcaption class="event-map-caption">
               <p class="chart-insight">Six of seven mapped venues lie along eastern or southern coasts.</p>
-              <p class="event-map-note">The online event and Tweed Coast event remain unplotted because their supplied locations are not precise coordinates.</p>
+              <p class="event-map-note">The online event and broad Tweed Coast venue lack precise map points.</p>
               <p class="event-map-source">Sources: <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/" target="_blank" rel="noopener noreferrer">Surfing Australia national calendar</a> · <a href="https://github.com/FIT3179/Vega-Lite/tree/main/2_symbol_map" target="_blank" rel="noopener noreferrer">FIT3179 Week 8 map data</a> · <a href="https://github.com/anthwri/GeoJson-Data/blob/master/australian-states.json" target="_blank" rel="noopener noreferrer">Australian state boundary GeoJSON</a>.</p>
             </figcaption>
           </figure>
           <section class="event-chart-section" aria-labelledby="chart02-heading">
             <p class="section-eyebrow">02 · State distribution</p>
             <h3 id="chart02-heading" class="event-chart-heading">Where do the state-assigned events take place?</h3>
-            <p class="event-chart-deck">Each shade shows a state's count among the eight state-assigned entries in the 2026 calendar. These totals describe this calendar, not surfing participation rates.</p>
+            <p class="event-chart-deck">Counts cover eight state-assigned events, not participation rates.</p>
             <figure class="event-chart-figure event-chart-figure--state">
               <div id="chart2" class="state-count-map" role="img" aria-label="Choropleth of 2026 Surfing Australia event counts by state and territory. Hover a region for its count; use the comparison buttons to highlight a state."></div>
               <figcaption class="event-chart-caption chart02-panel">
-                <p class="chart02-panel__eyebrow">Key takeaway</p>
-                <h4>NSW leads the national circuit.</h4>
                 <p id="chart02-insight" class="chart-insight" aria-live="polite">Loading state counts…</p>
                 <div class="chart02-comparison" aria-labelledby="chart02-comparison-heading">
                   <h5 id="chart02-comparison-heading">State event count · 2026</h5>
                   <div id="chart02-bars" class="chart02-bars" aria-label="Select a state to highlight it on the map"></div>
                   <p id="chart02-zero-note" class="chart02-zero-note"></p>
                 </div>
-                <p class="event-chart-note">Tweed Coast is counted under NSW despite lacking a precise map point. The online entry has no assigned state and is excluded from the map.</p>
+                <p class="event-chart-note">Tweed Coast counts under NSW; the online event has no state.</p>
                 <p class="event-chart-source">State boundaries: <a href="https://github.com/anthwri/GeoJson-Data/blob/master/australian-states.json" target="_blank" rel="noopener noreferrer">Australian state boundary GeoJSON</a>. Event source: <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/" target="_blank" rel="noopener noreferrer">Surfing Australia 2026 national calendar</a>.</p>
               </figcaption>
             </figure>
@@ -81,12 +79,12 @@
           <section class="event-chart-section chart03-section" aria-labelledby="chart03-heading">
             <p class="section-eyebrow">03 / Event schedule and duration</p>
             <h3 id="chart03-heading" class="event-chart-heading">When do national surfing events take place?</h3>
-            <p class="event-chart-deck">The nine calendar entries are arranged by month. Each interval spans its actual days; the January online event appears in plum.</p>
+            <p class="event-chart-deck">Nine 2026 entries include one January online event.</p>
             <figure class="event-chart-figure">
               <div id="chart3" class="event-timeline" role="img" aria-label="Calendar of nine 2026 surfing events, arranged in month rows on a shared day-of-month scale. Hover intervals for venue, delivery and full dates. The Junior Surfing Titles continues from November into December."></div>
               <figcaption class="event-chart-caption">
-                <p class="chart-insight">The Junior Surfing Titles runs across November and December; months without listed events remain visible.</p>
-                <p class="event-chart-note">Rows share a 1–31 day scale; events appear only on valid calendar dates. The cross-month event appears twice but counts once.</p>
+
+                <p class="event-chart-note">Rows share days 1–31; a cross-month event counts once.</p>
                 <p class="event-chart-source">Dates and event details: <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/" target="_blank" rel="noopener noreferrer">Surfing Australia 2026 national calendar</a>.</p>
               </figcaption>
             </figure>
@@ -100,13 +98,13 @@
         <div class="story-heading">
           <p class="section-eyebrow">Chapter 02 / Australia’s wave conditions</p>
           <h2 id="waves-heading">What are the waves like around the Gold Coast–Tweed region?</h2>
-          <p class="wave-story-intro">Wave buoys record conditions at three nearby monitoring sites. Significant wave height (Hs) is the average height of the highest third of waves in a recording interval; it describes wave size, not surfing quality.</p>
+          <p class="wave-story-intro">Significant wave height (Hs) averages the highest third of waves in each reading.</p>
         </div>
         <div class="chart-stack wave-chart-stack">
           <section class="wave-chart-section" aria-labelledby="chart04-heading">
             <p class="section-eyebrow">04 · Mean wave height by site</p>
             <h3 id="chart04-heading" class="wave-chart-heading">Where were waves taller on average?</h3>
-            <p class="wave-chart-deck">The map locates the three monitoring sites. Circle area and aligned bars show their mean significant wave height in January 2026.</p>
+            <p class="wave-chart-deck">January 2026 means at three monitoring sites.</p>
             <figure class="wave-chart-figure">
               <div class="wave-site-dashboard">
                 <div class="wave-site-map-panel">
@@ -129,12 +127,12 @@
                   <p class="wave-site-panel__measure">Shared zero-based scale · 0–2 m</p>
                   <div id="chart4-compare" class="wave-site-comparison" role="img" aria-label="Aligned horizontal bars show the exact January 2026 mean significant wave height at each monitoring site, all on a shared zero to two metre scale. Hover a bar for wave-period and observation details."></div>
                   <p id="chart04-insight" class="wave-site-insight" aria-live="polite">Calculating the January site averages…</p>
-                  <p class="wave-site-panel__note">Means are shown to three decimal places.</p>
+
                 </aside>
               </div>
               <figcaption class="wave-chart-caption">
-                <p class="wave-chart-note">Station circles use the published reference coordinates; they do not imply a buoy stayed at one exact position throughout January.</p>
-                <p class="wave-chart-source">Wave observations: Queensland Government <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>. Station coordinates: official <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a> monitoring pages. Place names: <a href="https://www.data.qld.gov.au/dataset/place-names-gazetteer-queensland-txt-file" target="_blank" rel="noopener noreferrer">Queensland Place Names Gazetteer</a> and <a href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-4-july-2026-june-2031/access-and-downloads/geospatial-web-services" target="_blank" rel="noopener noreferrer">ABS localities</a>. Map geography: simplified mainland and state boundary from <a href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-4-july-2026-june-2031/access-and-downloads/geospatial-web-services" target="_blank" rel="noopener noreferrer">ABS ASGS Edition 4 (2026)</a>. Source details and licenses: <a href="data/GSHHG_SOURCE_AND_LICENSE.txt">geographic data notice</a>.</p>
+                <p class="wave-chart-note">Markers use reference coordinates; buoys may drift.</p>
+                <p class="wave-chart-source">Wave observations: Queensland Government <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>. Map sources, station coordinates and licences: <a href="data/GSHHG_SOURCE_AND_LICENSE.txt">geographic data notice</a>.</p>
               </figcaption>
             </figure>
           </section>
@@ -143,12 +141,12 @@
           <section class="wave-chart-section" aria-labelledby="chart05-heading">
             <p class="section-eyebrow">05 · Wave-height distribution</p>
             <h3 id="chart05-heading" class="wave-chart-heading">How much did wave heights vary?</h3>
-            <p class="wave-chart-deck">Each box summarizes valid half-hourly Hs readings from 1–31 January 2026, rather than just the site average.</p>
+            <p class="wave-chart-deck">Valid half-hourly Hs readings, January 2026.</p>
             <figure class="wave-chart-figure">
               <div id="chart5" class="wave-distribution" role="img" aria-label="Box-and-whisker plots comparing all valid January 2026 significant wave-height measurements at Gold Coast, Palm Beach and Tweed Offshore."></div>
               <figcaption class="wave-chart-caption">
                 <p id="chart05-insight" class="wave-chart-insight" aria-live="polite">Calculating the January wave-height distributions…</p>
-                <p class="wave-chart-note">The middle line is the median; the box covers the middle half of readings. Whiskers extend to the most extreme readings within 1.5 × the interquartile range (IQR); values beyond them appear as points.</p>
+                <p class="wave-chart-note">The middle line is the median; whiskers use the 1.5 × IQR rule.</p>
                 <p class="wave-chart-source">Source: Queensland Government Coastal Data System, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>.</p>
               </figcaption>
             </figure>
@@ -156,7 +154,7 @@
           <section class="wave-chart-section wave-chart-section--direction" aria-labelledby="chart06-heading">
             <p class="section-eyebrow">06 · Wave direction</p>
             <h3 id="chart06-heading" class="wave-chart-heading">Which compass sectors are most common?</h3>
-            <p class="wave-chart-deck">Each rose groups the directions that peak waves come from into eight compass sectors. Sector area represents the share of valid readings on a shared 0–90% scale.</p>
+            <p class="wave-chart-deck">January 2026 peak-wave directions at each site.</p>
             <figure class="wave-chart-figure">
               <div class="wave-small-multiple-grid wave-direction-grid">
                 <article class="wave-small-panel">
@@ -176,8 +174,8 @@
                 </article>
               </div>
               <figcaption class="wave-chart-caption">
-                <p id="chart06-insight" class="wave-chart-insight" aria-live="polite">Calculating the most frequent compass sectors…</p>
-                <p class="wave-chart-note">Each sector spans 45°. Radius uses a square-root scale so filled area is proportional to frequency; rings mark 30%, 60% and 90%. Bearings follow the Queensland Government’s <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/how-to-read-the-graphs" target="_blank" rel="noopener noreferrer">wave-graph guide</a>: 0° is north and 90° is east. Its <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-glossary" target="_blank" rel="noopener noreferrer">glossary</a> defines peak-wave direction as where waves come from. Only valid readings are included.</p>
+
+                <p class="wave-chart-note">Area shows valid readings from each 45° sector; rings mark 30%, 60% and 90%. Directions follow the Queensland <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/how-to-read-the-graphs" target="_blank" rel="noopener noreferrer">wave guide</a> and <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-glossary" target="_blank" rel="noopener noreferrer">glossary</a>.</p>
                 <p class="wave-chart-source">Source: Queensland Government Coastal Data System, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>.</p>
               </figcaption>
             </figure>
@@ -195,7 +193,7 @@
           <section class="wave-chart-section wave-chart-section--calendar" aria-labelledby="chart07-heading">
             <p class="section-eyebrow">07 · Daily wave height</p>
             <h3 id="chart07-heading" class="wave-chart-heading">When did daily wave heights rise and fall?</h3>
-            <p class="wave-chart-deck">Each Monday-first January 2026 calendar cell shows a day’s mean significant wave height (Hs). All panels share the same metre scale so daily conditions can be compared across stations.</p>
+            <p class="wave-chart-deck">Daily mean Hs in January 2026; all sites share one scale.</p>
             <figure class="wave-chart-figure">
               <div class="wave-small-multiple-grid wave-calendar-grid">
                 <article class="wave-small-panel">
@@ -219,7 +217,7 @@
               </div>
               <figcaption class="wave-chart-caption">
                 <p id="chart07-insight" class="wave-chart-insight" aria-live="polite">Calculating the daily highs and lows…</p>
-                <p class="wave-chart-note">18 January is marked in grey as “No data” for all three stations because no valid Hs readings were recorded that day. Valid daily means progress from pale to dark teal.</p>
+                <p class="wave-chart-note">Grey indicates missing data, not zero; 18 January is missing at all sites.</p>
                 <p class="wave-chart-source">Daily summaries derived from Queensland Government Coastal Data System observations: <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>.</p>
               </figcaption>
             </figure>
@@ -228,7 +226,7 @@
           <section class="wave-chart-section wave-chart-section--pairs" aria-labelledby="chart08-heading">
             <p class="section-eyebrow">08 · Height and period together</p>
             <h3 id="chart08-heading" class="wave-chart-heading">Which height–period combinations occur most often?</h3>
-            <p class="wave-chart-deck">Each cell counts January 2026 half-hourly records with both a valid significant wave height (Hs) and peak period (Tp). Shared bins are 0.25 m wide by 2 s high; the count colour scale is common to every station.</p>
+            <p class="wave-chart-deck">January paired Hs and peak period, in 0.25 m by 2 s bins.</p>
             <figure class="wave-chart-figure">
               <div class="wave-small-multiple-grid wave-pair-grid">
                 <article class="wave-small-panel">
@@ -254,8 +252,8 @@
                 <span id="chart08-count-max" class="wave-scale-key__label">Highest bin</span>
               </div>
               <figcaption class="wave-chart-caption">
-                <p id="chart08-insight" class="wave-chart-insight" aria-live="polite">Calculating each station’s most frequent Hs–Tp range…</p>
-                <p class="wave-chart-note">Tooltips report the exact Hs range, Tp range and number of paired observations in a bin. Empty cells indicate no paired records in that range.</p>
+
+                <p class="wave-chart-note">Blank cells have no paired observations.</p>
                 <p class="wave-chart-source">Source: Queensland Government Coastal Data System, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>.</p>
               </figcaption>
             </figure>
@@ -269,14 +267,14 @@
         <div class="story-heading">
           <p class="section-eyebrow">Chapter 03 / Who surfs in Australia?</p>
           <h2 id="participation-heading">Who participates in surfing, and how has participation changed?</h2>
-          <p class="participation-intro">AusPlay estimates show how surfing participation varies across the age groups in its adult table, differs by sex, and is split between overall and organised activity.</p>
+          <p class="participation-intro">AusPlay estimates compare participation across groups and activities.</p>
         </div>
         <div class="participation-stack">
           <div class="participation-comparison-grid">
           <section class="participation-chart-section" aria-labelledby="chart09-heading">
             <p class="section-eyebrow">09 · Age and participation</p>
             <h3 class="participation-chart-heading" id="chart09-heading">Which age groups have the highest surfing participation?</h3>
-            <p class="participation-chart-deck">In 2025, the highest listed rate was among 15–17-year-olds; the rate was lowest for people aged 65 and over.</p>
+            <p class="participation-chart-deck">2025 rates by age group.</p>
             <figure class="participation-figure">
               <div class="participation-viz participation-viz--ages">
                 <div class="participation-plot-label" aria-hidden="true">Age group</div>
@@ -284,7 +282,7 @@
               </div>
               <figcaption class="participation-caption">
                 <p class="participation-insight" id="chart09-insight" aria-live="polite">Loading age-group participation rates…</p>
-                <p class="participation-note">These are rates within each age group, not participant counts. AusPlay’s Adults table includes ages 15–17; that source classification is retained here.</p>
+                <p class="participation-note">Rates are within age groups. AusPlay Adults includes ages 15–17.</p>
                 <p class="participation-source">Source: Australian Sports Commission, <a href="https://www.ausport.gov.au/clearinghouse/research/ausplay/results/data-tables" target="_blank" rel="noopener noreferrer">AusPlay 2025 data tables</a>.</p>
               </figcaption>
             </figure>
@@ -293,7 +291,7 @@
           <section class="participation-chart-section" aria-labelledby="chart10-heading">
             <p class="section-eyebrow">10 · Comparing participation rates</p>
             <h3 class="participation-chart-heading" id="chart10-heading">How do male and female rates compare?</h3>
-            <p class="participation-chart-deck">Male participation rates were higher in both AusPlay population groups in 2025.</p>
+            <p class="participation-chart-deck">2025 rates within each population.</p>
             <figure class="participation-figure">
               <div class="participation-viz participation-viz--butterfly">
                 <div class="participation-sex-labels" aria-hidden="true"><span>Female</span><span>Male</span></div>
@@ -301,7 +299,7 @@
               </div>
               <figcaption class="participation-caption">
                 <p class="participation-insight" id="chart10-insight" aria-live="polite">Loading male and female participation rates…</p>
-                <p class="participation-note">Each percentage is a rate within its corresponding population. Adult and child rates use different population denominators, and male and female rates should not be added. “Adults” follows AusPlay’s table label, which includes ages 15–17.</p>
+                <p class="participation-note">Rates have different denominators and cannot be added; Adults includes ages 15–17.</p>
                 <p class="participation-source">Source: Australian Sports Commission, <a href="https://www.ausport.gov.au/clearinghouse/research/ausplay/results/data-tables" target="_blank" rel="noopener noreferrer">AusPlay 2025 data tables</a>.</p>
               </figcaption>
             </figure>
@@ -312,12 +310,12 @@
           <section class="participation-chart-section" aria-labelledby="chart11-heading">
             <p class="section-eyebrow">11 · Year-on-year change</p>
             <h3 class="participation-chart-heading" id="chart11-heading">How did participant estimates change from 2024 to 2025?</h3>
-            <p class="participation-chart-deck">Indexing each population to 100 in 2024 makes the two-year change readable despite the very different group sizes.</p>
+            <p class="participation-chart-deck">Each population is indexed to 100 in 2024.</p>
             <figure class="participation-figure">
               <div class="participation-viz participation-viz--slope" id="chart11" role="img" aria-label="Indexed slope chart connecting 2024 and 2025 estimated participant counts for Adults and Children, with 2024 set to 100 for each group"></div>
               <figcaption class="participation-caption">
                 <p class="participation-insight" id="chart11-insight" aria-live="polite">Loading the year-on-year comparison…</p>
-                <p class="participation-note">Both groups are indexed to 100 in 2024. Adults includes ages 15–17. These are changes in estimated counts, not participation rates; two years do not establish a long-term trend.</p>
+                <p class="participation-note">Counts, not rates; two years do not establish a trend. Adults includes ages 15–17.</p>
                 <p class="participation-source">Source: Australian Sports Commission, <a href="https://www.ausport.gov.au/clearinghouse/research/ausplay/results/data-tables" target="_blank" rel="noopener noreferrer">AusPlay 2024–25 data tables</a>.</p>
               </figcaption>
             </figure>
@@ -326,7 +324,7 @@
           <section class="participation-chart-section" aria-labelledby="chart12-heading">
             <p class="section-eyebrow">12 · Organised participation</p>
             <h3 class="participation-chart-heading" id="chart12-heading">What share of adult surfing is organised?</h3>
-            <p class="participation-chart-deck">The organised participation estimate is compared with the total adult surfing participant estimate for 2025.</p>
+            <p class="participation-chart-deck">2025 estimated adult surfing participants.</p>
             <figure class="participation-figure">
               <div class="participation-waffle-layout">
                 <div class="participation-waffle-visual">
@@ -339,11 +337,11 @@
                 <aside class="participation-callout" aria-label="Organised participation takeaway">
                   <p class="participation-callout-label">2025 adult estimates</p>
                   <p class="participation-share"><strong id="chart12-share">≈14.2%</strong><span>of estimated adult surfing participants</span></p>
-                  <p class="participation-insight" id="chart12-insight">About one in seven adult participants took part in organised surfing.</p>
+
                 </aside>
               </div>
               <figcaption class="participation-caption">
-                <p class="participation-note">Each square represents about one percentage point; 14 filled cells round the calculated 14.16% share to a whole percentage point. The remainder is total adult participants minus organised participants.</p>
+                <p class="participation-note">Each square represents about 1%; 14 filled squares round the 14.16% share.</p>
                 <p class="participation-note" id="chart12-counts">Estimated participants: 44,381 organised out of 313,396 adults.</p>
                 <p class="participation-source">Source: Australian Sports Commission, <a href="https://www.ausport.gov.au/clearinghouse/research/ausplay/results/data-tables" target="_blank" rel="noopener noreferrer">AusPlay 2025 data tables</a>.</p>
               </figcaption>
@@ -357,12 +355,7 @@
       <section class="conclusion content-width" aria-labelledby="conclusion-heading">
         <p class="section-eyebrow">Conclusion / Australia’s surfing story</p>
         <h2 id="conclusion-heading">What Australia's Surfing Data Reveals</h2>
-        <div class="conclusion-insights">
-          <div><h3>National competitions</h3><p>Six of seven mapped venues lie along eastern or southern coasts.</p></div>
-          <div><h3>Wave conditions</h3><p>Tweed Offshore recorded the highest January mean wave height among the three sites.</p></div>
-          <div><h3>Participation</h3><p>Estimated adult participants rose while child estimates fell from 2024 to 2025.</p></div>
-        </div>
-        <p class="conclusion-limitation">These datasets provide focused snapshots, not nationwide coverage of every surfing beach.</p>
+        <p class="conclusion-limitation">These snapshots span competitions, waves and participation, not every Australian surfing beach.</p>
       </section>
     </main>
 
@@ -386,6 +379,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vega@5" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6" defer></script>
-    <script src="js/main.js?v=paired-grid-20261027" defer></script>
+    <script src="js/main.js?v=editorial-final-20261027" defer></script>
   </body>
 </html>

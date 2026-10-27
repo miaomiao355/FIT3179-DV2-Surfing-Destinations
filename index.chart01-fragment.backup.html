@@ -1,0 +1,143 @@
+
+<section class="story-section story01-redesign" aria-labelledby="destinations-heading">
+  <header class="story01-intro">
+    <p class="section-eyebrow">
+      STORY 01 / DESTINATIONS &amp; COMPETITIONS
+    </p>
+
+    <h2 id="destinations-heading" class="chart01-heading">
+      Where does Australia's national surfing circuit travel?
+    </h2>
+
+    <p class="chart01-deck">
+      Explore the verified venues of Australia's 2026
+      national surfing calendar and see where the
+      circuit is concentrated.
+    </p>
+  </header>
+
+  <div class="chart-stack">
+    <figure class="event-map-figure">
+
+      <div class="event-dashboard">
+
+        <div class="event-map-panel">
+          <div class="event-panel-topline">
+            <span class="event-panel-label">
+              2026 National Surfing Event Venues
+            </span>
+            <span class="event-panel-year">Australia</span>
+          </div>
+
+          <div id="chart1" class="event-map" role="img"
+            aria-label="Map of 2026 Australian national surfing event venues">
+          </div>
+
+          <div class="map-legend" aria-label="Map legend">
+            <span class="map-legend__item">
+              <i class="legend-dot" aria-hidden="true"></i>
+              Mapped venue
+            </span>
+            <span class="map-legend__item">
+              <i class="legend-dot legend-dot--hover" aria-hidden="true"></i>
+              Selected / hovered
+            </span>
+            <span id="map-boundary-note" class="map-boundary-note">
+              Loading boundaries…
+            </span>
+          </div>
+        </div>
+
+        <aside class="story01-editorial-note">
+          <p class="story01-note-label">
+            The geographic pattern
+          </p>
+
+          <div class="story01-big-number">
+            <strong>6</strong>
+            <span>/ <span id="mapped-event-count">—</span></span>
+            <small>mapped venues</small>
+          </div>
+
+          <h3>
+            Australia's national surfing circuit
+            follows the coast.
+          </h3>
+
+          <p class="story01-finding">
+            Six mapped venue references lie along the
+            east or south coast. Margaret River, in
+            Western Australia, is the western outlier.
+          </p>
+
+          <p class="story01-metric">
+            <strong id="mapped-state-count">—</strong>
+            states with mapped venues
+          </p>
+
+          <p class="story01-smallnote">
+            <span id="unmapped-event-count">—</span>
+            other calendar entries are not precisely mapped.
+          </p>
+        </aside>
+      </div>
+
+      <details class="story01-explore">
+        <summary>
+          <span>Want to explore individual venues?</span>
+          <span class="story01-explore-action">
+            Explore events +
+          </span>
+        </summary>
+
+        <div class="story01-explore-content">
+          <p id="event-filter-label" class="event-filter-label">
+            Explore mapped venues
+          </p>
+
+          <div id="event-state-filters" class="state-filters"
+            role="group"
+            aria-label="Filter event locations by state">
+          </div>
+
+          <div id="event-list" class="event-list"
+            aria-live="polite">
+          </div>
+
+          <p class="sidebar-help">
+            Select a venue to highlight it on the map.
+            Hover a marker for event details.
+          </p>
+        </div>
+      </details>
+
+      <figcaption class="event-map-caption">
+        <p>
+          Mapped points represent event venue or locality
+          references, not every surfing beach.
+        </p>
+        <p class="event-map-note">
+          The online event and Tweed Coast entry have
+          no precise mapped point.
+        </p>
+        <p class="event-map-source">
+          Sources:
+          <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/">
+            Surfing Australia
+          </a>
+          ·
+          <a href="https://github.com/FIT3179/Vega-Lite/tree/main/2_symbol_map">
+            FIT3179 map data
+          </a>
+          ·
+          <a href="https://github.com/anthwri/GeoJson-Data/blob/master/australian-states.json">
+            Australian state boundaries
+          </a>
+        </p>
+      </figcaption>
+
+    </figure>
+
+    <!-- Keep your existing Chart 02 and Chart 03 here. -->
+  </div>
+</section>
