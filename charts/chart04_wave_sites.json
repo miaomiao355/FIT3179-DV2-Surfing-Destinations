@@ -13,7 +13,7 @@
     "top": 4,
     "bottom": 4
   },
-  "background": "#cfe4eb",
+  "background": "#dcecf0",
   "projection": {
     "type": "mercator",
     "center": [
@@ -58,8 +58,8 @@
               "New South Wales"
             ],
             "range": [
-              "#f4f1e8",
-              "#e9eee8"
+              "#e8ece7",
+              "#e8ece7"
             ]
           },
           "legend": null
@@ -79,9 +79,8 @@
         "type": "geoshape",
         "interactive": false,
         "fill": null,
-        "stroke": "#456e7a",
-        "strokeWidth": 1.5,
-        "opacity": 0.96
+        "stroke": "#8aadb9",
+        "strokeWidth": 0.8
       }
     },
     {
@@ -97,9 +96,8 @@
         "type": "geoshape",
         "interactive": false,
         "fill": null,
-        "stroke": "#49656d",
-        "strokeWidth": 1.25,
-        "opacity": 0.88
+        "stroke": "#b5c8c8",
+        "strokeWidth": 0.8
       }
     },
     {
@@ -144,185 +142,6 @@
         },
         "text": {
           "field": "label",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "name": "verified locality points",
-      "data": {
-        "url": "data/chart04_context_places.geojson",
-        "format": {
-          "type": "json",
-          "property": "features"
-        }
-      },
-      "mark": {
-        "type": "circle",
-        "interactive": true,
-        "size": 26,
-        "color": "#526b71",
-        "stroke": "#ffffff",
-        "strokeWidth": 1.5
-      },
-      "transform": [
-        {
-          "calculate": "datum.properties.name",
-          "as": "Place"
-        },
-        {
-          "calculate": "datum.properties.state",
-          "as": "State"
-        },
-        {
-          "calculate": "datum.properties.source",
-          "as": "Place_name_source"
-        },
-        {
-          "calculate": "datum.geometry.coordinates[0]",
-          "as": "Longitude"
-        },
-        {
-          "calculate": "datum.geometry.coordinates[1]",
-          "as": "Latitude"
-        }
-      ],
-      "encoding": {
-        "longitude": {
-          "field": "Longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "Latitude",
-          "type": "quantitative"
-        },
-        "tooltip": [
-          {
-            "field": "Place",
-            "type": "nominal",
-            "title": "Place"
-          },
-          {
-            "field": "State",
-            "type": "nominal",
-            "title": "State"
-          },
-          {
-            "field": "Place_name_source",
-            "type": "nominal",
-            "title": "Place-name source"
-          }
-        ]
-      }
-    },
-    {
-      "name": "Gold Coast locality label",
-      "data": {
-        "url": "data/chart04_context_places.geojson",
-        "format": {
-          "type": "json",
-          "property": "features"
-        }
-      },
-      "mark": {
-        "type": "text",
-        "interactive": false,
-        "dx": -9,
-        "dy": 18,
-        "align": "right",
-        "baseline": "top",
-        "font": "Segoe UI",
-        "fontSize": 11,
-        "fontWeight": 700,
-        "color": "#173B4A"
-      },
-      "transform": [
-        {
-          "calculate": "datum.properties.name",
-          "as": "Place"
-        },
-        {
-          "calculate": "datum.geometry.coordinates[0]",
-          "as": "Longitude"
-        },
-        {
-          "calculate": "datum.geometry.coordinates[1]",
-          "as": "Latitude"
-        },
-        {
-          "filter": "datum.Place === 'Gold Coast'"
-        }
-      ],
-      "encoding": {
-        "longitude": {
-          "field": "Longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "Latitude",
-          "type": "quantitative"
-        },
-        "color": {
-          "value": "#173B4A"
-        },
-        "text": {
-          "field": "Place",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "name": "Tweed Heads locality label",
-      "data": {
-        "url": "data/chart04_context_places.geojson",
-        "format": {
-          "type": "json",
-          "property": "features"
-        }
-      },
-      "mark": {
-        "type": "text",
-        "interactive": false,
-        "dx": -9,
-        "dy": -12,
-        "align": "right",
-        "baseline": "bottom",
-        "font": "Segoe UI",
-        "fontSize": 11,
-        "fontWeight": 700,
-        "color": "#173B4A"
-      },
-      "transform": [
-        {
-          "calculate": "datum.properties.name",
-          "as": "Place"
-        },
-        {
-          "calculate": "datum.geometry.coordinates[0]",
-          "as": "Longitude"
-        },
-        {
-          "calculate": "datum.geometry.coordinates[1]",
-          "as": "Latitude"
-        },
-        {
-          "filter": "datum.Place === 'Tweed Heads'"
-        }
-      ],
-      "encoding": {
-        "longitude": {
-          "field": "Longitude",
-          "type": "quantitative"
-        },
-        "latitude": {
-          "field": "Latitude",
-          "type": "quantitative"
-        },
-        "color": {
-          "value": "#173B4A"
-        },
-        "text": {
-          "field": "Place",
           "type": "nominal"
         }
       }
@@ -373,9 +192,9 @@
               "Tweed Offshore"
             ],
             "range": [
-              "#0072b2",
-              "#0072b2",
-              "#d55e00"
+              "#2A9D8F",
+              "#8B6FB3",
+              "#D08A2E"
             ]
           },
           "legend": null
@@ -432,26 +251,17 @@
     },
     {
       "name": "gold-coast-site-label",
-      "data": {
-        "values": [
-          {
-            "Location": "Gold Coast",
-            "Longitude": 153.44095,
-            "Latitude": -27.9649
-          }
-        ]
-      },
       "mark": {
         "type": "text",
         "interactive": false,
-        "dx": 9,
-        "dy": -14,
+        "dx": 18,
+        "dy": 0,
         "align": "left",
-        "baseline": "bottom",
+        "baseline": "middle",
         "font": "Segoe UI",
-        "fontSize": 11,
+        "fontSize": 12,
         "fontWeight": 700,
-        "color": "#173B4A"
+        "color": "#102b3a"
       },
       "encoding": {
         "longitude": {
@@ -466,33 +276,33 @@
           "value": "#173B4A"
         },
         "text": {
-          "field": "Location",
+          "field": "Label",
           "type": "nominal"
         }
-      }
+      },
+      "transform": [
+        {
+          "filter": "datum.Location === 'Gold Coast'"
+        },
+        {
+          "calculate": "datum.Location + '  ' + format(datum.Mean_Hs_m, '.3f') + ' m'",
+          "as": "Label"
+        }
+      ]
     },
     {
       "name": "palm-beach-site-label",
-      "data": {
-        "values": [
-          {
-            "Location": "Palm Beach",
-            "Longitude": 153.486367,
-            "Latitude": -28.099867
-          }
-        ]
-      },
       "mark": {
         "type": "text",
         "interactive": false,
-        "dx": -9,
-        "dy": -12,
-        "align": "right",
-        "baseline": "bottom",
+        "dx": 18,
+        "dy": 0,
+        "align": "left",
+        "baseline": "middle",
         "font": "Segoe UI",
-        "fontSize": 11,
+        "fontSize": 12,
         "fontWeight": 700,
-        "color": "#173B4A"
+        "color": "#102b3a"
       },
       "encoding": {
         "longitude": {
@@ -507,33 +317,33 @@
           "value": "#173B4A"
         },
         "text": {
-          "field": "Location",
+          "field": "Label",
           "type": "nominal"
         }
-      }
+      },
+      "transform": [
+        {
+          "filter": "datum.Location === 'Palm Beach'"
+        },
+        {
+          "calculate": "datum.Location + '  ' + format(datum.Mean_Hs_m, '.3f') + ' m'",
+          "as": "Label"
+        }
+      ]
     },
     {
       "name": "tweed-offshore-site-label",
-      "data": {
-        "values": [
-          {
-            "Location": "Tweed Offshore",
-            "Longitude": 153.680283,
-            "Latitude": -28.212
-          }
-        ]
-      },
       "mark": {
         "type": "text",
         "interactive": false,
-        "dx": 9,
-        "dy": 13,
-        "align": "left",
-        "baseline": "top",
+        "dx": -18,
+        "dy": 0,
+        "align": "right",
+        "baseline": "middle",
         "font": "Segoe UI",
-        "fontSize": 11,
+        "fontSize": 12,
         "fontWeight": 700,
-        "color": "#173B4A"
+        "color": "#102b3a"
       },
       "encoding": {
         "longitude": {
@@ -548,10 +358,19 @@
           "value": "#173B4A"
         },
         "text": {
-          "field": "Location",
+          "field": "Label",
           "type": "nominal"
         }
-      }
+      },
+      "transform": [
+        {
+          "filter": "datum.Location === 'Tweed Offshore'"
+        },
+        {
+          "calculate": "datum.Location + '  ' + format(datum.Mean_Hs_m, '.3f') + ' m'",
+          "as": "Label"
+        }
+      ]
     }
   ],
   "resolve": {

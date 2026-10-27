@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="An exploration of Australia's surfing destinations, wave conditions, competitions and participation.">
     <title>Australia: A Nation Built Around the Waves</title>
-    <link rel="stylesheet" href="css/style.css?v=chart03-readable-20261027">
+    <link rel="stylesheet" href="css/style.css?v=wave-conditions-20261027">
   </head>
   <body>
     <header class="hero">
@@ -97,15 +97,14 @@
             </figure>
           </section>
           <section class="event-chart-section chart03-section" aria-labelledby="chart03-heading">
-            <p class="section-eyebrow">03 / Season timeline</p>
-            <h3 id="chart03-heading" class="event-chart-heading">When do Australia's in-person national surfing events take place?</h3>
-            <p class="event-chart-deck">Eight in-person competitions span March to December 2026. Each line connects its actual start and end dates.</p>
+            <p class="section-eyebrow">03 / Event schedule and duration</p>
+            <h3 id="chart03-heading" class="event-chart-heading">When do national surfing events take place, and how long do they last?</h3>
+            <p class="event-chart-deck">Eight in-person events are listed chronologically, with their dates and durations shown side by side.</p>
             <figure class="event-chart-figure">
-              <ol id="chart03-mobile-key" class="chart03-mobile-key" aria-label="Numbered events and dates for the timeline" hidden></ol>
-              <div id="chart3" class="event-timeline" role="img" aria-label="Chronological connected-endpoint timeline showing eight in-person 2026 events. Two dots mark each event’s actual start and end dates. Hover for details and inclusive duration."></div>
+              <div id="chart3" class="event-timeline" role="img" aria-label="Eight in-person events in chronological order, with venue, dates and a zero-anchored duration in days. Hover over each event for details."></div>
               <figcaption class="event-chart-caption">
-                <p class="chart-insight">Wollongong starts 24 Aug, two days after Newcastle ends; the next listed event begins on 17 Nov.</p>
-                <p class="event-chart-note">The 2026 national calendar also includes one online event (1–31 January), excluded from this venue-based timeline. Hollow circles mark starts; filled circles mark ends. Inclusive durations are available in tooltips.</p>
+                <p class="chart-insight">The Junior Surfing Titles lasts 9 days, seven days longer than the 2-day Para Surfing Titles.</p>
+                <p class="event-chart-note">The calendar also includes an online event from 1?31 January, shown separately from these in-person events.</p>
                 <p class="event-chart-source">Dates and event details: <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/" target="_blank" rel="noopener noreferrer">Surfing Australia 2026 national calendar</a>.</p>
               </figcaption>
             </figure>
@@ -117,21 +116,21 @@
         <div class="story-heading">
           <p class="section-eyebrow">Chapter 02 / Australia’s wave conditions</p>
           <h2 id="waves-heading">What are the waves like around the Gold Coast–Tweed region?</h2>
-          <p class="wave-story-intro">The first section followed Australia’s national event calendar; this one turns to measured conditions at three nearby monitoring sites. Wave buoys record ocean conditions. Significant wave height (Hs) is the average height of the highest third of waves in a recording interval; it describes wave size, not surfing quality.</p>
+          <p class="wave-story-intro">Wave buoys record conditions at three nearby monitoring sites. Significant wave height (Hs) is the average height of the highest third of waves in a recording interval; it describes wave size, not surfing quality.</p>
         </div>
         <div class="chart-stack wave-chart-stack">
           <section class="wave-chart-section" aria-labelledby="chart04-heading">
             <p class="section-eyebrow">04 · Mean wave height by site</p>
             <h3 id="chart04-heading" class="wave-chart-heading">Where were waves taller on average?</h3>
-            <p class="wave-chart-deck">Three published station locations sit on a detailed Gold Coast–Tweed basemap. Circle area encodes each January 2026 mean; aligned bars make the exact differences easier to read.</p>
+            <p class="wave-chart-deck">The map locates the three monitoring sites. Circle area and aligned bars show their mean significant wave height in January 2026.</p>
             <figure class="wave-chart-figure">
               <div class="wave-site-dashboard">
                 <div class="wave-site-map-panel">
                   <div class="wave-site-map-shell">
-                    <div id="chart4" class="wave-site-map" role="img" aria-label="Regional proportional symbol map of the Gold Coast–Tweed coast across Queensland and New South Wales. Blue circles mark Gold Coast and Palm Beach; orange marks Tweed Offshore. Circle area represents January 2026 mean significant wave height on a shared 0 to 2 metre scale. Hover a circle or place for details."></div>
+                    <div id="chart4" class="wave-site-map" role="img" aria-label="Regional proportional symbol map of the Gold Coast–Tweed coast across Queensland and New South Wales. Teal, purple and ochre circles mark Gold Coast, Palm Beach and Tweed Offshore, respectively. Circle area represents January 2026 mean significant wave height on a shared 0 to 2 metre scale. Hover a circle for details."></div>
                     <aside class="wave-map-locator" aria-label="Australia locator. A dark teal outline identifies the regional Gold Coast–Tweed map extent.">
                       <span class="wave-map-locator__title">AUSTRALIA · STUDY AREA</span>
-                      <div id="chart4-locator" class="wave-map-locator__chart" role="img" aria-label="Australia outline with the Gold Coast–Tweed map extent highlighted in orange."></div>
+                      <div id="chart4-locator" class="wave-map-locator__chart" role="img" aria-label="Australia outline with the Gold Coast–Tweed map extent highlighted."></div>
                     </aside>
                   </div>
                   <div class="wave-symbol-legend" role="group" aria-label="Circle area legend for January mean significant wave height. The fixed scale runs from zero to two metres.">
@@ -142,10 +141,6 @@
                       <span class="wave-symbol-legend__item"><i class="wave-symbol-legend__circle" data-hs-reference="1.5" aria-hidden="true"></i><span>1.5</span></span>
                       <span class="wave-symbol-legend__item"><i class="wave-symbol-legend__circle" data-hs-reference="2" aria-hidden="true"></i><span>2.0</span></span>
                     </div>
-                    <div class="wave-symbol-legend__colors" role="group" aria-label="Blue identifies Gold Coast and Palm Beach; orange highlights Tweed Offshore in both the map and comparison bars.">
-                      <span><i class="wave-symbol-legend__swatch wave-symbol-legend__swatch--blue" aria-hidden="true"></i>Gold Coast · Palm Beach</span>
-                      <span><i class="wave-symbol-legend__swatch wave-symbol-legend__swatch--orange" aria-hidden="true"></i>Tweed Offshore</span>
-                    </div>
                   </div>
                 </div>
                 <aside class="wave-site-panel" aria-labelledby="chart04-panel-heading">
@@ -154,23 +149,17 @@
                   <p class="wave-site-panel__measure">Shared zero-based scale · 0–2 m</p>
                   <div id="chart4-compare" class="wave-site-comparison" role="img" aria-label="Aligned horizontal bars show the exact January 2026 mean significant wave height at each monitoring site, all on a shared zero to two metre scale. Hover a bar for wave-period and observation details."></div>
                   <p id="chart04-insight" class="wave-site-insight" aria-live="polite">Calculating the January site averages…</p>
-                  <p class="wave-site-panel__note">Exact to three decimals. Orange consistently highlights Tweed Offshore in the map and bars.</p>
+                  <p class="wave-site-panel__note">Means are shown to three decimal places.</p>
                 </aside>
-              </div>
-              <div class="wave-chart-method" aria-label="Chart design framework: what, why, and how.">
-                <p><strong>WHAT</strong><span>January mean Hs at three published stations.</span></p>
-                <p><strong>WHY</strong><span>Coastal position matters, while close means still need precise comparison.</span></p>
-                <p><strong>HOW</strong><span>Map circle area on a fixed 0–2 m scale; compare exact means with aligned bars.</span></p>
               </div>
               <figcaption class="wave-chart-caption">
                 <p class="wave-chart-note">Station circles use the published reference coordinates; they do not imply a buoy stayed at one exact position throughout January.</p>
-                <p class="wave-chart-source">Wave observations: Queensland Government <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>. Station coordinates: official <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a> monitoring pages. Map geography: <a href="https://www.data.qld.gov.au/dataset/coastline-queensland" target="_blank" rel="noopener noreferrer">Queensland coastline</a>, <a href="https://data.nsw.gov.au/data/dataset/1-40762316d10e43f081ddf641f7f6e687" target="_blank" rel="noopener noreferrer">NSW coastline</a>, <a href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-4-july-2026-june-2031/access-and-downloads/geospatial-web-services" target="_blank" rel="noopener noreferrer">ABS ASGS Edition 4 (2026)</a>, <a href="https://www.data.qld.gov.au/dataset/place-names-gazetteer-queensland-txt-file" target="_blank" rel="noopener noreferrer">Queensland Place Names Gazetteer</a> and <a href="https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-land/" target="_blank" rel="noopener noreferrer">Natural Earth</a> for the Australia locator. Source details and licenses: <a href="data/GSHHG_SOURCE_AND_LICENSE.txt">geographic data notice</a>.</p>
+                <p class="wave-chart-source">Wave observations: Queensland Government <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.data.qld.gov.au/dataset/coastal-data-system-waves-tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a>. Station coordinates: official <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/gold-coast" target="_blank" rel="noopener noreferrer">Gold Coast</a>, <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/palm-beach" target="_blank" rel="noopener noreferrer">Palm Beach</a> and <a href="https://www.qld.gov.au/environment/coasts-waterways/beach/monitoring/waves-sites/tweed-offshore" target="_blank" rel="noopener noreferrer">Tweed Offshore</a> monitoring pages. Map geography: <a href="https://www.data.qld.gov.au/dataset/coastline-queensland" target="_blank" rel="noopener noreferrer">Queensland coastline</a>, <a href="https://data.nsw.gov.au/data/dataset/1-40762316d10e43f081ddf641f7f6e687" target="_blank" rel="noopener noreferrer">NSW coastline</a>, <a href="https://www.abs.gov.au/statistics/standards/australian-statistical-geography-standard-asgs/edition-4-july-2026-june-2031/access-and-downloads/geospatial-web-services" target="_blank" rel="noopener noreferrer">ABS ASGS Edition 4 (2026)</a> and <a href="https://www.naturalearthdata.com/downloads/110m-physical-vectors/110m-land/" target="_blank" rel="noopener noreferrer">Natural Earth</a> for the Australia locator. Source details and licenses: <a href="data/GSHHG_SOURCE_AND_LICENSE.txt">geographic data notice</a>.</p>
               </figcaption>
             </figure>
           </section>
 
-          <div class="wave-subgroup">
-            <div class="wave-subgroup__intro"><h3>Variation and direction</h3><p>Compare the spread of wave heights and the directions from which waves arrive.</p></div>
+          <div class="wave-subgroup wave-subgroup--conditions">
           <section class="wave-chart-section" aria-labelledby="chart05-heading">
             <p class="section-eyebrow">05 · Wave-height distribution</p>
             <h3 id="chart05-heading" class="wave-chart-heading">How much did wave heights vary?</h3>
@@ -193,22 +182,18 @@
                 <article class="wave-small-panel">
                   <h4>Gold Coast</h4>
                   <p id="chart06-gold-note" class="wave-panel-stat">Calculating valid direction readings…</p>
-                  <div id="chart06-gold" class="wave-direction-chart" role="img" aria-label="Gold Coast horizontal bar chart of the share of valid peak-wave direction readings in eight compass sectors. Orange highlights the most frequent sector. Hover for counts and percentages."></div>
+                  <div id="chart06-gold" class="wave-direction-chart" role="img" aria-label="Gold Coast horizontal bar chart of the share of valid peak-wave direction readings in eight compass sectors. The site colour highlights the most frequent sector. Hover for counts and percentages."></div>
                 </article>
                 <article class="wave-small-panel">
                   <h4>Palm Beach</h4>
                   <p id="chart06-palm-note" class="wave-panel-stat">Calculating valid direction readings…</p>
-                  <div id="chart06-palm" class="wave-direction-chart" role="img" aria-label="Palm Beach horizontal bar chart of the share of valid peak-wave direction readings in eight compass sectors. Orange highlights the most frequent sector. Hover for counts and percentages."></div>
+                  <div id="chart06-palm" class="wave-direction-chart" role="img" aria-label="Palm Beach horizontal bar chart of the share of valid peak-wave direction readings in eight compass sectors. The site colour highlights the most frequent sector. Hover for counts and percentages."></div>
                 </article>
                 <article class="wave-small-panel">
                   <h4>Tweed Offshore</h4>
                   <p id="chart06-tweed-note" class="wave-panel-stat">Calculating valid direction readings…</p>
-                  <div id="chart06-tweed" class="wave-direction-chart" role="img" aria-label="Tweed Offshore horizontal bar chart of the share of valid peak-wave direction readings in eight compass sectors. Orange highlights the most frequent sector. Hover for counts and percentages."></div>
+                  <div id="chart06-tweed" class="wave-direction-chart" role="img" aria-label="Tweed Offshore horizontal bar chart of the share of valid peak-wave direction readings in eight compass sectors. The site colour highlights the most frequent sector. Hover for counts and percentages."></div>
                 </article>
-              </div>
-              <div class="wave-direction-key" aria-label="Wave direction chart legend">
-                <span><i class="wave-direction-swatch wave-direction-swatch--dominant" aria-hidden="true"></i>Most frequent sector at each site</span>
-                <span><i class="wave-direction-swatch wave-direction-swatch--other" aria-hidden="true"></i>Other sectors</span>
               </div>
               <figcaption class="wave-chart-caption">
                 <p id="chart06-insight" class="wave-chart-insight" aria-live="polite">Calculating the most frequent compass sectors…</p>
@@ -398,6 +383,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vega@5" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6" defer></script>
-    <script src="js/main.js?v=chart03-readable-20261027" defer></script>
+    <script src="js/main.js?v=wave-conditions-20261027" defer></script>
   </body>
 </html>

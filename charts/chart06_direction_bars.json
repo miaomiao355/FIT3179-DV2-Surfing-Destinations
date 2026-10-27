@@ -5,14 +5,14 @@
     "values": []
   },
   "width": "container",
-  "height": 250,
+  "height": 230,
   "autosize": {
     "type": "fit",
     "contains": "padding"
   },
   "padding": {
     "left": 4,
-    "right": 24,
+    "right": 45,
     "top": 6,
     "bottom": 4
   },
@@ -21,7 +21,7 @@
       "mark": {
         "type": "bar",
         "height": 17,
-        "cornerRadiusEnd": 3
+        "cornerRadiusEnd": 0
       }
     },
     {
@@ -31,7 +31,7 @@
         "baseline": "middle",
         "dx": 5,
         "font": "Segoe UI",
-        "fontSize": 9,
+        "fontSize": 11,
         "fontWeight": 700,
         "color": "#314d55"
       },
@@ -39,6 +39,9 @@
         "text": {
           "field": "PercentLabel",
           "type": "nominal"
+        },
+        "color": {
+          "value": "#223e4b"
         }
       }
     }
@@ -102,9 +105,22 @@
     "color": {
       "condition": {
         "test": "datum.IsDominant === true",
-        "value": "#d97721"
+        "field": "Location",
+        "type": "nominal",
+        "scale": {
+          "domain": [
+            "Gold Coast",
+            "Palm Beach",
+            "Tweed Offshore"
+          ],
+          "range": [
+            "#2A9D8F",
+            "#8B6FB3",
+            "#D08A2E"
+          ]
+        }
       },
-      "value": "#176b76",
+      "value": "#d1dfe0",
       "legend": null
     },
     "tooltip": [

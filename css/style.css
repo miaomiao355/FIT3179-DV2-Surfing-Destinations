@@ -126,16 +126,11 @@ h1 span { display: block; max-width: 1050px; }
 .chart02-bar-value { font-weight: 750; text-align: right; font-variant-numeric: tabular-nums; }
 .chart02-zero-note { margin-top: 12px; color: #54636A; font-size: .83rem; line-height: 1.4; }
 .chart02-panel .event-chart-note, .chart02-panel .event-chart-source { font-size: .8rem; }
-/* Chart 03: connected points show the true start and end dates. */
+/* Chart 03: a shared row scale aligns event details with duration endpoints. */
 .chart03-section .event-chart-heading { max-width: 1050px; color: #102B3A; font-size: clamp(1.4rem, 2vw, 1.75rem); }
 .chart03-section .event-chart-deck { color: #586773; }
-.chart03-section .event-timeline { width: 100%; min-width: 0; min-height: 600px; background: #FAF9F6; }
+.chart03-section .event-timeline { width: 100%; min-width: 0; background: #FAF9F6; }
 .chart03-section .event-timeline svg { display: block; }
-.chart03-mobile-key { list-style: none; padding: 0; margin: 0 0 16px; display: grid; gap: 10px; }
-.chart03-mobile-key[hidden] { display: none; }
-.chart03-mobile-key li { display: grid; grid-template-columns: 28px minmax(0, 1fr); gap: 8px; color: #102B3A; font-size: 14px; line-height: 1.35; }
-.chart03-mobile-number { font-weight: 700; color: #16758A; }
-.chart03-mobile-secondary { display: block; color: #586773; font-size: 13px; }
 
 @media (max-width: 1100px) {
   .event-chart-figure--state { grid-template-columns: 1fr; }
@@ -287,4 +282,47 @@ h1 span { display: block; max-width: 1050px; }
   .wave-symbol-legend__colors { grid-column: auto; }
   .wave-site-panel { padding: 20px 16px; }
   .participation-waffle-layout { padding: 24px; }
+}
+/* Wave conditions: one shared editorial language for charts 04–06. */
+.wave-story > .story-heading { margin-bottom: 28px; }
+.wave-story > .story-heading h2, .wave-chart-section[aria-labelledby="chart04-heading"] h3,
+.wave-subgroup--conditions .wave-chart-heading { font-family: Georgia, 'Times New Roman', serif; letter-spacing: -.035em; }
+.wave-story > .story-heading h2 { font-size: clamp(2rem, 3.2vw, 3rem); }
+.wave-story > .story-heading > p:not(.section-eyebrow) { max-width: 95ch; margin-top: 12px; line-height: 1.5; }
+.wave-chart-stack { gap: 36px; }
+.wave-subgroup--conditions { gap: 36px; }
+.wave-subgroup--conditions > .wave-chart-section:first-of-type { padding-top: 22px; border-top: 1px solid #aabfc3; }
+.wave-chart-section[aria-labelledby="chart04-heading"], .wave-subgroup--conditions .wave-chart-section { padding-top: 20px; }
+.wave-chart-section[aria-labelledby="chart04-heading"] > .section-eyebrow, .wave-subgroup--conditions .section-eyebrow { margin-bottom: 5px; }
+.wave-chart-section[aria-labelledby="chart04-heading"] .wave-chart-heading, .wave-subgroup--conditions .wave-chart-heading { font-size: clamp(1.7rem, 2.2vw, 2.15rem); }
+.wave-chart-section[aria-labelledby="chart04-heading"] .wave-chart-deck, .wave-subgroup--conditions .wave-chart-deck { max-width: 95ch; margin: 5px 0 14px; line-height: 1.45; }
+.wave-site-dashboard { grid-template-columns: minmax(0, 1.8fr) minmax(320px, 1fr); gap: 14px; background: transparent; }
+.wave-site-map-panel { padding: 0; background: #dcecf0; }
+.wave-site-map { background: #dcecf0; }
+.wave-map-locator { background: rgba(250, 251, 249, .95); border-color: #91aeb8; }
+.wave-symbol-legend { display: flex; align-items: center; gap: 16px; padding: 10px 16px; background: #edf3f1; }
+.wave-symbol-legend__title { max-width: 130px; line-height: 1.3; }
+.wave-symbol-legend__items { flex: 1; justify-content: space-around; }
+.wave-symbol-legend__circle { background: #7c9697; box-shadow: none; }
+.wave-site-panel { justify-content: flex-start; padding: 24px; border: 1px solid #dce5e7; background: #fff; }
+.wave-site-panel h4 { font: 700 1.6rem/1.15 Georgia, 'Times New Roman', serif; }
+.wave-site-comparison { height: 215px; margin-top: 12px; }
+.wave-site-insight { margin-top: auto; padding: 12px 14px; border: 0; border-left: 4px solid #d08a2e; background: #f8f1e6; }
+.wave-site-panel__note { margin-top: 8px; }
+.wave-chart-section[aria-labelledby="chart05-heading"] .wave-distribution { height: 320px; }
+.wave-chart-section[aria-labelledby="chart05-heading"] .wave-chart-caption { align-content: start; padding: 20px; border: 0; background: #edf4f3; }
+.wave-chart-section[aria-labelledby="chart05-heading"] .wave-chart-insight { padding-left: 14px; border-left: 4px solid #2a9d8f; }
+.wave-direction-grid { gap: 0; background: #fff; }
+.wave-direction-grid .wave-small-panel { padding: 12px 16px; border: 0; }
+.wave-direction-grid .wave-small-panel + .wave-small-panel { border-left: 1px solid #dce5e7; }
+.wave-direction-grid .wave-small-panel:nth-child(1) h4 { color: #167c72; }
+.wave-direction-grid .wave-small-panel:nth-child(2) h4 { color: #70539a; }
+.wave-direction-grid .wave-small-panel:nth-child(3) h4 { color: #a96312; }
+.wave-direction-chart { min-height: 245px; }
+.wave-chart-section--direction .wave-chart-insight { padding: 12px 16px; border-left: 4px solid #d08a2e; background: #f8f1e6; }
+@media (max-width: 1000px) { .wave-site-dashboard { grid-template-columns: 1fr; } .wave-site-panel { border: 1px solid #dce5e7; } }
+@media (max-width: 700px) {
+  .wave-direction-grid .wave-small-panel + .wave-small-panel { border-left: 0; border-top: 1px solid #dce5e7; }
+  .wave-symbol-legend { flex-wrap: wrap; }
+  .wave-site-panel { padding: 20px; }
 }

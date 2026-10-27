@@ -1,133 +1,21 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Connected-endpoint interval timeline showing actual start and end dates of the 2026 in-person national surfing events.",
-  "width": "container",
-  "height": 600,
-  "autosize": {
-    "type": "fit",
-    "contains": "padding"
-  },
+  "description": "Chronological event schedule with zero-anchored inclusive duration endpoints.",
+  "width": 900,
+  "height": 560,
   "padding": {
-    "left": 8,
-    "right": 12,
-    "top": 30,
-    "bottom": 8
+    "left": 0,
+    "right": 4,
+    "top": 32,
+    "bottom": 45
   },
   "background": "#FAF9F6",
   "data": {
     "values": []
   },
   "encoding": {
-    "x": {
-      "field": "Start_ms",
-      "type": "temporal",
-      "scale": {
-        "type": "utc",
-        "domain": [
-          {
-            "year": 2026,
-            "month": 1,
-            "date": 1,
-            "utc": true
-          },
-          {
-            "year": 2027,
-            "month": 1,
-            "date": 1,
-            "utc": true
-          }
-        ]
-      },
-      "axis": {
-        "title": null,
-        "format": "%b",
-        "values": [
-          {
-            "year": 2026,
-            "month": 1,
-            "date": 1,
-            "utc": true
-          },
-          {
-            "year": 2026,
-            "month": 2,
-            "date": 1,
-            "utc": true
-          },
-          {
-            "year": 2026,
-            "month": 3,
-            "date": 1,
-            "utc": true
-          },
-          {
-            "year": 2026,
-            "month": 4,
-            "date": 1,
-            "utc": true
-          },
-          {
-            "year": 2026,
-            "month": 5,
-            "date": 1,
-            "utc": true
-          },
-          {
-            "year": 2026,
-            "month": 6,
-            "date": 1,
-            "utc": true
-          },
-          {
-            "year": 2026,
-            "month": 7,
-            "date": 1,
-            "utc": true
-          },
-          {
-            "year": 2026,
-            "month": 8,
-            "date": 1,
-            "utc": true
-          },
-          {
-            "year": 2026,
-            "month": 9,
-            "date": 1,
-            "utc": true
-          },
-          {
-            "year": 2026,
-            "month": 10,
-            "date": 1,
-            "utc": true
-          },
-          {
-            "year": 2026,
-            "month": 11,
-            "date": 1,
-            "utc": true
-          },
-          {
-            "year": 2026,
-            "month": 12,
-            "date": 1,
-            "utc": true
-          }
-        ],
-        "labelAngle": 0,
-        "labelFontSize": 12,
-        "grid": true,
-        "labelPadding": 8,
-        "orient": "top",
-        "gridColor": "#E5E2DB",
-        "labelColor": "#586773",
-        "tickSize": 0,
-        "domain": false
-      }
-    },
     "y": {
-      "field": "Timeline_label",
+      "field": "Event",
       "type": "nominal",
       "sort": {
         "field": "Start_ms",
@@ -136,331 +24,165 @@
       },
       "axis": null
     },
-    "color": {
-      "field": "State",
-      "type": "nominal",
-      "scale": {
-        "domain": [
-          "NSW",
-          "VIC",
-          "QLD",
-          "WA"
-        ],
-        "range": [
-          "#4263A0",
-          "#8667A8",
-          "#22857F",
-          "#C47B32"
-        ]
-      },
-      "legend": {
-        "title": "Event state",
-        "orient": "bottom",
-        "direction": "horizontal",
-        "symbolType": "circle",
-        "symbolSize": 110,
-        "labelFontSize": 13,
-        "titleFontSize": 13
-      }
-    },
     "tooltip": [
       {
         "field": "Event",
-        "type": "nominal",
-        "title": "Event"
+        "title": "Event",
+        "type": "nominal"
       },
       {
-        "field": "Location",
-        "type": "nominal",
-        "title": "Location"
-      },
-      {
-        "field": "Delivery_label",
-        "type": "nominal",
-        "title": "Delivery"
-      },
-      {
-        "field": "State_label",
-        "type": "nominal",
-        "title": "State"
+        "field": "Venue_label",
+        "title": "Venue",
+        "type": "nominal"
       },
       {
         "field": "Start_label",
-        "type": "nominal",
-        "title": "Start"
+        "title": "Start date",
+        "type": "nominal"
       },
       {
         "field": "End_label",
-        "type": "nominal",
-        "title": "End (inclusive)"
+        "title": "End date",
+        "type": "nominal"
       },
       {
         "field": "Duration_days",
+        "title": "Duration (days)",
         "type": "quantitative",
-        "title": "Listed days",
         "format": "d"
       }
     ]
   },
-  "config": {
-    "view": {
-      "stroke": null
-    },
-    "axis": {
-      "labelColor": "#102B3A",
-      "titleColor": "#102B3A",
-      "gridColor": "#E5E2DB",
-      "domainColor": "#c8d4d5",
-      "tickColor": "#c8d4d5",
-      "labelFont": "Segoe UI",
-      "titleFont": "Segoe UI",
-      "labelFontSize": 12,
-      "titleFontSize": 12
-    },
-    "legend": {
-      "labelColor": "#586773",
-      "titleColor": "#183d50",
-      "labelFont": "Segoe UI",
-      "titleFont": "Segoe UI",
-      "labelFontSize": 12,
-      "titleFontSize": 12
-    },
-    "font": "Segoe UI"
-  },
   "layer": [
     {
-      "name": "event-interval",
+      "name": "duration-rule",
       "mark": {
         "type": "rule",
-        "strokeWidth": 3.5,
-        "cursor": "pointer"
-      },
-      "encoding": {
-        "x2": {
-          "field": "End_ms",
-          "type": "temporal"
-        },
-        "opacity": {
-          "condition": {
-            "param": "interval_hover",
-            "empty": false,
-            "value": 1
-          },
-          "value": 0.92
-        }
-      },
-      "params": [
-        {
-          "name": "interval_hover",
-          "select": {
-            "type": "point",
-            "fields": [
-              "Event"
-            ],
-            "on": "pointerover",
-            "clear": "pointerout"
-          }
-        }
-      ]
-    },
-    {
-      "name": "event-start",
-      "mark": {
-        "type": "point",
-        "filled": false,
-        "shape": "circle",
-        "size": 225,
         "strokeWidth": 2.5,
         "cursor": "pointer"
       },
       "encoding": {
-        "opacity": {
-          "condition": {
-            "param": "start_hover",
-            "empty": false,
-            "value": 1
-          },
-          "value": 0.92
-        }
-      },
-      "params": [
-        {
-          "name": "start_hover",
-          "select": {
-            "type": "point",
-            "fields": [
-              "Event"
+        "x": {
+          "field": "Duration_days",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              10
             ],
-            "on": "pointerover",
-            "clear": "pointerout"
+            "nice": false,
+            "range": [
+              500,
+              900
+            ]
+          },
+          "axis": {
+            "title": "Duration (days)",
+            "values": [
+              0,
+              2,
+              4,
+              6,
+              8,
+              10
+            ],
+            "grid": true,
+            "gridColor": "#E5E2DB",
+            "domain": false,
+            "tickColor": "#AABFC3",
+            "labelColor": "#102B3A",
+            "titleColor": "#102B3A",
+            "labelFontSize": 12,
+            "titleFontSize": 12,
+            "labelPadding": 6,
+            "titlePadding": 10
           }
+        },
+        "x2": {
+          "datum": 0
+        },
+        "color": {
+          "condition": {
+            "test": "datum.Is_longest",
+            "value": "#C47B32"
+          },
+          "value": "#176B76"
         }
-      ]
+      }
     },
     {
-      "name": "event-end",
+      "name": "duration-endpoint",
       "mark": {
         "type": "point",
         "filled": true,
-        "shape": "circle",
-        "size": 135,
+        "size": 150,
+        "opacity": 1,
         "stroke": "#FAF9F6",
-        "strokeWidth": 1.4,
+        "strokeWidth": 1.2,
         "cursor": "pointer"
       },
       "encoding": {
         "x": {
-          "field": "End_ms",
-          "type": "temporal",
+          "field": "Duration_days",
+          "type": "quantitative",
           "scale": {
-            "type": "utc",
             "domain": [
-              {
-                "year": 2026,
-                "month": 1,
-                "date": 1,
-                "utc": true
-              },
-              {
-                "year": 2027,
-                "month": 1,
-                "date": 1,
-                "utc": true
-              }
+              0,
+              10
+            ],
+            "nice": false,
+            "range": [
+              500,
+              900
             ]
           },
           "axis": {
-            "title": null,
-            "format": "%b",
+            "title": "Duration (days)",
             "values": [
-              {
-                "year": 2026,
-                "month": 1,
-                "date": 1,
-                "utc": true
-              },
-              {
-                "year": 2026,
-                "month": 2,
-                "date": 1,
-                "utc": true
-              },
-              {
-                "year": 2026,
-                "month": 3,
-                "date": 1,
-                "utc": true
-              },
-              {
-                "year": 2026,
-                "month": 4,
-                "date": 1,
-                "utc": true
-              },
-              {
-                "year": 2026,
-                "month": 5,
-                "date": 1,
-                "utc": true
-              },
-              {
-                "year": 2026,
-                "month": 6,
-                "date": 1,
-                "utc": true
-              },
-              {
-                "year": 2026,
-                "month": 7,
-                "date": 1,
-                "utc": true
-              },
-              {
-                "year": 2026,
-                "month": 8,
-                "date": 1,
-                "utc": true
-              },
-              {
-                "year": 2026,
-                "month": 9,
-                "date": 1,
-                "utc": true
-              },
-              {
-                "year": 2026,
-                "month": 10,
-                "date": 1,
-                "utc": true
-              },
-              {
-                "year": 2026,
-                "month": 11,
-                "date": 1,
-                "utc": true
-              },
-              {
-                "year": 2026,
-                "month": 12,
-                "date": 1,
-                "utc": true
-              }
+              0,
+              2,
+              4,
+              6,
+              8,
+              10
             ],
-            "labelAngle": 0,
-            "labelFontSize": 12,
             "grid": true,
-            "labelPadding": 8,
-            "orient": "top",
             "gridColor": "#E5E2DB",
-            "labelColor": "#586773",
-            "tickSize": 0,
-            "domain": false
+            "domain": false,
+            "tickColor": "#AABFC3",
+            "labelColor": "#102B3A",
+            "titleColor": "#102B3A",
+            "labelFontSize": 12,
+            "titleFontSize": 12,
+            "labelPadding": 6,
+            "titlePadding": 10
           }
         },
-        "opacity": {
+        "color": {
           "condition": {
-            "param": "end_hover",
-            "empty": false,
-            "value": 1
+            "test": "datum.Is_longest",
+            "value": "#C47B32"
           },
-          "value": 0.92
+          "value": "#176B76"
         }
-      },
-      "params": [
-        {
-          "name": "end_hover",
-          "select": {
-            "type": "point",
-            "fields": [
-              "Event"
-            ],
-            "on": "pointerover",
-            "clear": "pointerout"
-          }
-        }
-      ]
+      }
     },
     {
-      "name": "event-title-label",
+      "name": "event-title",
       "mark": {
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "font": "Segoe UI",
         "fontSize": 14,
         "fontWeight": 700,
         "color": "#102B3A",
         "lineBreak": "\n",
         "lineHeight": 17,
-        "limit": 235,
-        "interactive": true
+        "limit": 200
       },
       "encoding": {
         "x": {
-          "value": -520
-        },
-        "color": {
-          "value": "#102B3A"
+          "value": 0
         },
         "text": {
           "field": "Timeline_title",
@@ -469,54 +191,44 @@
       }
     },
     {
-      "name": "event-location-label",
+      "name": "event-venue",
       "mark": {
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "font": "Segoe UI",
         "fontSize": 13,
         "fontWeight": 400,
-        "color": "#586773",
+        "color": "#102B3A",
         "lineBreak": "\n",
         "lineHeight": 17,
-        "limit": 128,
-        "interactive": true
+        "limit": 200
       },
       "encoding": {
         "x": {
-          "value": -270
-        },
-        "color": {
-          "value": "#586773"
+          "value": 0
         },
         "text": {
-          "field": "Timeline_location",
+          "field": "Venue_label",
           "type": "nominal"
         }
       }
     },
     {
-      "name": "event-date-label",
+      "name": "event-date",
       "mark": {
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "font": "Segoe UI",
         "fontSize": 13,
         "fontWeight": 400,
-        "color": "#586773",
+        "color": "#102B3A",
         "lineBreak": "\n",
         "lineHeight": 17,
-        "limit": 120,
-        "interactive": true
+        "limit": 200
       },
       "encoding": {
         "x": {
-          "value": -130
-        },
-        "color": {
-          "value": "#586773"
+          "value": 0
         },
         "text": {
           "field": "Timeline_date",
@@ -525,7 +237,7 @@
       }
     },
     {
-      "name": "event-title-heading",
+      "name": "event-heading",
       "data": {
         "values": [
           {
@@ -537,31 +249,25 @@
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "font": "Segoe UI",
         "fontSize": 12,
         "fontWeight": 700,
-        "color": "#586773",
-        "interactive": false
+        "color": "#102B3A"
       },
       "encoding": {
         "x": {
-          "value": -520
+          "value": 0
         },
         "y": {
-          "value": -17
-        },
-        "color": {
-          "value": "#586773"
+          "value": -20
         },
         "text": {
-          "field": "label",
-          "type": "nominal"
+          "field": "label"
         },
         "tooltip": null
       }
     },
     {
-      "name": "event-location-heading",
+      "name": "venue-heading",
       "data": {
         "values": [
           {
@@ -573,31 +279,25 @@
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "font": "Segoe UI",
         "fontSize": 12,
         "fontWeight": 700,
-        "color": "#586773",
-        "interactive": false
+        "color": "#102B3A"
       },
       "encoding": {
         "x": {
-          "value": -270
+          "value": 0
         },
         "y": {
-          "value": -17
-        },
-        "color": {
-          "value": "#586773"
+          "value": -20
         },
         "text": {
-          "field": "label",
-          "type": "nominal"
+          "field": "label"
         },
         "tooltip": null
       }
     },
     {
-      "name": "event-date-heading",
+      "name": "date-heading",
       "data": {
         "values": [
           {
@@ -609,28 +309,62 @@
         "type": "text",
         "align": "left",
         "baseline": "middle",
-        "font": "Segoe UI",
         "fontSize": 12,
         "fontWeight": 700,
-        "color": "#586773",
-        "interactive": false
+        "color": "#102B3A"
       },
       "encoding": {
         "x": {
-          "value": -130
+          "value": 0
         },
         "y": {
-          "value": -17
-        },
-        "color": {
-          "value": "#586773"
+          "value": -20
         },
         "text": {
-          "field": "label",
-          "type": "nominal"
+          "field": "label"
+        },
+        "tooltip": null
+      }
+    },
+    {
+      "name": "duration-heading",
+      "data": {
+        "values": [
+          {
+            "label": "DURATION"
+          }
+        ]
+      },
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "middle",
+        "fontSize": 12,
+        "fontWeight": 700,
+        "color": "#102B3A"
+      },
+      "encoding": {
+        "x": {
+          "value": 0
+        },
+        "y": {
+          "value": -20
+        },
+        "text": {
+          "field": "label"
         },
         "tooltip": null
       }
     }
-  ]
+  ],
+  "config": {
+    "view": {
+      "stroke": null
+    },
+    "font": "Segoe UI",
+    "axis": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI"
+    }
+  }
 }

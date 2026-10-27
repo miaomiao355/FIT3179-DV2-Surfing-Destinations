@@ -2,7 +2,7 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Distribution of valid half-hourly significant wave height (Hs) measurements recorded at three monitoring sites in January 2026. Boxplots use the conventional Tukey 1.5 × IQR whisker rule; values beyond the whiskers are displayed as outlier points.",
   "width": "container",
-  "height": 370,
+  "height": 300,
   "autosize": {
     "type": "fit",
     "contains": "padding"
@@ -20,9 +20,9 @@
   "mark": {
     "type": "boxplot",
     "extent": 1.5,
-    "size": 58,
+    "size": 64,
     "box": {
-      "fillOpacity": 0.62,
+      "fillOpacity": 0.55,
       "strokeWidth": 1.5
     },
     "median": {
@@ -86,9 +86,13 @@
         ],
         "format": ".1f",
         "grid": true,
-        "gridColor": "#e7eeee",
+        "gridColor": "#dce5e7",
         "labelColor": "#52616a",
-        "titleColor": "#344f57"
+        "titleColor": "#344f57",
+        "gridDash": [
+          3,
+          3
+        ]
       }
     },
     "color": {
@@ -101,9 +105,9 @@
           "Tweed Offshore"
         ],
         "range": [
-          "#0072b2",
-          "#56b4e9",
-          "#176b76"
+          "#2A9D8F",
+          "#8B6FB3",
+          "#D08A2E"
         ]
       },
       "legend": null
