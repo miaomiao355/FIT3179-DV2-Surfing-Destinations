@@ -5,12 +5,12 @@
     "values": []
   },
   "width": "container",
-  "height": 188,
+  "height": 230,
   "layer": [
     {
       "mark": {
         "type": "bar",
-        "size": 42,
+        "size": 34,
         "cornerRadiusEnd": 4
       },
       "encoding": {
@@ -19,22 +19,18 @@
           "type": "quantitative",
           "scale": {
             "domain": [
-              -2.1,
-              2.1
+              -2.3,
+              2.3
             ],
             "nice": false
           },
           "axis": {
-            "title": "Participation rate (%) · equal scale on both sides",
+            "title": "Participation rate (%) ? equal scales",
             "values": [
               -2,
-              -1.5,
               -1,
-              -0.5,
               0,
-              0.5,
               1,
-              1.5,
               2
             ],
             "labelExpr": "format(abs(datum.value), '.1f') + '%'",
@@ -73,19 +69,11 @@
               "Male"
             ],
             "range": [
-              "#2878A0",
-              "#D97721"
+              "#8668A6",
+              "#23877D"
             ]
           },
-          "legend": {
-            "title": null,
-            "orient": "bottom",
-            "direction": "horizontal",
-            "labelColor": "#526a72",
-            "labelFontSize": 11,
-            "symbolType": "square",
-            "symbolSize": 100
-          }
+          "legend": null
         },
         "tooltip": [
           {
@@ -129,8 +117,8 @@
           "type": "quantitative",
           "scale": {
             "domain": [
-              -2.1,
-              2.1
+              -2.3,
+              2.3
             ],
             "nice": false
           }
@@ -158,8 +146,8 @@
           "type": "quantitative",
           "scale": {
             "domain": [
-              -2.1,
-              2.1
+              -2.3,
+              2.3
             ],
             "nice": false
           }
@@ -202,8 +190,8 @@
           "type": "quantitative",
           "scale": {
             "domain": [
-              -2.1,
-              2.1
+              -2.3,
+              2.3
             ],
             "nice": false
           }
@@ -250,5 +238,9 @@
       "labelColor": "#344e5b",
       "titleColor": "#183d50"
     }
+  },
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
   }
 }

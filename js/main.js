@@ -123,29 +123,6 @@ function addFilterButtons(events, onStateChange) {
   }
 }
 
-function renderEventList(events, currentState, chosenEvent, onSelect) {
-  const list = document.getElementById("event-list");
-  const visible = currentState === "All" ? events : events.filter(event => event.State === currentState);
-  list.replaceChildren();
-  visible.forEach(event => {
-    const item = makeElement("button", "event-row");
-    item.type = "button";
-    item.setAttribute("aria-pressed", String(chosenEvent === event.Event));
-    if (chosenEvent === event.Event) item.classList.add("is-selected");
-
-    const date = makeElement("span", "event-row__date", eventDateText(event));
-    const information = makeElement("span", "event-row__information");
-    information.appendChild(makeElement("span", "event-row__location", event.Location));
-    information.appendChild(makeElement("span", "event-row__name", event.Event));
-    const state = makeElement("span", "event-row__state", event.State);
-    item.append(date, information, state);
-    item.addEventListener("click", () => onSelect(chosenEvent === event.Event ? "" : event.Event));
-    list.appendChild(item);
-  });
-  document.getElementById("event-filter-label").textContent = currentState === "All"
-    ? "Explore mapped venues" : `Mapped venues in ${currentState}`;
-}
-
 function displayMapFailure(message) {
   const target = document.getElementById("chart1");
   target.replaceChildren(makeElement("p", "map-error", message));
@@ -159,10 +136,6 @@ async function initializeEventMap() {
     if (!specificationResponse.ok) throw new Error("Cannot load the Chart 01 Vega-Lite JSON.");
     const allEvents = events.filter(withValidCoordinates).sort((a, b) => a.Start_Date.localeCompare(b.Start_Date));
     if (!allEvents.length) throw new Error("No mappable event coordinates found.");
-    const mappedStateCount = new Set(allEvents.map(event => event.State)).size;
-    document.getElementById("mapped-event-count").textContent = String(allEvents.length);
-    document.getElementById("mapped-state-count").textContent = String(mappedStateCount);
-    document.getElementById("unmapped-event-count").textContent = String(events.length - allEvents.length);
 
     const specification = await addStateBoundariesWhenAvailable(await specificationResponse.json());
     const {view} = await window.vegaEmbed("#chart1", specification, {actions: false, renderer: "svg"});
@@ -177,6 +150,18 @@ async function initializeEventMap() {
       console.error("Chart 01 detail map could not render:", error);
       showChartError("chart1-inset", "The coastal detail map could not load.");
     }
+    // Recompute each projection's fitted viewport when its panel changes size.
+    views.forEach((chartView, index) => {
+      const target = document.getElementById(index === 0 ? "chart1" : "chart1-inset");
+      let lastWidth = 0, lastHeight = 0;
+      const observer = new ResizeObserver(entries => {
+        const {width, height} = entries[0].contentRect;
+        if (!width || !height || (width === lastWidth && height === lastHeight)) return;
+        lastWidth = width; lastHeight = height;
+        chartView.resize().runAsync().catch(error => console.error("Chart 01 resize failed:", error));
+      });
+      observer.observe(target);
+    });
     let activeState = "All";
     let chosenEvent = "";
     // Vega-Lite top-level params compile to the named Vega signals below.
@@ -187,8 +172,17 @@ async function initializeEventMap() {
     const updateSelection = async eventName => {
       chosenEvent = eventName;
       await setSignal("focus_event", eventName);
-      renderEventList(allEvents, activeState, chosenEvent, updateSelection);
     };
+    // Selecting a point updates both views without a separate event list.
+    for (const chartView of views) {
+      chartView.addEventListener("click", (_event, item) => {
+        const name = item?.datum?.Event;
+        if (name && allEvents.some(event => event.Event === name &&
+            (activeState === "All" || event.State === activeState))) {
+          updateSelection(chosenEvent === name ? "" : name);
+        }
+      });
+    }
     const updateState = async state => {
       activeState = state;
       chosenEvent = "";
@@ -197,10 +191,10 @@ async function initializeEventMap() {
       document.querySelectorAll(".state-pill").forEach(button => {
         button.setAttribute("aria-pressed", String(button.dataset.state === state));
       });
-      renderEventList(allEvents, state, "", updateSelection);
+      document.getElementById("event-filter-label").textContent = state === "All"
+        ? "Explore mapped venues" : `Mapped venues in ${state}`;
     };
     addFilterButtons(allEvents, updateState);
-    renderEventList(allEvents, activeState, chosenEvent, updateSelection);
   } catch (error) {
     console.error("Chart 01 could not be rendered:", error);
     displayMapFailure("The interactive map could not load. Check the browser console or data paths.");
@@ -210,6 +204,22 @@ async function initializeEventMap() {
 function showChartError(targetId, message) {
   const target = document.getElementById(targetId);
   target.replaceChildren(makeElement("p", "chart-error", message));
+}
+
+// Vega container widths can change when the editorial grid reflows.
+function observeChartWidth(element, view, label) {
+  if (typeof ResizeObserver === "undefined") return;
+  let lastWidth = -1, timer;
+  const observer = new ResizeObserver(entries => {
+    const width = Math.round(entries[0].contentRect.width);
+    if (width <= 0 || width === lastWidth) return;
+    lastWidth = width;
+    window.clearTimeout(timer);
+    timer = window.setTimeout(() => {
+      view.resize().runAsync().catch(error => console.error(label + " resize failed:", error));
+    }, 100);
+  });
+  observer.observe(element);
 }
 
 async function initializeStateCountMap() {
@@ -251,6 +261,7 @@ async function initializeStateCountMap() {
     const specification = await specificationResponse.json();
     specification.data.values = joinedFeatures;
     const {view} = await window.vegaEmbed("#chart2", specification, {actions: false, renderer: "svg"});
+    observeChartWidth(document.getElementById("chart2"), view, "Chart 02");
     const barContainer = document.getElementById("chart02-bars");
     const ranked = Object.entries(counts).filter(([, count]) => count > 0)
       .sort((a, b) => b[1] - a[1] || STATE_NAME_BY_CODE[a[0]].localeCompare(STATE_NAME_BY_CODE[b[0]]));
@@ -287,10 +298,9 @@ async function initializeStateCountMap() {
   }
 }
 
-function wrapTimelineTitle(title, maxCharacters) {
-  const words = title.replace(/^(?:Buildcare )?Australian /, "").split(/\s+/);
+function wrapCalendarLabel(label, maxCharacters) {
   const lines = [""];
-  for (const word of words) {
+  for (const word of label.split(/\s+/)) {
     const line = lines[lines.length - 1];
     if (line && (line + " " + word).length > maxCharacters) lines.push(word);
     else lines[lines.length - 1] = line ? line + " " + word : word;
@@ -309,76 +319,68 @@ function prepareTimelineEvents(events) {
       ...event,
       Delivery_label: event.Location.trim().toLowerCase() === "online" ? "Online event" : "In-person event",
       Venue_label: event.Location + (event.State?.trim() ? ", " + event.State.trim() : ""),
-      Timeline_date: eventDateText(event),
-      Start_label: new Date(startMs).toLocaleDateString("en-AU", {
-        day: "numeric", month: "short", year: "numeric", timeZone: "UTC"
-      }),
-      End_label: new Date(endMs).toLocaleDateString("en-AU", {
-        day: "numeric", month: "short", year: "numeric", timeZone: "UTC"
-      }),
-      Start_ms: startMs,
+      Timeline_date: eventDateText(event), Start_ms: startMs, End_ms: endMs,
       Duration_days: (endMs - startMs) / DAY_MS + 1
     };
   });
 }
 
+// Each interval is clipped to actual month boundaries. End coordinates are exclusive.
+function buildEventCalendar(events, width) {
+  const prepared = prepareTimelineEvents(events).sort((a, b) => a.Start_ms - b.Start_ms);
+  const months = [], segments = [];
+  const maxCharacters = Math.max(14, Math.floor((width - 96) / 7.2));
+  let top = 0;
+  for (let month = 0; month < 12; month++) {
+    const start = Date.UTC(2026, month, 1), next = Date.UTC(2026, month + 1, 1);
+    const monthName = new Date(start).toLocaleDateString("en-AU", {month: "short", timeZone: "UTC"});
+    const monthEvents = prepared.filter(event => event.Start_ms < next && event.End_ms >= start);
+    const monthTop = top;
+    if (!monthEvents.length) top += 46;
+    for (const event of monthEvents) {
+      const segmentStart = Math.max(start, event.Start_ms);
+      const segmentEndExclusive = Math.min(next, event.End_ms + DAY_MS);
+      const dayStart = new Date(segmentStart).getUTCDate();
+      const dayEnd = new Date(segmentEndExclusive - DAY_MS).getUTCDate();
+      const segmentDate = (dayStart === dayEnd ? String(dayStart) : dayStart + "–" + dayEnd) + " " + monthName;
+      const continuation = event.Start_ms < start ? " (continued)" : event.End_ms >= next ? " (continues)" : "";
+      const shortName = event.Event.replace(/^(?:Buildcare )?Australian /, "");
+      const label = shortName + " · " + segmentDate + continuation;
+      const wrapped = wrapCalendarLabel(label, maxCharacters);
+      const lines = wrapped.split("\n").length;
+      const barY = top + 8 + lines * 16 + 3;
+      segments.push({...event, Month: monthName, SegmentDate: segmentDate,
+        DayStart: dayStart, DayEndExclusive: dayEnd + 1,
+        LabelY: top + 8, BarY: barY, WrappedLabel: wrapped});
+      top += Math.max(52, lines * 16 + 30);
+    }
+    months.push({Month: monthName, Top: monthTop, Bottom: top, LabelY: monthTop + 8,
+      IsEmpty: monthEvents.length === 0});
+  }
+  return {months, segments, height: top, eventCount: prepared.length};
+}
+
 async function initializeEventTimeline() {
   try {
-    const [events, specificationResponse] = await Promise.all([
+    const [events, response] = await Promise.all([
       readEventData(), fetch("charts/chart03_event_timeline.json", {cache: "no-store"})
     ]);
-    if (!specificationResponse.ok) throw new Error("Cannot load the Chart 03 Vega-Lite specification.");
-    const specification = await specificationResponse.json();
-    const timelineEvents = prepareTimelineEvents(events)
-      .filter(event => event.Delivery_label === "In-person event")
-      .sort((a, b) => a.Start_ms - b.Start_ms);
-    if (!timelineEvents.length) throw new Error("The national calendar contains no in-person events.");
-    const maxDuration = Math.max(...timelineEvents.map(event => event.Duration_days));
+    if (!response.ok) throw new Error("Cannot load the Chart 03 Vega specification.");
+    const template = await response.json();
     const chartElement = document.getElementById("chart3");
-    let currentWidth = 0;
-    let currentView;
+    let currentWidth = 0, currentView;
     async function renderTimeline() {
-      const width = Math.floor(chartElement.clientWidth) - 4;
+      const width = Math.floor(chartElement.clientWidth) - 8;
       if (width <= 0 || width === currentWidth) return;
       currentWidth = width;
-      const compact = width < 720;
-      const chart = JSON.parse(JSON.stringify(specification));
-      chart.width = width;
-      chart.height = timelineEvents.length * (compact ? 110 : 70);
-      const domainMax = Math.max(10, Math.ceil(maxDuration + 1));
-      const plotStart = compact ? Math.round(width * 0.61) : Math.round(width * 0.63);
-      const plotEnd = width - 10;
-      const venueX = Math.round(width * 0.30);
-      const dateX = Math.round(width * 0.46);
-      chart.data.values = timelineEvents.map(event => ({
-        ...event,
-        Is_longest: event.Duration_days === maxDuration,
-        Timeline_title: wrapTimelineTitle(event.Event, compact ? 20 : Math.max(20, Math.floor((venueX - 15) / 7.5)))
-      }));
-      const layer = name => chart.layer.find(item => item.name === name);
-      for (const name of ["duration-rule", "duration-endpoint"]) {
-        layer(name).encoding.x.scale.domain = [0, domainMax];
-        layer(name).encoding.x.scale.range = [plotStart, plotEnd];
-        layer(name).encoding.x.axis.values = domainMax === 10 ? [0, 2, 4, 6, 8, 10] : undefined;
-      }
-      layer("event-title").mark.limit = compact ? plotStart - 14 : venueX - 14;
-      layer("event-venue").mark.limit = compact ? plotStart - 14 : dateX - venueX - 12;
-      layer("event-date").mark.limit = compact ? plotStart - 14 : plotStart - dateX - 12;
-      layer("event-venue").encoding.x.value = compact ? 0 : venueX;
-      layer("event-date").encoding.x.value = compact ? 0 : dateX;
-      layer("venue-heading").encoding.x.value = venueX;
-      layer("date-heading").encoding.x.value = dateX;
-      layer("duration-heading").encoding.x.value = plotStart;
-      if (compact) {
-        layer("event-title").mark.dy = -26;
-        layer("event-venue").mark.dy = 11;
-        layer("event-date").mark.dy = 29;
-        layer("event-heading").data.values[0].label = "EVENT / VENUE / DATES";
-        chart.layer = chart.layer.filter(item => !["venue-heading", "date-heading"].includes(item.name));
-      }
+      const calendar = buildEventCalendar(events, width);
+      if (calendar.eventCount !== events.length || !calendar.segments.length) throw new Error("The event calendar could not be constructed.");
+      const chart = JSON.parse(JSON.stringify(template));
+      chart.width = width; chart.height = calendar.height;
+      chart.data.find(data => data.name === "months").values = calendar.months;
+      chart.data.find(data => data.name === "segments").values = calendar.segments;
       if (currentView) currentView.finalize();
-      const embedded = await window.vegaEmbed(chartElement, chart, {actions: false, renderer: "svg"});
-      currentView = embedded.view;
+      currentView = (await window.vegaEmbed(chartElement, chart, {actions: false, renderer: "svg"})).view;
     }
     await renderTimeline();
     let resizeTimer;
@@ -388,7 +390,7 @@ async function initializeEventTimeline() {
     });
   } catch (error) {
     console.error("Chart 03 could not be rendered:", error);
-    showChartError("chart3", "The event duration chart could not load. Check the event data, chart path, and browser console.");
+    showChartError("chart3", "The monthly event calendar could not load. Check the event data and browser console.");
   }
 }
 
@@ -504,85 +506,10 @@ function renderWaveInsights(summaries, boxStats) {
 function setWaveSymbolLegend(maximumArea) {
   for (const circle of document.querySelectorAll("[data-hs-reference]")) {
     const value = Number(circle.dataset.hsReference);
-    const diameter = Math.sqrt((value / 2) * maximumArea * 4 / Math.PI);
+    const diameter = Math.sqrt((value / 2) * maximumArea);
     circle.style.width = diameter.toFixed(1) + "px";
     circle.style.height = diameter.toFixed(1) + "px";
   }
-}
-
-async function renderAustraliaLocator() {
-  const container = document.getElementById("chart4-locator");
-  const [outlineResponse, locatorResponse] = await Promise.all([
-    fetch("data/australia_outline.geojson"),
-    fetch("charts/chart04_au_locator.json", {cache: "no-store"})
-  ]);
-  if (!outlineResponse.ok || !locatorResponse.ok) {
-    throw new Error("The Australia outline or regional extent could not be loaded.");
-  }
-
-  const outline = await outlineResponse.json();
-  const locatorSpec = await locatorResponse.json();
-  const australia = outline.features?.find(feature => feature.properties?.name === "Australia") ?? outline.features?.[0];
-  const extentLayer = locatorSpec.layer?.find(layer => layer.name === "Gold Coast Tweed map extent");
-  const extent = extentLayer?.data?.values?.[0]?.geometry;
-  if (!australia?.geometry?.coordinates || !extent?.coordinates) {
-    throw new Error("The Australia outline or Gold Coast–Tweed extent has no geometry.");
-  }
-
-  const collectPoints = (coordinates, points = []) => {
-    if (!Array.isArray(coordinates)) return points;
-    if (coordinates.length >= 2 && typeof coordinates[0] === "number" && typeof coordinates[1] === "number") {
-      points.push(coordinates);
-      return points;
-    }
-    for (const part of coordinates) collectPoints(part, points);
-    return points;
-  };
-  const collectRings = (coordinates, rings = []) => {
-    if (!Array.isArray(coordinates)) return rings;
-    if (coordinates.length && Array.isArray(coordinates[0]) && typeof coordinates[0][0] === "number") {
-      rings.push(coordinates);
-      return rings;
-    }
-    for (const part of coordinates) collectRings(part, rings);
-    return rings;
-  };
-
-  const rings = collectRings(australia.geometry.coordinates);
-  const allPoints = collectPoints(australia.geometry.coordinates);
-  const extentPoints = collectPoints(extent.coordinates);
-  if (!rings.length || !allPoints.length || !extentPoints.length) {
-    throw new Error("The Australia outline or locator extent has no coordinates.");
-  }
-
-  const meanLatitude = allPoints.reduce((sum, point) => sum + point[1], 0) / allPoints.length;
-  const longitudeFactor = Math.cos(meanLatitude * Math.PI / 180);
-  const project = ([longitude, latitude]) => [longitude * longitudeFactor, -latitude];
-  const projected = [...allPoints, ...extentPoints].map(project);
-  const minX = Math.min(...projected.map(point => point[0]));
-  const maxX = Math.max(...projected.map(point => point[0]));
-  const minY = Math.min(...projected.map(point => point[1]));
-  const maxY = Math.max(...projected.map(point => point[1]));
-  const viewWidth = 320;
-  const viewHeight = 192;
-  const padding = 12;
-  const scale = Math.min(
-    (viewWidth - 2 * padding) / (maxX - minX),
-    (viewHeight - 2 * padding) / (maxY - minY)
-  );
-  const offsetX = (viewWidth - (maxX - minX) * scale) / 2 - minX * scale;
-  const offsetY = (viewHeight - (maxY - minY) * scale) / 2 - minY * scale;
-  const position = coordinate => {
-    const [x, y] = project(coordinate);
-    return [x * scale + offsetX, y * scale + offsetY];
-  };
-  const pathForRings = geometry => collectRings(geometry.coordinates).map(ring =>
-    ring.map((coordinate, index) => {
-      const [x, y] = position(coordinate);
-      return `${index === 0 ? "M" : "L"}${x.toFixed(2)},${y.toFixed(2)}`;
-    }).join(" ") + " Z"
-  ).join(" ");
-  container.innerHTML = `<svg viewBox="0 0 ${viewWidth} ${viewHeight}" role="presentation" aria-hidden="true" focusable="false"><path d="${pathForRings(australia.geometry)}" fill="#d8e4e2" fill-rule="evenodd" stroke="#748d92" stroke-width="1.5" vector-effect="non-scaling-stroke"></path><path d="${pathForRings(extent)}" fill="#42616a" fill-opacity=".14" stroke="#354f58" stroke-width="2.2" vector-effect="non-scaling-stroke"></path></svg>`;
 }
 
 async function initializeWaveCharts() {
@@ -620,6 +547,25 @@ async function initializeWaveCharts() {
         throw new Error("The Chart 04 specification has no shared top-level data source.");
       }
       chart04.data.values = summaries;
+      // Vega normally fetches layer URLs itself; explicitly bypass the browser
+      // cache so an old land-polygon winding cannot survive a map update.
+      const geographicRequests = new Map();
+      await Promise.all(chart04.layer.map(async layer => {
+        const source = layer.data;
+        if (!source?.url) return;
+        if (source.format?.type !== "json" || source.format?.property !== "features") {
+          throw new Error("Unexpected Chart 04 geographic data format: " + source.url);
+        }
+        if (!geographicRequests.has(source.url)) {
+          geographicRequests.set(source.url, fetch(source.url, {cache: "no-store"}).then(async response => {
+            if (!response.ok) throw new Error("Cannot load Chart 04 geography: " + source.url);
+            const collection = await response.json();
+            if (!Array.isArray(collection.features)) throw new Error("Invalid geographic features: " + source.url);
+            return collection.features;
+          }));
+        }
+        layer.data = {values: await geographicRequests.get(source.url)};
+      }));
       const mapElement = document.getElementById("chart4");
       const symbolLayer = chart04.layer?.find(layer => layer.encoding?.size?.scale);
       if (!symbolLayer?.encoding?.size?.scale) {
@@ -627,11 +573,19 @@ async function initializeWaveCharts() {
       }
       const maximumArea = 600;
       symbolLayer.encoding.size.scale.range = [0, maximumArea];
-      chart04.projection.scale.expr = mapElement.clientWidth < 600
-        ? "min((width - 32) / 0.0102, (height - 42) / 0.0103)"
-        : "min((width - 42) / 0.0178, (height - 46) / 0.0103)";
       setWaveSymbolLegend(maximumArea);
-      await window.vegaEmbed(mapElement, chart04, {actions: false, renderer: "svg"});
+      let compact = mapElement.clientWidth < 500;
+      chart04.height = compact ? 300 : 400;
+      let mapView = (await window.vegaEmbed(mapElement, chart04, {actions: false, renderer: "svg"})).view;
+      // A shorter viewport keeps the offshore station visible on narrow screens.
+      const resizeObserver = new ResizeObserver(entries => {
+        const nextCompact = entries[0].contentRect.width < 500;
+        if (nextCompact === compact) return;
+        compact = nextCompact;
+        mapView.height(compact ? 300 : 400).resize().runAsync().catch(error =>
+          console.error("Chart 04 resize failed:", error));
+      });
+      resizeObserver.observe(mapElement);
     })(),
     (async () => {
       const response = await fetch("charts/chart04_wave_comparison.json", {cache: "no-store"});
@@ -643,7 +597,6 @@ async function initializeWaveCharts() {
       comparison.data.values = summaries;
       await window.vegaEmbed("#chart4-compare", comparison, {actions: false, renderer: "svg"});
     })(),
-    renderAustraliaLocator(),
     (async () => {
       const response = await fetch("charts/chart05_wave_distribution.json");
       if (!response.ok) throw new Error("Cannot load the Chart 05 specification.");
@@ -664,11 +617,7 @@ async function initializeWaveCharts() {
     showChartError("chart4-compare", "The aligned wave-height comparison could not load.");
   }
   if (results[2].status === "rejected") {
-    console.error("Chart 04 locator could not be rendered:", results[2].reason);
-    showChartError("chart4-locator", "Australia locator not available.");
-  }
-  if (results[3].status === "rejected") {
-    console.error("Chart 05 could not be rendered:", results[3].reason);
+    console.error("Chart 05 could not be rendered:", results[2].reason);
     showChartError("chart5", "The wave distribution chart could not load. Check the event data, chart path, and browser console.");
   }
 }
@@ -772,6 +721,7 @@ function buildWaveDirectionRows(observations) {
       return {
         Location: site,
         Sector: sector,
+        SectorIndex: index,
         Count: counts[index],
         Percentage: percentage,
         PercentLabel: percentage.toFixed(1) + "%",
@@ -789,17 +739,11 @@ async function initializeChart06WaveDirection() {
   try {
     const [observations, template] = await Promise.all([
       readWaveChartCsv(WAVE_DATA_CSV, "the January wave observations"),
-      readWaveChartSpec("charts/chart06_direction_bars.json", "Chart 06")
+      readWaveChartSpec("charts/chart06_wave_rose.json", "Chart 06")
     ]);
     const perSite = buildWaveDirectionRows(observations);
     const maximumShare = Math.max(...WAVE_CHART_SITE_ORDER.map(site => perSite.get(site).maximumPercentage));
-    const axisMaximum = Math.max(20, Math.ceil(maximumShare / 10) * 10);
-    const axisStep = axisMaximum <= 20 ? 5 : axisMaximum <= 50 ? 10 : 20;
-    template.encoding.x.scale.domain = [0, axisMaximum + 5];
-    template.encoding.x.axis.values = Array.from(
-      {length: Math.floor(axisMaximum / axisStep) + 1},
-      (_, index) => index * axisStep
-    );
+    if (maximumShare > 90) throw new Error("A direction share exceeds the shared 90% rose scale.");
 
     const embeds = WAVE_CHART_SITE_ORDER.map(async site => {
       const summary = perSite.get(site);
@@ -809,8 +753,24 @@ async function initializeChart06WaveDirection() {
       document.getElementById(panel.directionNote).textContent =
         "n = " + summary.validCount.toLocaleString("en-AU") + " valid readings · " +
         leaders + " leads at " + leadPercent + "%";
-      const specification = cloneWaveChartSpecWithValues(template, summary.rows, "Chart 06");
-      await window.vegaEmbed("#" + panel.direction, specification, {actions: false, renderer: "svg"});
+      const container = document.getElementById(panel.direction);
+      const specification = JSON.parse(JSON.stringify(template));
+      const sectorData = specification.data.find(data => data.name === "sectors");
+      if (!sectorData) throw new Error("Chart 06 has no sectors data source.");
+      sectorData.values = summary.rows;
+      const sizeForWidth = width => Math.max(1, Math.min(360, Math.floor(width)));
+      let size = sizeForWidth(container.clientWidth);
+      specification.width = size;
+      specification.height = size;
+      const {view} = await window.vegaEmbed(container, specification, {actions: false, renderer: "svg"});
+      const observer = new ResizeObserver(entries => {
+        const nextSize = sizeForWidth(entries[0].contentRect.width);
+        if (nextSize === size) return;
+        size = nextSize;
+        view.width(size).height(size).resize().runAsync().catch(error =>
+          console.error("Chart 06 resize failed:", error));
+      });
+      observer.observe(container);
     });
     const results = await Promise.allSettled(embeds);
     results.forEach((result, index) => {
@@ -835,7 +795,7 @@ async function initializeChart06WaveDirection() {
       : "Most frequent sectors: " + siteLeads.join("; ") + ".";
   } catch (error) {
     console.error("Chart 06 wave-direction data could not be prepared:", error);
-    displayWaveError(targetIds, "The January direction data or sector-bar specification could not be loaded. Check the data path and browser console.");
+    displayWaveError(targetIds, "The January direction data or wave rose specification could not be loaded. Check the data path and browser console.");
   }
 }
 function buildWaveCalendarRows(dailyRows) {
@@ -1063,7 +1023,8 @@ async function initializeChart08HeightPeriod() {
     if (!template.encoding || !template.encoding.color || !template.encoding.color.scale) {
       throw new Error("Chart 08 must define a shared quantitative color scale in its top-level encoding.");
     }
-    template.encoding.color.scale.domain = [0, commonMaxCount];
+    // Match the five colour stops in the shared legend to the data-derived maximum.
+    template.encoding.color.scale.domain = [0, 0.25, 0.5, 0.75, 1].map(fraction => fraction * commonMaxCount);
     document.getElementById("chart08-count-max").textContent = commonMaxCount.toLocaleString("en-AU");
 
     const results = await Promise.allSettled(WAVE_CHART_SITE_ORDER.map(async site => {
@@ -1142,7 +1103,10 @@ async function loadParticipationChart(targetId, specificationPath, label, makeVa
   ]);
   const values = makeValues(rows);
   const specification = cloneWaveChartSpecWithValues(template, values, label);
-  await window.vegaEmbed("#" + targetId, specification, {actions: false});
+  const {view} = await window.vegaEmbed("#" + targetId, specification, {actions: false});
+  if (targetId === "chart11" || targetId === "chart12") {
+    observeChartWidth(document.getElementById(targetId), view, label);
+  }
   return values;
 }
 
@@ -1243,15 +1207,15 @@ async function initializeChart11ParticipationSlope() {
           Participants: row.Value,
           Index: index,
           ChangePercent: changePercent,
-          EndpointLabel: row.Population + " · " + formatAusplayPeople(row.Value) + " · " + index.toFixed(2)
+          EndpointLabel: row.Population + " " + (changePercent >= 0 ? "+" : "−") + Math.abs(changePercent).toFixed(2) + "%"
         };
       });
     });
     const adults = values.find(row => row.Population === "Adults" && row.Year === 2025).ChangePercent;
     const children = values.find(row => row.Population === "Children" && row.Year === 2025).ChangePercent;
-    const signed = value => (value > 0 ? "+" : "−") + Math.abs(value).toFixed(2) + "%";
+    const change = value => (value >= 0 ? "increased" : "decreased") + " by " + Math.abs(value).toFixed(2) + "%";
     document.getElementById("chart11-insight").textContent =
-      "Estimated participants moved in opposite directions: Adults " + signed(adults) + " and Children " + signed(children) + " from 2024 to 2025.";
+      "Adult estimates " + change(adults) + "; child estimates " + change(children) + ".";
   } catch (error) {
     console.error("Chart 11 participation change could not be rendered:", error);
     showChartError("chart11", "The AusPlay year-on-year estimates or Chart 11 specification could not be loaded. Check the data path and browser console.");
@@ -1300,8 +1264,7 @@ async function initializeChart12OrganisedWaffle() {
     const sharePercent = values[0].OrganisedSharePercent;
     document.getElementById("chart12-share").textContent = "≈" + sharePercent.toFixed(1) + "%";
     document.getElementById("chart12-counts").textContent =
-      formatAusplayPeople(organised) + " organised participants of " + formatAusplayPeople(total) +
-      " total; remainder " + formatAusplayPeople(total - organised) + ".";
+      "Estimated participants: " + formatAusplayPeople(organised) + " organised out of " + formatAusplayPeople(total) + " adults.";
   } catch (error) {
     console.error("Chart 12 organised participation could not be rendered:", error);
     showChartError("chart12", "The AusPlay total or organised adult estimates or Chart 12 specification could not be loaded. Check the data path and browser console.");

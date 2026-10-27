@@ -5,7 +5,7 @@
     "values": []
   },
   "width": "container",
-  "height": 278,
+  "height": 310,
   "layer": [
     {
       "transform": [
@@ -20,12 +20,12 @@
       ],
       "mark": {
         "type": "rule",
-        "color": "#b5c7ca",
+        "color": "#b8b8b2",
         "strokeDash": [
           4,
           4
         ],
-        "strokeWidth": 1.5
+        "strokeWidth": 1
       },
       "encoding": {
         "y": {
@@ -53,8 +53,8 @@
           "type": "quantitative",
           "scale": {
             "domain": [
-              2024,
-              2025.48
+              2023.45,
+              2025.08
             ],
             "nice": false
           },
@@ -85,7 +85,7 @@
             "zero": false
           },
           "axis": {
-            "title": "Indexed estimated participants (2024 = 100)",
+            "title": "Estimated participants index (2024 = 100)",
             "values": [
               96,
               98,
@@ -94,7 +94,7 @@
             ],
             "format": ".0f",
             "grid": true,
-            "gridColor": "#e7eef0",
+            "gridColor": "#e8e6df",
             "labelColor": "#526a72",
             "titleColor": "#314d55",
             "titlePadding": 12
@@ -117,8 +117,8 @@
               "Children"
             ],
             "range": [
-              "#176B76",
-              "#D97721"
+              "#347B80",
+              "#956F99"
             ]
           },
           "legend": null
@@ -170,8 +170,8 @@
           "type": "quantitative",
           "scale": {
             "domain": [
-              2024,
-              2025.48
+              2023.45,
+              2025.08
             ],
             "nice": false
           }
@@ -197,8 +197,8 @@
               "Children"
             ],
             "range": [
-              "#176B76",
-              "#D97721"
+              "#347B80",
+              "#956F99"
             ]
           },
           "legend": null
@@ -259,12 +259,13 @@
       ],
       "mark": {
         "type": "text",
-        "align": "left",
+        "align": "right",
         "baseline": "middle",
-        "dx": 11,
-        "dy": -16,
-        "fontSize": 12,
-        "fontWeight": 700
+        "dx": -11,
+        "dy": -17,
+        "fontSize": 13,
+        "fontWeight": 700,
+        "cursor": "pointer"
       },
       "encoding": {
         "x": {
@@ -272,8 +273,8 @@
           "type": "quantitative",
           "scale": {
             "domain": [
-              2024,
-              2025.48
+              2023.45,
+              2025.08
             ],
             "nice": false
           }
@@ -291,24 +292,43 @@
           }
         },
         "text": {
-          "field": "EndpointLabel",
+          "field": "Population",
           "type": "nominal"
         },
         "color": {
-          "field": "Population",
-          "type": "nominal",
-          "scale": {
-            "domain": [
-              "Adults",
-              "Children"
-            ],
-            "range": [
-              "#176B76",
-              "#D97721"
-            ]
+          "value": "#102B3A"
+        },
+        "tooltip": [
+          {
+            "field": "Population",
+            "type": "nominal",
+            "title": "AusPlay population"
           },
-          "legend": null
-        }
+          {
+            "field": "Year",
+            "type": "quantitative",
+            "title": "Year",
+            "format": "d"
+          },
+          {
+            "field": "Participants",
+            "type": "quantitative",
+            "title": "Estimated participants (people)",
+            "format": ",.0f"
+          },
+          {
+            "field": "Index",
+            "type": "quantitative",
+            "title": "Index (2024 = 100)",
+            "format": ".2f"
+          },
+          {
+            "field": "ChangePercent",
+            "type": "quantitative",
+            "title": "2024–25 change (%)",
+            "format": "+.2f"
+          }
+        ]
       }
     },
     {
@@ -319,12 +339,13 @@
       ],
       "mark": {
         "type": "text",
-        "align": "left",
+        "align": "right",
         "baseline": "middle",
-        "dx": 11,
+        "dx": -11,
         "dy": 17,
-        "fontSize": 12,
-        "fontWeight": 700
+        "fontSize": 13,
+        "fontWeight": 700,
+        "cursor": "pointer"
       },
       "encoding": {
         "x": {
@@ -332,8 +353,87 @@
           "type": "quantitative",
           "scale": {
             "domain": [
-              2024,
-              2025.48
+              2023.45,
+              2025.08
+            ],
+            "nice": false
+          }
+        },
+        "y": {
+          "field": "Index",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              95.5,
+              103.5
+            ],
+            "nice": false,
+            "zero": false
+          }
+        },
+        "text": {
+          "field": "Population",
+          "type": "nominal"
+        },
+        "color": {
+          "value": "#102B3A"
+        },
+        "tooltip": [
+          {
+            "field": "Population",
+            "type": "nominal",
+            "title": "AusPlay population"
+          },
+          {
+            "field": "Year",
+            "type": "quantitative",
+            "title": "Year",
+            "format": "d"
+          },
+          {
+            "field": "Participants",
+            "type": "quantitative",
+            "title": "Estimated participants (people)",
+            "format": ",.0f"
+          },
+          {
+            "field": "Index",
+            "type": "quantitative",
+            "title": "Index (2024 = 100)",
+            "format": ".2f"
+          },
+          {
+            "field": "ChangePercent",
+            "type": "quantitative",
+            "title": "2024–25 change (%)",
+            "format": "+.2f"
+          }
+        ]
+      }
+    },
+    {
+      "transform": [
+        {
+          "filter": "datum.Year === 2025 && datum.Population === 'Adults'"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "right",
+        "baseline": "middle",
+        "dx": -10,
+        "fontSize": 13,
+        "fontWeight": 700,
+        "dy": -17
+      },
+      "encoding": {
+        "x": {
+          "field": "Year",
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              2023.45,
+              2025.08
             ],
             "nice": false
           }
@@ -355,35 +455,24 @@
           "type": "nominal"
         },
         "color": {
-          "field": "Population",
-          "type": "nominal",
-          "scale": {
-            "domain": [
-              "Adults",
-              "Children"
-            ],
-            "range": [
-              "#176B76",
-              "#D97721"
-            ]
-          },
-          "legend": null
+          "value": "#102B3A"
         }
       }
     },
     {
       "transform": [
         {
-          "filter": "datum.Year === 2025"
+          "filter": "datum.Year === 2025 && datum.Population === 'Children'"
         }
       ],
       "mark": {
         "type": "text",
-        "align": "left",
+        "align": "right",
         "baseline": "middle",
-        "dx": 11,
-        "fontSize": 12,
-        "fontWeight": 700
+        "dx": -10,
+        "fontSize": 13,
+        "fontWeight": 700,
+        "dy": 17
       },
       "encoding": {
         "x": {
@@ -391,8 +480,8 @@
           "type": "quantitative",
           "scale": {
             "domain": [
-              2024,
-              2025.48
+              2023.45,
+              2025.08
             ],
             "nice": false
           }
@@ -414,19 +503,7 @@
           "type": "nominal"
         },
         "color": {
-          "field": "Population",
-          "type": "nominal",
-          "scale": {
-            "domain": [
-              "Adults",
-              "Children"
-            ],
-            "range": [
-              "#176B76",
-              "#D97721"
-            ]
-          },
-          "legend": null
+          "value": "#102B3A"
         }
       }
     }
@@ -455,5 +532,9 @@
       "labelColor": "#344e5b",
       "titleColor": "#183d50"
     }
+  },
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
   }
 }

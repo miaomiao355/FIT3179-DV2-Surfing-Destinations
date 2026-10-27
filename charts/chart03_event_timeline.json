@@ -1,370 +1,313 @@
 {
-  "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Chronological event schedule with zero-anchored inclusive duration endpoints.",
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "2026 month-by-month event calendar. Interval width is actual inclusive days within each month; cross-month events are split into linked segments.",
   "width": 900,
-  "height": 560,
+  "height": 650,
   "padding": {
     "left": 0,
     "right": 4,
-    "top": 32,
-    "bottom": 45
+    "top": 40,
+    "bottom": 8
   },
   "background": "#FAF9F6",
-  "data": {
-    "values": []
+  "autosize": {
+    "type": "pad",
+    "contains": "content"
   },
-  "encoding": {
-    "y": {
-      "field": "Event",
-      "type": "nominal",
-      "sort": {
-        "field": "Start_ms",
-        "op": "min",
-        "order": "ascending"
-      },
-      "axis": null
-    },
-    "tooltip": [
-      {
-        "field": "Event",
-        "title": "Event",
-        "type": "nominal"
-      },
-      {
-        "field": "Venue_label",
-        "title": "Venue",
-        "type": "nominal"
-      },
-      {
-        "field": "Start_label",
-        "title": "Start date",
-        "type": "nominal"
-      },
-      {
-        "field": "End_label",
-        "title": "End date",
-        "type": "nominal"
-      },
-      {
-        "field": "Duration_days",
-        "title": "Duration (days)",
-        "type": "quantitative",
-        "format": "d"
-      }
-    ]
-  },
-  "layer": [
+  "signals": [
     {
-      "name": "duration-rule",
-      "mark": {
-        "type": "rule",
-        "strokeWidth": 2.5,
-        "cursor": "pointer"
-      },
-      "encoding": {
-        "x": {
-          "field": "Duration_days",
-          "type": "quantitative",
-          "scale": {
-            "domain": [
-              0,
-              10
-            ],
-            "nice": false,
-            "range": [
-              500,
-              900
-            ]
-          },
-          "axis": {
-            "title": "Duration (days)",
-            "values": [
-              0,
-              2,
-              4,
-              6,
-              8,
-              10
-            ],
-            "grid": true,
-            "gridColor": "#E5E2DB",
-            "domain": false,
-            "tickColor": "#AABFC3",
-            "labelColor": "#102B3A",
-            "titleColor": "#102B3A",
-            "labelFontSize": 12,
-            "titleFontSize": 12,
-            "labelPadding": 6,
-            "titlePadding": 10
-          }
-        },
-        "x2": {
-          "datum": 0
-        },
-        "color": {
-          "condition": {
-            "test": "datum.Is_longest",
-            "value": "#C47B32"
-          },
-          "value": "#176B76"
-        }
-      }
-    },
-    {
-      "name": "duration-endpoint",
-      "mark": {
-        "type": "point",
-        "filled": true,
-        "size": 150,
-        "opacity": 1,
-        "stroke": "#FAF9F6",
-        "strokeWidth": 1.2,
-        "cursor": "pointer"
-      },
-      "encoding": {
-        "x": {
-          "field": "Duration_days",
-          "type": "quantitative",
-          "scale": {
-            "domain": [
-              0,
-              10
-            ],
-            "nice": false,
-            "range": [
-              500,
-              900
-            ]
-          },
-          "axis": {
-            "title": "Duration (days)",
-            "values": [
-              0,
-              2,
-              4,
-              6,
-              8,
-              10
-            ],
-            "grid": true,
-            "gridColor": "#E5E2DB",
-            "domain": false,
-            "tickColor": "#AABFC3",
-            "labelColor": "#102B3A",
-            "titleColor": "#102B3A",
-            "labelFontSize": 12,
-            "titleFontSize": 12,
-            "labelPadding": 6,
-            "titlePadding": 10
-          }
-        },
-        "color": {
-          "condition": {
-            "test": "datum.Is_longest",
-            "value": "#C47B32"
-          },
-          "value": "#176B76"
-        }
-      }
-    },
-    {
-      "name": "event-title",
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "middle",
-        "fontSize": 14,
-        "fontWeight": 700,
-        "color": "#102B3A",
-        "lineBreak": "\n",
-        "lineHeight": 17,
-        "limit": 200
-      },
-      "encoding": {
-        "x": {
-          "value": 0
-        },
-        "text": {
-          "field": "Timeline_title",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "name": "event-venue",
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "middle",
-        "fontSize": 13,
-        "fontWeight": 400,
-        "color": "#102B3A",
-        "lineBreak": "\n",
-        "lineHeight": 17,
-        "limit": 200
-      },
-      "encoding": {
-        "x": {
-          "value": 0
-        },
-        "text": {
-          "field": "Venue_label",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "name": "event-date",
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "middle",
-        "fontSize": 13,
-        "fontWeight": 400,
-        "color": "#102B3A",
-        "lineBreak": "\n",
-        "lineHeight": 17,
-        "limit": 200
-      },
-      "encoding": {
-        "x": {
-          "value": 0
-        },
-        "text": {
-          "field": "Timeline_date",
-          "type": "nominal"
-        }
-      }
-    },
-    {
-      "name": "event-heading",
-      "data": {
-        "values": [
-          {
-            "label": "EVENT"
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "middle",
-        "fontSize": 12,
-        "fontWeight": 700,
-        "color": "#102B3A"
-      },
-      "encoding": {
-        "x": {
-          "value": 0
-        },
-        "y": {
-          "value": -20
-        },
-        "text": {
-          "field": "label"
-        },
-        "tooltip": null
-      }
-    },
-    {
-      "name": "venue-heading",
-      "data": {
-        "values": [
-          {
-            "label": "VENUE"
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "middle",
-        "fontSize": 12,
-        "fontWeight": 700,
-        "color": "#102B3A"
-      },
-      "encoding": {
-        "x": {
-          "value": 0
-        },
-        "y": {
-          "value": -20
-        },
-        "text": {
-          "field": "label"
-        },
-        "tooltip": null
-      }
-    },
-    {
-      "name": "date-heading",
-      "data": {
-        "values": [
-          {
-            "label": "DATES"
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "middle",
-        "fontSize": 12,
-        "fontWeight": 700,
-        "color": "#102B3A"
-      },
-      "encoding": {
-        "x": {
-          "value": 0
-        },
-        "y": {
-          "value": -20
-        },
-        "text": {
-          "field": "label"
-        },
-        "tooltip": null
-      }
-    },
-    {
-      "name": "duration-heading",
-      "data": {
-        "values": [
-          {
-            "label": "DURATION"
-          }
-        ]
-      },
-      "mark": {
-        "type": "text",
-        "align": "left",
-        "baseline": "middle",
-        "fontSize": 12,
-        "fontWeight": 700,
-        "color": "#102B3A"
-      },
-      "encoding": {
-        "x": {
-          "value": 0
-        },
-        "y": {
-          "value": -20
-        },
-        "text": {
-          "field": "label"
-        },
-        "tooltip": null
-      }
+      "name": "plotLeft",
+      "value": 76
     }
   ],
-  "config": {
-    "view": {
-      "stroke": null
+  "data": [
+    {
+      "name": "months",
+      "values": []
     },
-    "font": "Segoe UI",
-    "axis": {
-      "labelFont": "Segoe UI",
-      "titleFont": "Segoe UI"
+    {
+      "name": "segments",
+      "values": []
+    },
+    {
+      "name": "grid",
+      "values": [
+        {
+          "day": 1
+        },
+        {
+          "day": 10
+        },
+        {
+          "day": 20
+        },
+        {
+          "day": 31
+        }
+      ]
+    },
+    {
+      "name": "empty-month-data",
+      "source": "months",
+      "transform": [
+        {
+          "type": "filter",
+          "expr": "datum.IsEmpty"
+        }
+      ]
     }
-  }
+  ],
+  "scales": [
+    {
+      "name": "day",
+      "type": "linear",
+      "domain": [
+        1,
+        32
+      ],
+      "range": [
+        {
+          "signal": "plotLeft"
+        },
+        {
+          "signal": "width - 8"
+        }
+      ],
+      "zero": false,
+      "nice": false
+    }
+  ],
+  "axes": [
+    {
+      "scale": "day",
+      "orient": "top",
+      "values": [
+        1,
+        5,
+        10,
+        15,
+        20,
+        25,
+        31
+      ],
+      "title": "Day of month",
+      "titleFont": "Segoe UI",
+      "titleFontSize": 12,
+      "titleColor": "#314d55",
+      "labelFont": "Segoe UI",
+      "labelFontSize": 12,
+      "labelColor": "#526a72",
+      "domain": false,
+      "tickColor": "#bac8c8",
+      "tickSize": 4,
+      "labelPadding": 5,
+      "titlePadding": 8
+    }
+  ],
+  "marks": [
+    {
+      "name": "day-grid",
+      "type": "rule",
+      "from": {
+        "data": "grid"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "scale": "day",
+            "field": "day"
+          },
+          "y": {
+            "value": 0
+          },
+          "y2": {
+            "signal": "height"
+          },
+          "stroke": {
+            "value": "#e5e6df"
+          },
+          "strokeWidth": {
+            "value": 0.7
+          },
+          "strokeOpacity": {
+            "value": 0.55
+          }
+        }
+      }
+    },
+    {
+      "name": "month-boundaries",
+      "type": "rule",
+      "from": {
+        "data": "months"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "value": 0
+          },
+          "x2": {
+            "signal": "width"
+          },
+          "y": {
+            "field": "Bottom"
+          },
+          "stroke": {
+            "value": "#dfe5e1"
+          },
+          "strokeWidth": {
+            "value": 0.7
+          },
+          "strokeOpacity": {
+            "value": 0.7
+          }
+        }
+      }
+    },
+    {
+      "name": "month-labels",
+      "type": "text",
+      "from": {
+        "data": "months"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "value": 0
+          },
+          "y": {
+            "field": "LabelY"
+          },
+          "text": {
+            "field": "Month"
+          },
+          "font": {
+            "value": "Segoe UI"
+          },
+          "fontSize": {
+            "value": 12
+          },
+          "fontWeight": {
+            "value": 700
+          },
+          "fill": {
+            "signal": "datum.IsEmpty ? '#71817f' : '#102B3A'"
+          },
+          "baseline": {
+            "value": "top"
+          }
+        }
+      }
+    },
+    {
+      "name": "empty-months",
+      "type": "text",
+      "from": {
+        "data": "empty-month-data"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "plotLeft + 3"
+          },
+          "y": {
+            "field": "LabelY"
+          },
+          "text": {
+            "value": "No listed events"
+          },
+          "font": {
+            "value": "Segoe UI"
+          },
+          "fontSize": {
+            "value": 11
+          },
+          "fill": {
+            "value": "#87938f"
+          },
+          "baseline": {
+            "value": "top"
+          }
+        }
+      }
+    },
+    {
+      "name": "event-labels",
+      "type": "text",
+      "from": {
+        "data": "segments"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "plotLeft + 3"
+          },
+          "y": {
+            "field": "LabelY"
+          },
+          "text": {
+            "field": "WrappedLabel"
+          },
+          "lineBreak": {
+            "value": "\n"
+          },
+          "lineHeight": {
+            "value": 16
+          },
+          "font": {
+            "value": "Segoe UI"
+          },
+          "fontSize": {
+            "value": 13
+          },
+          "fontWeight": {
+            "value": 600
+          },
+          "fill": {
+            "value": "#102B3A"
+          },
+          "baseline": {
+            "value": "top"
+          },
+          "tooltip": {
+            "signal": "{'Event':datum.Event,'Venue':datum.Venue_label,'Delivery':datum.Delivery_label,'Dates':datum.Timeline_date,'Duration (days)':datum.Duration_days,'Segment':datum.SegmentDate}"
+          }
+        }
+      }
+    },
+    {
+      "name": "event-intervals",
+      "type": "rect",
+      "from": {
+        "data": "segments"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "scale": "day",
+            "field": "DayStart"
+          },
+          "x2": {
+            "scale": "day",
+            "field": "DayEndExclusive"
+          },
+          "y": {
+            "field": "BarY"
+          },
+          "height": {
+            "value": 9
+          },
+          "fill": {
+            "signal": "datum.Delivery_label === 'Online event' ? '#9778A2' : '#397D80'"
+          },
+          "cursor": {
+            "value": "pointer"
+          },
+          "tooltip": {
+            "signal": "{'Event':datum.Event,'Venue':datum.Venue_label,'Delivery':datum.Delivery_label,'Dates':datum.Timeline_date,'Duration (days)':datum.Duration_days,'Segment':datum.SegmentDate}"
+          }
+        }
+      }
+    }
+  ]
 }

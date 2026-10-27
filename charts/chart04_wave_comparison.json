@@ -35,16 +35,7 @@
             "Palm Beach",
             "Tweed Offshore"
           ],
-          "axis": {
-            "title": null,
-            "labelFont": "Segoe UI",
-            "labelFontSize": 12,
-            "labelColor": "#3f555d",
-            "labelLimit": 105,
-            "labelPadding": 9,
-            "domain": false,
-            "ticks": false
-          }
+          "axis": null
         },
         "x": {
           "field": "Mean_Hs_m",
@@ -172,6 +163,49 @@
           "field": "Mean_Hs_m",
           "type": "quantitative",
           "format": ".3f"
+        }
+      }
+    },
+    {
+      "name": "monitoring-site-names",
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "bottom",
+        "dy": -16,
+        "font": "Segoe UI",
+        "fontSize": 12,
+        "fontWeight": 700,
+        "color": "#173B4A",
+        "interactive": false
+      },
+      "encoding": {
+        "y": {
+          "field": "Location",
+          "type": "nominal",
+          "sort": [
+            "Gold Coast",
+            "Palm Beach",
+            "Tweed Offshore"
+          ],
+          "axis": null
+        },
+        "x": {
+          "datum": 0,
+          "type": "quantitative",
+          "scale": {
+            "domain": [
+              0,
+              2
+            ],
+            "nice": false,
+            "zero": true
+          },
+          "axis": null
+        },
+        "text": {
+          "field": "Location",
+          "type": "nominal"
         }
       }
     }

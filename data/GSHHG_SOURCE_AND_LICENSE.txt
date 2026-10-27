@@ -3,15 +3,18 @@ Chart 04 regional basemap and source record
 
 Map design
 ----------
-Chart 04 uses a locally clipped regional excerpt of official shoreline and
-state-boundary data. The previous GSHHG polygon export is not used in the
+Chart 04 uses full-extent, generalised ABS mainland rings and a locally clipped
+ABS state boundary.
+The official Queensland and NSW shoreline excerpts are retained for reference,
+but are not drawn over the mainland. The previous GSHHG polygon export is not used in the
 redesigned map: inspection found three Polygon fragments with rectangular cut
 edges, too sparse to describe this coastal region clearly. The old GeoJSON is
 retained for provenance only.
 
 Regional extent and coordinates
 -------------------------------
-The chart basemap covers 152.96–153.98°E and 27.86–28.38°S. Source queries and
+The earlier clipped land excerpt covered 152.96–153.98°E and 27.86–28.38°S;
+the display mainland now extends well beyond the map viewport. Source queries and
 local GeoJSON use geographic positions in [longitude, latitude] order and are
 rendered in a Mercator projection centred on the Gold Coast–Tweed region. Data
 was queried and clipped on 19 October 2026. The ABS state boundary is a
@@ -39,7 +42,22 @@ State areas and border
 Australian Bureau of Statistics (ABS), Australian Statistical Geography
 Standard (ASGS), Edition 4 (2026), State and Territory Generalised (STE_GEN)
 layer. Queensland and New South Wales polygons were locally clipped to the
-chart extent; their shared border is derived from the published polygon edges.
+chart extent; their shared border is derived from the published polygon edges. Polygon rings
+were rewound for Vega/D3 spherical geographic rendering, without changing
+coordinates, so the regional land area is filled rather than its complement.
+For Chart 04 display, chart04_land_simplified.geojson generalises the
+NSW mainland exterior ring with a roughly 350 m tolerance, preserving the state
+boundary vertices and clipping edges; islands below 0.05 km² are omitted.
+The unsimplified clipped ABS geometry remains in chart04_state_areas.geojson.
+This display generalisation suppresses narrow coastal details and is not a
+navigational shoreline.
+The display file, chart04_land_editorial.geojson, uses the full largest
+mainland ring of each original ABS generalised state geometry. Its coordinates
+match those source rings exactly in reverse order for Vega/D3; no display-ring
+clipping or additional simplification is applied. Other components and interior
+rings are omitted. The independent ABS state boundary remains visible. The
+original ABS service response is retained in .chart04-source-audit/abs-states.geojson.
+This small-scale display is not a navigational shoreline.
 The service publishes the boundary as a cartographic representation, not for
 legal use, under Creative Commons Attribution 4.0:
 https://geo.abs.gov.au/arcgis/rest/services/ASGS2026/STE/MapServer/1

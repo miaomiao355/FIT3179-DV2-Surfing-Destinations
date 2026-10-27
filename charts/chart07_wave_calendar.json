@@ -232,12 +232,18 @@
           "scale": {
             "domain": [
               0,
+              0.75,
+              1.5,
+              2.25,
               3
             ],
             "clamp": true,
             "range": [
-              "#edf4f7",
-              "#176b76"
+              "#EFF5F2",
+              "#BADBD1",
+              "#6DAE9E",
+              "#246F70",
+              "#134C55"
             ]
           },
           "legend": null
@@ -276,7 +282,7 @@
       "mark": {
         "type": "text",
         "font": "Segoe UI",
-        "fontSize": 11,
+        "fontSize": 12,
         "fontWeight": "bold",
         "baseline": "middle",
         "dy": -7
@@ -292,7 +298,26 @@
             ],
             "nice": false
           },
-          "axis": null
+          "axis": {
+            "values": [
+              0.5,
+              1.5,
+              2.5,
+              3.5,
+              4.5,
+              5.5,
+              6.5
+            ],
+            "labelExpr": "datum.value === 0.5 ? 'Mon' : datum.value === 1.5 ? 'Tue' : datum.value === 2.5 ? 'Wed' : datum.value === 3.5 ? 'Thu' : datum.value === 4.5 ? 'Fri' : datum.value === 5.5 ? 'Sat' : 'Sun'",
+            "labelFont": "Segoe UI",
+            "labelFontSize": 12,
+            "labelColor": "#52616a",
+            "labelPadding": 7,
+            "tickSize": 0,
+            "domain": false,
+            "grid": false,
+            "title": null
+          }
         },
         "y": {
           "field": "YCenter",
@@ -313,10 +338,10 @@
         },
         "color": {
           "condition": {
-            "test": "datum.HasData === true && datum.Mean_Hs_m >= 1.95",
+            "test": "datum.HasData === true && datum.Mean_Hs_m >= 2.03",
             "value": "#ffffff"
           },
-          "value": "#314d55"
+          "value": "#000000"
         }
       }
     },
@@ -329,7 +354,7 @@
       "mark": {
         "type": "text",
         "font": "Segoe UI",
-        "fontSize": 9,
+        "fontSize": 10,
         "fontWeight": "bold",
         "baseline": "middle",
         "dy": 8,
@@ -346,7 +371,26 @@
             ],
             "nice": false
           },
-          "axis": null
+          "axis": {
+            "values": [
+              0.5,
+              1.5,
+              2.5,
+              3.5,
+              4.5,
+              5.5,
+              6.5
+            ],
+            "labelExpr": "datum.value === 0.5 ? 'Mon' : datum.value === 1.5 ? 'Tue' : datum.value === 2.5 ? 'Wed' : datum.value === 3.5 ? 'Thu' : datum.value === 4.5 ? 'Fri' : datum.value === 5.5 ? 'Sat' : 'Sun'",
+            "labelFont": "Segoe UI",
+            "labelFontSize": 12,
+            "labelColor": "#52616a",
+            "labelPadding": 7,
+            "tickSize": 0,
+            "domain": false,
+            "grid": false,
+            "title": null
+          }
         },
         "y": {
           "field": "YCenter",

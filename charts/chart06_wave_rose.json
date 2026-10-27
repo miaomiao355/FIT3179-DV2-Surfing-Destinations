@@ -1,0 +1,232 @@
+{
+  "$schema": "https://vega.github.io/schema/vega/v5.json",
+  "description": "Wave rose of January 2026 peak-wave directions. Compass sectors have equal angles and sector area is proportional to the percentage of valid readings.",
+  "width": 300,
+  "height": 300,
+  "padding": 0,
+  "background": "#ffffff",
+  "autosize": {
+    "type": "none",
+    "contains": "content"
+  },
+  "signals": [
+    {
+      "name": "cx",
+      "update": "width / 2"
+    },
+    {
+      "name": "cy",
+      "update": "height / 2"
+    },
+    {
+      "name": "radius",
+      "update": "max(0, min(width, height) / 2 - 38)"
+    }
+  ],
+  "data": [
+    {
+      "name": "sectors",
+      "values": []
+    },
+    {
+      "name": "rings",
+      "values": [
+        {
+          "Value": 30
+        },
+        {
+          "Value": 60
+        },
+        {
+          "Value": 90
+        }
+      ]
+    }
+  ],
+  "scales": [
+    {
+      "name": "frequencyRadius",
+      "type": "sqrt",
+      "domain": [
+        0,
+        90
+      ],
+      "range": [
+        0,
+        {
+          "signal": "radius"
+        }
+      ],
+      "zero": true,
+      "nice": false
+    }
+  ],
+  "marks": [
+    {
+      "name": "frequency-sectors",
+      "type": "arc",
+      "from": {
+        "data": "sectors"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "cx"
+          },
+          "y": {
+            "signal": "cy"
+          },
+          "startAngle": {
+            "signal": "datum.SectorIndex * PI / 4 - PI / 8"
+          },
+          "endAngle": {
+            "signal": "datum.SectorIndex * PI / 4 + PI / 8"
+          },
+          "innerRadius": {
+            "value": 0
+          },
+          "outerRadius": {
+            "scale": "frequencyRadius",
+            "field": "Percentage"
+          },
+          "fill": {
+            "signal": "datum.Location === 'Gold Coast' ? '#2A9D8F' : datum.Location === 'Palm Beach' ? '#8B6FB3' : '#D08A2E'"
+          },
+          "fillOpacity": {
+            "signal": "datum.IsDominant ? 0.95 : 0.55"
+          },
+          "stroke": {
+            "value": "#ffffff"
+          },
+          "strokeWidth": {
+            "value": 1
+          },
+          "cursor": {
+            "value": "pointer"
+          },
+          "tooltip": {
+            "signal": "{'Monitoring site':datum.Location,'Direction from':datum.Sector,'Valid readings':datum.Count,'Share (%)':format(datum.Percentage, '.1f'),'Total valid readings':datum.ValidCount}"
+          }
+        }
+      }
+    },
+    {
+      "name": "reference-rings",
+      "type": "arc",
+      "from": {
+        "data": "rings"
+      },
+      "interactive": false,
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "cx"
+          },
+          "y": {
+            "signal": "cy"
+          },
+          "startAngle": {
+            "value": 0
+          },
+          "endAngle": {
+            "signal": "2 * PI"
+          },
+          "innerRadius": {
+            "scale": "frequencyRadius",
+            "field": "Value"
+          },
+          "outerRadius": {
+            "scale": "frequencyRadius",
+            "field": "Value"
+          },
+          "fill": {
+            "value": "transparent"
+          },
+          "stroke": {
+            "value": "#9db2b1"
+          },
+          "strokeWidth": {
+            "value": 0.8
+          }
+        }
+      }
+    },
+    {
+      "name": "ring-labels",
+      "type": "text",
+      "from": {
+        "data": "rings"
+      },
+      "interactive": false,
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "cx + 4"
+          },
+          "y": {
+            "signal": "cy - scale('frequencyRadius', datum.Value) + 3"
+          },
+          "text": {
+            "signal": "format(datum.Value, '.0f') + '%'"
+          },
+          "font": {
+            "value": "Segoe UI"
+          },
+          "fontSize": {
+            "value": 10
+          },
+          "fontWeight": {
+            "value": 600
+          },
+          "fill": {
+            "value": "#425a60"
+          },
+          "baseline": {
+            "value": "top"
+          }
+        }
+      }
+    },
+    {
+      "name": "compass-labels",
+      "type": "text",
+      "from": {
+        "data": "sectors"
+      },
+      "encode": {
+        "update": {
+          "x": {
+            "signal": "cx + sin(datum.SectorIndex * PI / 4) * (radius + 20)"
+          },
+          "y": {
+            "signal": "cy - cos(datum.SectorIndex * PI / 4) * (radius + 20)"
+          },
+          "text": {
+            "field": "Sector"
+          },
+          "font": {
+            "value": "Segoe UI"
+          },
+          "fontSize": {
+            "value": 12
+          },
+          "fontWeight": {
+            "value": 700
+          },
+          "fill": {
+            "value": "#183d50"
+          },
+          "align": {
+            "value": "center"
+          },
+          "baseline": {
+            "value": "middle"
+          },
+          "tooltip": {
+            "signal": "{'Monitoring site':datum.Location,'Direction from':datum.Sector,'Valid readings':datum.Count,'Share (%)':format(datum.Percentage, '.1f'),'Total valid readings':datum.ValidCount}"
+          }
+        }
+      }
+    }
+  ]
+}

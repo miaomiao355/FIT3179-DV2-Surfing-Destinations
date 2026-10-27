@@ -5,13 +5,13 @@
     "values": []
   },
   "width": "container",
-  "height": 278,
+  "height": 306,
   "layer": [
     {
       "mark": {
         "type": "rule",
-        "color": "#87B5BC",
-        "strokeWidth": 3,
+        "color": "#A9B8B7",
+        "strokeWidth": 2,
         "strokeCap": "round"
       },
       "encoding": {
@@ -72,7 +72,7 @@
     {
       "mark": {
         "type": "circle",
-        "size": 150,
+        "size": 135,
         "stroke": "#ffffff",
         "strokeWidth": 2
       },
@@ -111,9 +111,9 @@
               "Lowest"
             ],
             "range": [
-              "#D97721",
-              "#176B76",
-              "#D97721"
+              "#B96728",
+              "#287D78",
+              "#365D71"
             ]
           },
           "legend": null
@@ -136,16 +136,16 @@
     {
       "mark": {
         "type": "text",
-        "align": "left",
+        "align": "right",
         "baseline": "middle",
-        "dx": 10,
-        "fontSize": 12,
+        "dx": 0,
+        "fontSize": 13,
         "fontWeight": 700,
         "color": "#314d55"
       },
       "encoding": {
         "x": {
-          "field": "RatePercent",
+          "datum": 2.84,
           "type": "quantitative",
           "scale": {
             "domain": [
@@ -199,5 +199,9 @@
       "labelColor": "#344e5b",
       "titleColor": "#183d50"
     }
+  },
+  "autosize": {
+    "type": "fit",
+    "contains": "padding"
   }
 }

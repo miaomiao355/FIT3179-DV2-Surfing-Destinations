@@ -1,8 +1,8 @@
 {
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
-  "description": "Proportional symbol map of January 2026 mean significant wave height at Gold Coast, Palm Beach and Tweed Offshore. Official Queensland and NSW coastline linework is shown over ABS ASGS 2026 state areas.",
+  "description": "Mercator proportional-symbol map of January 2026 mean wave height with a simplified ABS mainland basemap.",
   "width": "container",
-  "height": 450,
+  "height": 400,
   "autosize": {
     "type": "fit",
     "contains": "padding"
@@ -13,7 +13,7 @@
     "top": 4,
     "bottom": 4
   },
-  "background": "#dcecf0",
+  "background": "#D9EDF2",
   "projection": {
     "type": "mercator",
     "center": [
@@ -21,7 +21,7 @@
       -28.12
     ],
     "scale": {
-      "expr": "min((width - 42) / 0.0178, (height - 46) / 0.0103)"
+      "expr": "max((width + 2) / 0.0178, (height + 2) / 0.0103)"
     }
   },
   "data": {
@@ -29,9 +29,9 @@
   },
   "layer": [
     {
-      "name": "ABS 2026 Queensland and NSW land areas",
+      "name": "Simplified ABS mainland",
       "data": {
-        "url": "data/chart04_state_areas.geojson",
+        "url": "data/chart04_land_editorial.geojson",
         "format": {
           "type": "json",
           "property": "features"
@@ -58,29 +58,12 @@
               "New South Wales"
             ],
             "range": [
-              "#e8ece7",
-              "#e8ece7"
+              "#EAE7DC",
+              "#E0E1D7"
             ]
           },
           "legend": null
         }
-      }
-    },
-    {
-      "name": "official Queensland and NSW coastlines",
-      "data": {
-        "url": "data/chart04_coastlines.geojson",
-        "format": {
-          "type": "json",
-          "property": "features"
-        }
-      },
-      "mark": {
-        "type": "geoshape",
-        "interactive": false,
-        "fill": null,
-        "stroke": "#8aadb9",
-        "strokeWidth": 0.8
       }
     },
     {
@@ -96,8 +79,8 @@
         "type": "geoshape",
         "interactive": false,
         "fill": null,
-        "stroke": "#b5c8c8",
-        "strokeWidth": 0.8
+        "stroke": "#AAA69B",
+        "strokeWidth": 0.9
       }
     },
     {
@@ -105,14 +88,14 @@
       "data": {
         "values": [
           {
-            "label": "QLD",
-            "Longitude": 153.12,
-            "Latitude": -27.965
+            "label": "QUEENSLAND",
+            "Longitude": 153.18,
+            "Latitude": -27.97
           },
           {
-            "label": "NSW",
-            "Longitude": 153.12,
-            "Latitude": -28.255
+            "label": "NEW SOUTH WALES",
+            "Longitude": 153.23,
+            "Latitude": -28.27
           }
         ]
       },
@@ -120,11 +103,11 @@
         "type": "text",
         "interactive": false,
         "font": "Segoe UI",
-        "fontSize": 11,
+        "fontSize": 10,
         "fontWeight": 700,
         "letterSpacing": 0.9,
-        "color": "#173B4A",
-        "opacity": 0.9,
+        "color": "#697e82",
+        "opacity": 0.85,
         "align": "center",
         "baseline": "middle"
       },
@@ -134,7 +117,7 @@
           "type": "quantitative"
         },
         "color": {
-          "value": "#173B4A"
+          "value": "#697e82"
         },
         "latitude": {
           "field": "Latitude",
@@ -142,6 +125,132 @@
         },
         "text": {
           "field": "label",
+          "type": "nominal"
+        }
+      }
+    },
+    {
+      "name": "verified locality points",
+      "data": {
+        "url": "data/chart04_context_places.geojson",
+        "format": {
+          "type": "json",
+          "property": "features"
+        }
+      },
+      "mark": {
+        "type": "circle",
+        "interactive": false,
+        "size": 20,
+        "color": "#526b71",
+        "stroke": "#ffffff",
+        "strokeWidth": 1.5
+      },
+      "transform": [
+        {
+          "calculate": "datum.properties.name",
+          "as": "Place"
+        },
+        {
+          "calculate": "datum.properties.state",
+          "as": "State"
+        },
+        {
+          "calculate": "datum.properties.source",
+          "as": "Place_name_source"
+        },
+        {
+          "calculate": "datum.geometry.coordinates[0]",
+          "as": "Longitude"
+        },
+        {
+          "calculate": "datum.geometry.coordinates[1]",
+          "as": "Latitude"
+        },
+        {
+          "filter": "datum.Place === 'Tweed Heads'"
+        }
+      ],
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "tooltip": [
+          {
+            "field": "Place",
+            "type": "nominal",
+            "title": "Place"
+          },
+          {
+            "field": "State",
+            "type": "nominal",
+            "title": "State"
+          },
+          {
+            "field": "Place_name_source",
+            "type": "nominal",
+            "title": "Place-name source"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Tweed Heads locality label",
+      "data": {
+        "url": "data/chart04_context_places.geojson",
+        "format": {
+          "type": "json",
+          "property": "features"
+        }
+      },
+      "mark": {
+        "type": "text",
+        "interactive": false,
+        "dx": -8,
+        "dy": 14,
+        "align": "right",
+        "baseline": "top",
+        "font": "Segoe UI",
+        "fontSize": 11,
+        "fontWeight": 400,
+        "color": "#173B4A"
+      },
+      "transform": [
+        {
+          "calculate": "datum.properties.name",
+          "as": "Place"
+        },
+        {
+          "calculate": "datum.geometry.coordinates[0]",
+          "as": "Longitude"
+        },
+        {
+          "calculate": "datum.geometry.coordinates[1]",
+          "as": "Latitude"
+        },
+        {
+          "filter": "datum.Place === 'Tweed Heads'"
+        }
+      ],
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "color": {
+          "value": "#173B4A"
+        },
+        "text": {
+          "field": "Place",
           "type": "nominal"
         }
       }
@@ -250,16 +359,16 @@
       }
     },
     {
-      "name": "gold-coast-site-label",
+      "name": "gold-coast-site-label-name",
       "mark": {
         "type": "text",
         "interactive": false,
         "dx": 18,
-        "dy": 0,
+        "dy": -8,
         "align": "left",
         "baseline": "middle",
         "font": "Segoe UI",
-        "fontSize": 12,
+        "fontSize": 13,
         "fontWeight": 700,
         "color": "#102b3a"
       },
@@ -276,7 +385,44 @@
           "value": "#173B4A"
         },
         "text": {
-          "field": "Label",
+          "field": "Location",
+          "type": "nominal"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.Location === 'Gold Coast'"
+        }
+      ]
+    },
+    {
+      "name": "gold-coast-site-label-value",
+      "mark": {
+        "type": "text",
+        "interactive": false,
+        "dx": 18,
+        "dy": 9,
+        "align": "left",
+        "baseline": "middle",
+        "font": "Segoe UI",
+        "fontSize": 12,
+        "fontWeight": 400,
+        "color": "#102b3a"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "color": {
+          "value": "#173B4A"
+        },
+        "text": {
+          "field": "ValueLabel",
           "type": "nominal"
         }
       },
@@ -285,22 +431,22 @@
           "filter": "datum.Location === 'Gold Coast'"
         },
         {
-          "calculate": "datum.Location + '  ' + format(datum.Mean_Hs_m, '.3f') + ' m'",
-          "as": "Label"
+          "calculate": "format(datum.Mean_Hs_m, '.3f') + ' m'",
+          "as": "ValueLabel"
         }
       ]
     },
     {
-      "name": "palm-beach-site-label",
+      "name": "palm-beach-site-label-name",
       "mark": {
         "type": "text",
         "interactive": false,
         "dx": 18,
-        "dy": 0,
+        "dy": -8,
         "align": "left",
         "baseline": "middle",
         "font": "Segoe UI",
-        "fontSize": 12,
+        "fontSize": 13,
         "fontWeight": 700,
         "color": "#102b3a"
       },
@@ -317,7 +463,44 @@
           "value": "#173B4A"
         },
         "text": {
-          "field": "Label",
+          "field": "Location",
+          "type": "nominal"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.Location === 'Palm Beach'"
+        }
+      ]
+    },
+    {
+      "name": "palm-beach-site-label-value",
+      "mark": {
+        "type": "text",
+        "interactive": false,
+        "dx": 18,
+        "dy": 9,
+        "align": "left",
+        "baseline": "middle",
+        "font": "Segoe UI",
+        "fontSize": 12,
+        "fontWeight": 400,
+        "color": "#102b3a"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "color": {
+          "value": "#173B4A"
+        },
+        "text": {
+          "field": "ValueLabel",
           "type": "nominal"
         }
       },
@@ -326,22 +509,22 @@
           "filter": "datum.Location === 'Palm Beach'"
         },
         {
-          "calculate": "datum.Location + '  ' + format(datum.Mean_Hs_m, '.3f') + ' m'",
-          "as": "Label"
+          "calculate": "format(datum.Mean_Hs_m, '.3f') + ' m'",
+          "as": "ValueLabel"
         }
       ]
     },
     {
-      "name": "tweed-offshore-site-label",
+      "name": "tweed-offshore-site-label-name",
       "mark": {
         "type": "text",
         "interactive": false,
-        "dx": -18,
-        "dy": 0,
-        "align": "right",
+        "dx": -22,
+        "dy": 25,
+        "align": "center",
         "baseline": "middle",
         "font": "Segoe UI",
-        "fontSize": 12,
+        "fontSize": 13,
         "fontWeight": 700,
         "color": "#102b3a"
       },
@@ -358,7 +541,44 @@
           "value": "#173B4A"
         },
         "text": {
-          "field": "Label",
+          "field": "Location",
+          "type": "nominal"
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.Location === 'Tweed Offshore'"
+        }
+      ]
+    },
+    {
+      "name": "tweed-offshore-site-label-value",
+      "mark": {
+        "type": "text",
+        "interactive": false,
+        "dx": -22,
+        "dy": 40,
+        "align": "center",
+        "baseline": "middle",
+        "font": "Segoe UI",
+        "fontSize": 12,
+        "fontWeight": 400,
+        "color": "#102b3a"
+      },
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "color": {
+          "value": "#173B4A"
+        },
+        "text": {
+          "field": "ValueLabel",
           "type": "nominal"
         }
       },
@@ -367,8 +587,8 @@
           "filter": "datum.Location === 'Tweed Offshore'"
         },
         {
-          "calculate": "datum.Location + '  ' + format(datum.Mean_Hs_m, '.3f') + ' m'",
-          "as": "Label"
+          "calculate": "format(datum.Mean_Hs_m, '.3f') + ' m'",
+          "as": "ValueLabel"
         }
       ]
     }

@@ -8,10 +8,10 @@ A single-page FIT3179 Data Visualisation 2 story about Australia's surfing calen
 | --- | --- | --- | --- |
 | 01 | Where does the national circuit travel? | Equal Earth event point map with state filters and venue selection | Locate mapped event references |
 | 02 | Where are state-assigned event entries listed? | Equal Earth choropleth of discrete event counts | Compare calendar totals by state |
-| 03 | When are events scheduled? | Gantt-style event timeline | Compare event dates and duration |
+| 03 | When are events scheduled? | Month-by-month interval calendar | Locate event dates and compare their durations |
 | 04 | Where were waves taller on average? | Mercator proportional symbol map; symbol area encodes mean Hs | Locate three monitoring sites and compare mean height |
 | 05 | How much did wave heights vary? | Tukey box plots | Compare distributions and outliers |
-| 06 | Which direction sectors are most common? | Three aligned horizontal bar small multiples | Compare eight bearing sectors by site |
+| 06 | Which direction sectors are most common? | Three wave roses with a common area-proportional scale | Compare eight bearing sectors by site |
 | 07 | When did daily wave heights rise and fall? | Three calendar heatmaps on one metre scale | Scan within-month patterns |
 | 08 | Which height–period combinations occur most often? | Three binned Hs–Tp heatmaps with a shared count scale | Compare paired conditions |
 | 09 | Which age groups have the highest participation? | Layered lollipop chart | Compare 2025 participation rates |
@@ -19,9 +19,9 @@ A single-page FIT3179 Data Visualisation 2 story about Australia's surfing calen
 | 11 | How did participant estimates change from 2024 to 2025? | Indexed slope chart | Compare relative year-on-year change |
 | 12 | What share of adult surfing is organised? | 10 × 10 waffle chart | Communicate an approximate part-to-whole share |
 
-The three map idioms are the event point map, state choropleth and regional proportional symbol map. The map symbols in Chart 04 remain at the published reference coordinates; symbol area, not radius, represents mean significant wave height. Its deliberately small markers keep Gold Coast and Palm Beach distinct. Chart 06 uses a shared linear scale to make direction-sector percentages easier to compare than radial lengths.
+The three map idioms are the event point map, state choropleth and regional proportional symbol map. The map symbols in Chart 04 remain at the published reference coordinates; symbol area, not radius, represents mean significant wave height. Its deliberately small markers keep Gold Coast and Palm Beach distinct. Chart 06 uses a shared square-root radius scale, so sector area is proportional to the direction percentage at every site.
 
-The project contains twelve chart sections, exceeding the assignment's minimum of ten. The advanced idioms include the three map types, Gantt timeline, box plots, calendar heatmaps, binned heatmaps, butterfly comparison and waffle chart. Small-multiple panels are counted as one chart each.
+The project contains twelve chart sections, exceeding the assignment's minimum of ten. Its interval calendar, choropleth, box plots, wave roses, calendar heatmap, binned heatmap and waffle chart are plausible advanced idioms. The point and proportional-symbol maps, butterfly bars and indexed slope chart warrant tutor judgment under the rubric's exclusions for dot, bubble, bar and line charts. Small-multiple panels are counted as one chart each; the advanced-idiom threshold should not be assumed to be met.
 
 The Australian state boundary layer is a third-party community GeoJSON copy. Its eight state and territory feature names are checked by the page, but its boundary linework has not been independently validated against an ABS release.
 

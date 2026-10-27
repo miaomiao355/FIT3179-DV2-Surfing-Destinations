@@ -5,7 +5,7 @@
     "values": []
   },
   "width": "container",
-  "height": 295,
+  "height": 345,
   "autosize": {
     "type": "fit",
     "contains": "padding"
@@ -13,7 +13,7 @@
   "mark": {
     "type": "rect",
     "stroke": "#ffffff",
-    "strokeWidth": 0.65
+    "strokeWidth": 0.4
   },
   "encoding": {
     "x": {
@@ -27,7 +27,7 @@
         "nice": false
       },
       "axis": {
-        "title": "Significant wave height (m)",
+        "title": "Significant wave height, Hs (m)",
         "values": [
           0,
           1,
@@ -38,7 +38,7 @@
         "labelFontSize": 12,
         "titleFont": "Segoe UI",
         "titleFontSize": 12,
-        "grid": true,
+        "grid": false,
         "gridColor": "#e7edef",
         "tickSize": 3
       }
@@ -58,7 +58,7 @@
         "nice": false
       },
       "axis": {
-        "title": "Peak period (s)",
+        "title": "Peak period, Tp (s)",
         "values": [
           0,
           5,
@@ -70,7 +70,7 @@
         "labelFontSize": 12,
         "titleFont": "Segoe UI",
         "titleFontSize": 12,
-        "grid": true,
+        "grid": false,
         "gridColor": "#e7edef",
         "tickSize": 3
       }
@@ -85,12 +85,18 @@
       "scale": {
         "domain": [
           0,
+          44.75,
+          89.5,
+          134.25,
           179
         ],
         "clamp": true,
         "range": [
-          "#e8f2f4",
-          "#176b76"
+          "#F4F0F8",
+          "#D9C9E9",
+          "#AD91CE",
+          "#75549F",
+          "#422868"
         ]
       },
       "legend": null

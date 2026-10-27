@@ -8,9 +8,9 @@
   "height": "container",
   "mark": {
     "type": "rect",
-    "stroke": "#ffffff",
+    "stroke": "#FAF9F6",
     "strokeWidth": 2,
-    "cornerRadius": 2
+    "cornerRadius": 0
   },
   "encoding": {
     "x": {
@@ -64,8 +64,8 @@
           "Remainder"
         ],
         "range": [
-          "#D97721",
-          "#C8DDE1"
+          "#A46C86",
+          "#DDE4E2"
         ]
       },
       "legend": null
