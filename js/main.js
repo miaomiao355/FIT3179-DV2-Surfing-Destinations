@@ -90,13 +90,13 @@ function loadChart02StateBoundaries() {
 }
 
 // A local state boundary layer adds geographic context to the national venue map.
-async function addStateBoundariesWhenAvailable(specification) {
+async function addStateBoundariesWhenAvailable(specification, isInset = false) {
   try {
     const features = await loadStateBoundaries();
     specification.layer.splice(1, 0, {
       name: "australian-state-boundaries",
       data: {values: features},
-      mark: {type: "geoshape", fillOpacity: 0, stroke: "#b3c8c6", strokeWidth: 1.05}
+      mark: {type: "geoshape", fill: "#E8DDC8", stroke: "#AAA69B", strokeWidth: isInset ? 0.45 : 0.65, clip: true, interactive: false}
     });
     document.getElementById("map-boundary-note").textContent = "State boundaries shown";
   } catch (error) {
@@ -114,7 +114,7 @@ function addFilterButtons(events, onStateChange) {
   const counts = Object.fromEntries(allStates.map(state => [state,
     events.filter(event => state === "All" || event.State === state).length]));
   for (const state of allStates) {
-    const button = makeElement("button", "state-pill", `${state} · ${counts[state]}`);
+    const button = makeElement("button", "state-pill", `${state === "All" ? "All States" : state} · ${counts[state]}`);
     button.type = "button";
     button.dataset.state = state;
     button.setAttribute("aria-pressed", String(state === "All"));
@@ -154,7 +154,7 @@ function displayMapFailure(message) {
 async function initializeEventMap() {
   try {
     const [events, specificationResponse] = await Promise.all([
-      readEventData(), fetch("charts/chart01_event_locations.json")
+      readEventData(), fetch("charts/chart01_event_locations.json", {cache: "no-store"})
     ]);
     if (!specificationResponse.ok) throw new Error("Cannot load the Chart 01 Vega-Lite JSON.");
     const allEvents = events.filter(withValidCoordinates).sort((a, b) => a.Start_Date.localeCompare(b.Start_Date));
@@ -165,12 +165,23 @@ async function initializeEventMap() {
     document.getElementById("unmapped-event-count").textContent = String(events.length - allEvents.length);
 
     const specification = await addStateBoundariesWhenAvailable(await specificationResponse.json());
-    const {view} = await window.vegaEmbed("#chart1", specification, {actions: false});
+    const {view} = await window.vegaEmbed("#chart1", specification, {actions: false, renderer: "svg"});
+    const views = [view];
+    try {
+      const insetResponse = await fetch("charts/chart01_event_inset.json", {cache: "no-store"});
+      if (!insetResponse.ok) throw new Error("Cannot load the Chart 01 detail specification.");
+      const insetSpecification = await addStateBoundariesWhenAvailable(await insetResponse.json(), true);
+      const inset = await window.vegaEmbed("#chart1-inset", insetSpecification, {actions: false, renderer: "svg"});
+      views.push(inset.view);
+    } catch (error) {
+      console.error("Chart 01 detail map could not render:", error);
+      showChartError("chart1-inset", "The coastal detail map could not load.");
+    }
     let activeState = "All";
     let chosenEvent = "";
     // Vega-Lite top-level params compile to the named Vega signals below.
     const setSignal = async (name, value) => {
-      try { await view.signal(name, value).runAsync(); }
+      try { await Promise.all(views.map(chartView => chartView.signal(name, value).runAsync())); }
       catch (error) { console.error(`Cannot update map control ${name}`, error); }
     };
     const updateSelection = async eventName => {
@@ -204,7 +215,7 @@ function showChartError(targetId, message) {
 async function initializeStateCountMap() {
   try {
     const [events, features, specificationResponse] = await Promise.all([
-    readEventData(), loadChart02StateBoundaries(), fetch("charts/chart02_events_by_state.json")
+    readEventData(), loadChart02StateBoundaries(), fetch("charts/chart02_events_by_state.json", {cache: "no-store"})
     ]);
     if (!specificationResponse.ok) throw new Error("Cannot load the Chart 02 Vega-Lite specification.");
     const counts = Object.fromEntries(Object.keys(STATE_NAME_BY_CODE).map(code => [code, 0]));
@@ -236,14 +247,55 @@ async function initializeStateCountMap() {
     }
 
     document.getElementById("chart02-insight").textContent =
-      `New South Wales hosts ${counts.NSW} of the ${assignedEventCount} state-assigned national events.`;
+      `New South Wales accounts for ${counts.NSW} of the ${assignedEventCount} state-assigned events in Surfing Australia's 2026 national calendar.`;
     const specification = await specificationResponse.json();
     specification.data.values = joinedFeatures;
-    await window.vegaEmbed("#chart2", specification, {actions: false});
+    const {view} = await window.vegaEmbed("#chart2", specification, {actions: false, renderer: "svg"});
+    const barContainer = document.getElementById("chart02-bars");
+    const ranked = Object.entries(counts).filter(([, count]) => count > 0)
+      .sort((a, b) => b[1] - a[1] || STATE_NAME_BY_CODE[a[0]].localeCompare(STATE_NAME_BY_CODE[b[0]]));
+    const highestCount = Math.max(...ranked.map(([, count]) => count));
+    const colours = specification.encoding.color.scale.range;
+    let selectedState = "";
+    for (const [code, count] of ranked) {
+      const button = makeElement("button", "chart02-bar-row");
+      button.type = "button";
+      button.setAttribute("aria-pressed", "false");
+      button.setAttribute("aria-label", STATE_NAME_BY_CODE[code] + ": " + count + (count === 1 ? " event" : " events") + ". Highlight on map.");
+      const label = makeElement("span", "chart02-bar-label", STATE_NAME_BY_CODE[code]);
+      const track = makeElement("span", "chart02-bar-track");
+      track.setAttribute("aria-hidden", "true");
+      const fill = makeElement("span", "chart02-bar-fill");
+      fill.style.width = (count / highestCount * 100) + "%";
+      fill.style.backgroundColor = colours[count];
+      track.appendChild(fill);
+      const value = makeElement("span", "chart02-bar-value", String(count));
+      button.append(label, track, value);
+      button.addEventListener("click", async () => {
+        selectedState = selectedState === STATE_NAME_BY_CODE[code] ? "" : STATE_NAME_BY_CODE[code];
+        for (const row of barContainer.children) row.setAttribute("aria-pressed", String(row === button && !!selectedState));
+        try { await view.signal("selected_state", selectedState).runAsync(); }
+        catch (error) { console.error("Could not highlight state on Chart 02:", error); }
+      });
+      barContainer.appendChild(button);
+    }
+    const zeroStates = Object.entries(counts).filter(([, count]) => count === 0).map(([code]) => code);
+    document.getElementById("chart02-zero-note").textContent = zeroStates.join(", ") + ": no state-assigned events.";
   } catch (error) {
     console.error("Chart 02 could not be rendered:", error);
     showChartError("chart2", "The state count map could not load. Check the boundary source, data path, and browser console.");
   }
+}
+
+function wrapTimelineTitle(title, maxCharacters = 19) {
+  const words = title.replace(/^(?:Buildcare )?Australian /, "").split(/\s+/);
+  const lines = [""];
+  for (const word of words) {
+    const line = lines[lines.length - 1];
+    if (line && (line + " " + word).length > maxCharacters) lines.push(word);
+    else lines[lines.length - 1] = line ? line + " " + word : word;
+  }
+  return lines.join("\n");
 }
 
 function prepareTimelineEvents(events) {
@@ -256,6 +308,12 @@ function prepareTimelineEvents(events) {
     return {
       ...event,
       State_label: event.State?.trim() || "Online / no state",
+      Delivery_label: event.Location.trim().toLowerCase() === "online" ? "Online event" : "In-person event",
+      Timeline_label: event.Event.replace(/^(?:Buildcare )?Australian /, "") + "|" + event.Location + (event.State?.trim() ? ", " + event.State.trim() : "") + " · " + eventDateText(event),
+      Timeline_title: wrapTimelineTitle(event.Event),
+      Timeline_location: event.Location + (event.State?.trim() ? "\n" + event.State.trim() : ""),
+      Timeline_date: eventDateText(event).replace(" – ", " –\n"),
+      Timeline_compact: event.Location + (event.State?.trim() ? ", " + event.State.trim() : "") + "\n" + eventDateText(event),
       Start_label: new Date(`${event.Start_Date}T12:00:00Z`).toLocaleDateString("en-AU", {
         day: "numeric", month: "short", year: "numeric", timeZone: "UTC"
       }),
@@ -273,12 +331,75 @@ function prepareTimelineEvents(events) {
 async function initializeEventTimeline() {
   try {
     const [events, specificationResponse] = await Promise.all([
-      readEventData(), fetch("charts/chart03_event_timeline.json")
+      readEventData(), fetch("charts/chart03_event_timeline.json", {cache: "no-store"})
     ]);
     if (!specificationResponse.ok) throw new Error("Cannot load the Chart 03 Vega-Lite specification.");
     const specification = await specificationResponse.json();
-    specification.data.values = prepareTimelineEvents(events);
-    await window.vegaEmbed("#chart3", specification, {actions: false});
+    const timelineEvents = prepareTimelineEvents(events).filter(event => event.Delivery_label === "In-person event").sort((a, b) => a.Start_ms - b.Start_ms);
+    if (!timelineEvents.length) throw new Error("The national calendar contains no in-person timeline entries.");
+    const chartElement = document.getElementById("chart3");
+    const compactKey = document.getElementById("chart03-mobile-key");
+    timelineEvents.forEach((event, index) => {
+      const item = document.createElement("li");
+      const number = document.createElement("span");
+      const details = document.createElement("span");
+      const title = document.createElement("strong");
+      const secondary = document.createElement("span");
+      number.className = "chart03-mobile-number";
+      number.textContent = String(index + 1);
+      title.textContent = event.Event.replace(/^(?:Buildcare )?Australian /, "");
+      secondary.className = "chart03-mobile-secondary";
+      secondary.textContent = event.Location + ", " + event.State_label + " - " + eventDateText(event);
+      details.append(title, secondary);
+      item.append(number, details);
+      compactKey.append(item);
+    });
+    const months = specification.encoding.x.axis.values;
+    let currentMode = "";
+    let currentView;
+    async function renderTimeline() {
+      const width = chartElement.clientWidth;
+      const mode = width >= 1100 ? "wide" : width >= 750 ? "medium" : "compact";
+      if (mode === currentMode) return;
+      currentMode = mode;
+      const chart = JSON.parse(JSON.stringify(specification));
+      chart.data.values = timelineEvents.map((event, index) => ({...event, Timeline_index: String(index + 1), Timeline_title: wrapTimelineTitle(event.Event, mode === "wide" ? 15 : 13)}));
+      compactKey.hidden = mode !== "compact";
+      const left = mode === "wide" ? 530 : mode === "medium" ? 480 : 45;
+      chart.padding.left = 8;
+      const layer = name => chart.layer.find(item => item.name === name);
+      const titleX = -left + 10;
+      const locationX = mode === "wide" ? -290 : -280;
+      const dateX = mode === "wide" ? -130 : -120;
+      for (const name of ["event-title-label", "event-title-heading"]) layer(name).encoding.x.value = titleX;
+      for (const name of ["event-location-label", "event-location-heading"]) layer(name).encoding.x.value = locationX;
+      layer("event-title-label").mark.limit = Math.max(65, locationX - titleX - 14);
+      layer("event-location-label").mark.limit = mode === "compact" ? Math.abs(locationX) - 10 : dateX - locationX - 12;
+      if (mode === "compact") {
+        layer("event-title-label").encoding.text.field = "Timeline_index";
+        layer("event-title-label").mark.limit = 25;
+        layer("event-title-heading").data.values[0].label = "#";
+        chart.layer = chart.layer.filter(item => !["event-location-label", "event-location-heading", "event-date-label", "event-date-heading"].includes(item.name));
+        chart.encoding.color.legend.columns = 2;
+        if (width < 500) {
+          const sparseMonths = months.filter((_, index) => index % 2 === 0);
+          chart.encoding.x.axis.values = sparseMonths;
+          layer("event-end").encoding.x.axis.values = sparseMonths;
+        }
+      } else {
+        for (const name of ["event-date-label", "event-date-heading"]) layer(name).encoding.x.value = dateX;
+        layer("event-date-label").mark.limit = Math.abs(dateX) - 10;
+      }
+      if (currentView) currentView.finalize();
+      const embedded = await window.vegaEmbed(chartElement, chart, {actions: false, renderer: "svg"});
+      currentView = embedded.view;
+    }
+    await renderTimeline();
+    let resizeTimer;
+    window.addEventListener("resize", () => {
+      window.clearTimeout(resizeTimer);
+      resizeTimer = window.setTimeout(() => { renderTimeline().catch(error => console.error("Chart 03 resize failed:", error)); }, 150);
+    });
   } catch (error) {
     console.error("Chart 03 could not be rendered:", error);
     showChartError("chart3", "The event timeline could not load. Check the event data, chart path, and browser console.");

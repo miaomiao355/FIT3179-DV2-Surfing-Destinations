@@ -83,6 +83,23 @@
   "config": {
     "view": {
       "stroke": null
+    },
+    "font": "Segoe UI",
+    "axis": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
+    },
+    "legend": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
     }
   }
 }

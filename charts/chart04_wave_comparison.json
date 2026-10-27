@@ -37,8 +37,8 @@
           ],
           "axis": {
             "title": null,
-            "labelFont": "Arial",
-            "labelFontSize": 11,
+            "labelFont": "Segoe UI",
+            "labelFontSize": 12,
             "labelColor": "#3f555d",
             "labelLimit": 105,
             "labelPadding": 9,
@@ -59,12 +59,12 @@
           },
           "axis": {
             "title": "Mean significant wave height (m)",
-            "titleFont": "Arial",
-            "titleFontSize": 10,
+            "titleFont": "Segoe UI",
+            "titleFontSize": 12,
             "titleColor": "#536970",
             "titlePadding": 10,
-            "labelFont": "Arial",
-            "labelFontSize": 9,
+            "labelFont": "Segoe UI",
+            "labelFontSize": 12,
             "labelColor": "#667a80",
             "format": ".1f",
             "values": [
@@ -138,8 +138,8 @@
         "align": "left",
         "baseline": "middle",
         "dx": 7,
-        "font": "Arial",
-        "fontSize": 10,
+        "font": "Segoe UI",
+        "fontSize": 11,
         "fontWeight": 700,
         "color": "#2c454c",
         "clip": false
@@ -179,6 +179,23 @@
   "config": {
     "view": {
       "stroke": null
+    },
+    "font": "Segoe UI",
+    "axis": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
+    },
+    "legend": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
     }
   }
 }

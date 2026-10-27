@@ -13,7 +13,7 @@
     "top": 4,
     "bottom": 4
   },
-  "background": "#dfeef2",
+  "background": "#cfe4eb",
   "projection": {
     "type": "mercator",
     "center": [
@@ -79,8 +79,8 @@
         "type": "geoshape",
         "interactive": false,
         "fill": null,
-        "stroke": "#5f7f88",
-        "strokeWidth": 1.25,
+        "stroke": "#456e7a",
+        "strokeWidth": 1.5,
         "opacity": 0.96
       }
     },
@@ -121,7 +121,7 @@
       "mark": {
         "type": "text",
         "interactive": false,
-        "font": "Arial",
+        "font": "Segoe UI",
         "fontSize": 11,
         "fontWeight": 700,
         "letterSpacing": 0.9,
@@ -231,8 +231,8 @@
         "dy": 18,
         "align": "right",
         "baseline": "top",
-        "font": "Arial",
-        "fontSize": 9,
+        "font": "Segoe UI",
+        "fontSize": 11,
         "fontWeight": 700,
         "color": "#173B4A"
       },
@@ -287,8 +287,8 @@
         "dy": -12,
         "align": "right",
         "baseline": "bottom",
-        "font": "Arial",
-        "fontSize": 9,
+        "font": "Segoe UI",
+        "fontSize": 11,
         "fontWeight": 700,
         "color": "#173B4A"
       },
@@ -448,8 +448,8 @@
         "dy": -14,
         "align": "left",
         "baseline": "bottom",
-        "font": "Arial",
-        "fontSize": 10,
+        "font": "Segoe UI",
+        "fontSize": 11,
         "fontWeight": 700,
         "color": "#173B4A"
       },
@@ -489,8 +489,8 @@
         "dy": -12,
         "align": "right",
         "baseline": "bottom",
-        "font": "Arial",
-        "fontSize": 10,
+        "font": "Segoe UI",
+        "fontSize": 11,
         "fontWeight": 700,
         "color": "#173B4A"
       },
@@ -530,8 +530,8 @@
         "dy": 13,
         "align": "left",
         "baseline": "top",
-        "font": "Arial",
-        "fontSize": 10,
+        "font": "Segoe UI",
+        "fontSize": 11,
         "fontWeight": 700,
         "color": "#173B4A"
       },
@@ -564,11 +564,24 @@
       "stroke": null
     },
     "axis": {
-      "labelFont": "Arial",
-      "titleFont": "Arial"
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
     },
     "text": {
-      "font": "Arial"
+      "font": "Segoe UI"
+    },
+    "font": "Segoe UI",
+    "legend": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
     }
   }
 }

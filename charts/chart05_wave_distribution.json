@@ -137,8 +137,21 @@
       "stroke": null
     },
     "axis": {
-      "labelFont": "Arial",
-      "titleFont": "Arial"
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
+    },
+    "font": "Segoe UI",
+    "legend": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
     }
   }
 }

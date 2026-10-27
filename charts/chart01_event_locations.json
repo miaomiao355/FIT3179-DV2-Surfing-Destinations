@@ -3,7 +3,7 @@
   "description": "Seven verifiable Surfing Australia 2026 event venue coordinates, with state boundaries and contextual labels.",
   "width": "container",
   "height": "container",
-  "background": "#eef5f5",
+  "background": "#E8F3F4",
   "padding": {
     "left": 10,
     "top": 8,
@@ -25,7 +25,7 @@
       0
     ],
     "scale": {
-      "expr": "min(width * 1.62, height * 1.38)"
+      "expr": "min(width * 1.52, height * 1.42)"
     }
   },
   "params": [
@@ -50,9 +50,9 @@
       },
       "mark": {
         "type": "geoshape",
-        "fill": "#f8fbf7",
-        "stroke": "#789b9e",
-        "strokeWidth": 1.6
+        "fill": "#E8DDC8",
+        "stroke": "#AAA69B",
+        "strokeWidth": 1
       }
     },
     {
@@ -72,36 +72,36 @@
           {
             "label": "QLD",
             "lon": 145,
-            "lat": -22.0
+            "lat": -22
           },
           {
             "label": "SA",
-            "lon": 136.0,
+            "lon": 136,
             "lat": -30.1
           },
           {
             "label": "NSW",
-            "lon": 146.0,
+            "lon": 146,
             "lat": -32.8
           },
           {
             "label": "VIC",
             "lon": 143.8,
-            "lat": -37.0
+            "lat": -37
           },
           {
             "label": "TAS",
             "lon": 146.7,
-            "lat": -42.0
+            "lat": -42
           }
         ]
       },
       "mark": {
         "type": "text",
-        "font": "Arial",
-        "fontSize": 13,
+        "font": "Segoe UI",
+        "fontSize": 12,
         "fontWeight": "bold",
-        "color": "#54777d",
+        "color": "#54636A",
         "opacity": 0.95
       },
       "encoding": {
@@ -116,6 +116,56 @@
         "text": {
           "field": "label",
           "type": "nominal"
+        }
+      }
+    },
+    {
+      "name": "western-outlier-leader",
+      "data": {
+        "url": "data/surfing_australia_events_2026.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "Latitude": "number",
+            "Longitude": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.Location === 'Margaret River' && (state_filter === 'All' || datum.State === state_filter)"
+        },
+        {
+          "calculate": "datum.Longitude + 2.2",
+          "as": "AnnotationLon"
+        },
+        {
+          "calculate": "datum.Latitude - 2.4",
+          "as": "AnnotationLat"
+        }
+      ],
+      "mark": {
+        "type": "rule",
+        "stroke": "#E66B35",
+        "strokeWidth": 1.5,
+        "interactive": false
+      },
+      "encoding": {
+        "longitude": {
+          "field": "Longitude",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "Latitude",
+          "type": "quantitative"
+        },
+        "longitude2": {
+          "field": "AnnotationLon",
+          "type": "quantitative"
+        },
+        "latitude2": {
+          "field": "AnnotationLat",
+          "type": "quantitative"
         }
       }
     },
@@ -154,7 +204,7 @@
       ],
       "mark": {
         "type": "circle",
-        "stroke": "#ffffff",
+        "stroke": "#FAF9F6",
         "strokeWidth": 2,
         "opacity": 0.95,
         "cursor": "pointer"
@@ -180,21 +230,14 @@
               "value": 350
             }
           ],
-          "value": 220
+          "value": 260
         },
         "color": {
-          "condition": [
-            {
-              "test": "focus_event !== '' && datum.Event === focus_event",
-              "value": "#E69F00"
-            },
-            {
-              "param": "event_hover",
-              "empty": false,
-              "value": "#E69F00"
-            }
-          ],
-          "value": "#176b76"
+          "condition": {
+            "test": "datum.Location === 'Margaret River'",
+            "value": "#E66B35"
+          },
+          "value": "#16758A"
         },
         "tooltip": [
           {
@@ -229,13 +272,109 @@
             "type": "nominal",
             "title": "Category"
           }
-        ]
+        ],
+        "stroke": {
+          "condition": [
+            {
+              "test": "focus_event !== '' && datum.Event === focus_event",
+              "value": "#102B3A"
+            },
+            {
+              "param": "event_hover",
+              "empty": false,
+              "value": "#102B3A"
+            }
+          ],
+          "value": "#FAF9F6"
+        },
+        "strokeWidth": {
+          "condition": [
+            {
+              "test": "focus_event !== '' && datum.Event === focus_event",
+              "value": 3
+            },
+            {
+              "param": "event_hover",
+              "empty": false,
+              "value": 3
+            }
+          ],
+          "value": 2
+        }
+      }
+    },
+    {
+      "name": "western-outlier-label",
+      "data": {
+        "url": "data/surfing_australia_events_2026.csv",
+        "format": {
+          "type": "csv",
+          "parse": {
+            "Latitude": "number",
+            "Longitude": "number"
+          }
+        }
+      },
+      "transform": [
+        {
+          "filter": "datum.Location === 'Margaret River' && (state_filter === 'All' || datum.State === state_filter)"
+        },
+        {
+          "calculate": "datum.Longitude + 2.2",
+          "as": "AnnotationLon"
+        },
+        {
+          "calculate": "datum.Latitude - 2.4",
+          "as": "AnnotationLat"
+        }
+      ],
+      "mark": {
+        "type": "text",
+        "align": "left",
+        "baseline": "top",
+        "dx": 5,
+        "dy": 3,
+        "font": "Segoe UI",
+        "fontSize": 12,
+        "fontWeight": 700,
+        "color": "#9C421C",
+        "interactive": false
+      },
+      "encoding": {
+        "longitude": {
+          "field": "AnnotationLon",
+          "type": "quantitative"
+        },
+        "latitude": {
+          "field": "AnnotationLat",
+          "type": "quantitative"
+        },
+        "text": {
+          "value": "Margaret River · western outlier"
+        }
       }
     }
   ],
   "config": {
     "view": {
       "stroke": null
+    },
+    "font": "Segoe UI",
+    "axis": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
+    },
+    "legend": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
     }
   }
 }

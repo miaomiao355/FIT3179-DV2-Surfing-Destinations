@@ -2,19 +2,25 @@
   "$schema": "https://vega.github.io/schema/vega-lite/v5.json",
   "description": "Count of state-assigned entries in the Surfing Australia 2026 national event calendar, joined to Australian state boundary GeoJSON.",
   "width": "container",
-  "height": 430,
+  "height": "container",
   "padding": 12,
   "autosize": {
     "type": "fit",
     "contains": "padding"
   },
-  "background": "#f4f8f7",
+  "background": "#FAF9F6",
   "projection": {
     "type": "equalEarth",
-    "center": [134, -27],
-    "rotate": [0, 0],
+    "center": [
+      134,
+      -27
+    ],
+    "rotate": [
+      0,
+      0
+    ],
     "scale": {
-      "expr": "min(width * 1.25, height * 1.38)"
+      "expr": "min(width * 1.48, height * 1.42)"
     }
   },
   "data": {
@@ -25,10 +31,16 @@
       "name": "state_hover",
       "select": {
         "type": "point",
-        "fields": ["state_name"],
+        "fields": [
+          "state_name"
+        ],
         "on": "pointerover",
         "clear": "pointerout"
       }
+    },
+    {
+      "name": "selected_state",
+      "value": ""
     }
   ],
   "transform": [
@@ -44,7 +56,7 @@
   "mark": {
     "type": "geoshape",
     "cursor": "pointer",
-    "stroke": "#ffffff",
+    "stroke": "#B9B2A6",
     "strokeWidth": 1.15
   },
   "encoding": {
@@ -52,32 +64,66 @@
       "field": "event_count",
       "type": "ordinal",
       "scale": {
-        "domain": [0, 1, 2, 3, 4],
-        "range": ["#eaf1f4", "#bfd5df", "#83b3c5", "#438aa3", "#155b78"]
+        "domain": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
+        "range": [
+          "#EAE6DE",
+          "#F4CBA5",
+          "#D98550",
+          "#B8643A",
+          "#8E412B"
+        ]
       },
       "legend": {
-        "title": "National events",
+        "title": "2026 national event count",
         "orient": "bottom",
         "direction": "horizontal",
-        "values": [0, 1, 2, 3, 4],
+        "values": [
+          0,
+          1,
+          2,
+          3,
+          4
+        ],
         "columns": 5,
         "symbolType": "square",
-        "symbolSize": 110
+        "symbolSize": 160,
+        "labelFontSize": 13,
+        "titleFontSize": 13
       }
     },
     "stroke": {
-      "condition": {
-        "param": "state_hover",
-        "value": "#e69f00"
-      },
-      "value": "#ffffff"
+      "condition": [
+        {
+          "test": "selected_state !== '' && datum.state_name === selected_state",
+          "value": "#102B3A"
+        },
+        {
+          "param": "state_hover",
+          "empty": false,
+          "value": "#6B615A"
+        }
+      ],
+      "value": "#B9B2A6"
     },
     "strokeWidth": {
-      "condition": {
-        "param": "state_hover",
-        "value": 1.8
-      },
-      "value": 1.15
+      "condition": [
+        {
+          "test": "selected_state !== '' && datum.state_name === selected_state",
+          "value": 2.2
+        },
+        {
+          "param": "state_hover",
+          "empty": false,
+          "value": 1.6
+        }
+      ],
+      "value": 0.8
     },
     "tooltip": [
       {
@@ -98,13 +144,22 @@
       "stroke": null
     },
     "axis": {
-      "labelColor": "#52616a",
-      "titleColor": "#344f57",
-      "gridColor": "#e4eceb"
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50",
+      "gridColor": "#e4eceb",
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12
     },
     "legend": {
-      "labelColor": "#52616a",
-      "titleColor": "#344f57"
-    }
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50",
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12
+    },
+    "font": "Segoe UI"
   }
 }

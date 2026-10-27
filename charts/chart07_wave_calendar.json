@@ -4,7 +4,7 @@
   "data": {
     "values": []
   },
-  "width": 250,
+  "width": "container",
   "height": 244,
   "autosize": {
     "type": "fit",
@@ -45,8 +45,8 @@
               6.5
             ],
             "labelExpr": "datum.value === 0.5 ? 'Mon' : datum.value === 1.5 ? 'Tue' : datum.value === 2.5 ? 'Wed' : datum.value === 3.5 ? 'Thu' : datum.value === 4.5 ? 'Fri' : datum.value === 5.5 ? 'Sat' : 'Sun'",
-            "labelFont": "Arial",
-            "labelFontSize": 10,
+            "labelFont": "Segoe UI",
+            "labelFontSize": 12,
             "labelColor": "#52616a",
             "labelPadding": 7,
             "tickSize": 0,
@@ -110,8 +110,8 @@
               6.5
             ],
             "labelExpr": "datum.value === 0.5 ? 'Mon' : datum.value === 1.5 ? 'Tue' : datum.value === 2.5 ? 'Wed' : datum.value === 3.5 ? 'Thu' : datum.value === 4.5 ? 'Fri' : datum.value === 5.5 ? 'Sat' : 'Sun'",
-            "labelFont": "Arial",
-            "labelFontSize": 10,
+            "labelFont": "Segoe UI",
+            "labelFontSize": 12,
             "labelColor": "#52616a",
             "labelPadding": 7,
             "tickSize": 0,
@@ -197,8 +197,8 @@
               6.5
             ],
             "labelExpr": "datum.value === 0.5 ? 'Mon' : datum.value === 1.5 ? 'Tue' : datum.value === 2.5 ? 'Wed' : datum.value === 3.5 ? 'Thu' : datum.value === 4.5 ? 'Fri' : datum.value === 5.5 ? 'Sat' : 'Sun'",
-            "labelFont": "Arial",
-            "labelFontSize": 10,
+            "labelFont": "Segoe UI",
+            "labelFontSize": 12,
             "labelColor": "#52616a",
             "labelPadding": 7,
             "tickSize": 0,
@@ -275,7 +275,7 @@
       ],
       "mark": {
         "type": "text",
-        "font": "Arial",
+        "font": "Segoe UI",
         "fontSize": 11,
         "fontWeight": "bold",
         "baseline": "middle",
@@ -328,7 +328,7 @@
       ],
       "mark": {
         "type": "text",
-        "font": "Arial",
+        "font": "Segoe UI",
         "fontSize": 9,
         "fontWeight": "bold",
         "baseline": "middle",
@@ -371,6 +371,23 @@
   "config": {
     "view": {
       "stroke": null
+    },
+    "font": "Segoe UI",
+    "axis": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
+    },
+    "legend": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
     }
   }
 }

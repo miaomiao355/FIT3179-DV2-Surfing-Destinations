@@ -5,49 +5,70 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="An exploration of Australia's surfing destinations, wave conditions, competitions and participation.">
     <title>Australia: A Nation Built Around the Waves</title>
-    <link rel="stylesheet" href="css/style.css?v=hd-redesign-20261017">
+    <link rel="stylesheet" href="css/style.css?v=chart03-readable-20261027">
   </head>
   <body>
     <header class="hero">
       <div class="content-width hero__content">
-        <h1>Australia: A Nation Built Around the Waves</h1>
+        <p class="hero__eyebrow">Australia / Surfing in data</p>
+        <h1>Australia: <span>A Nation Built Around the Waves</span></h1>
         <p class="hero__subtitle">Explore the places, wave conditions, competitions and surfing participation that shape Australia’s surfing story.</p>
       </div>
     </header>
 
     <main class="content-width">
-      <section class="story-section" aria-labelledby="destinations-heading">
-        <p class="section-eyebrow">Story 01 · Destinations &amp; competitions</p>
-        <h2 id="destinations-heading" class="chart01-heading">Where does Australia's national surfing circuit travel?</h2>
-        <p class="chart01-deck">Six of the seven mapped venue references are on the east or south coast; Margaret River is the western outlier.</p>
+      <section class="story-section story01-redesign" aria-labelledby="destinations-heading">
+        <div class="story-heading story01-intro">
+          <p class="section-eyebrow">Chapter 01 / The national surfing circuit</p>
+          <h2 id="destinations-heading" class="chart01-heading">Where and when do national surfing competitions take place?</h2>
+          <p class="chart01-deck">Follow the venues, state distribution and dates in Surfing Australia’s 2026 national calendar.</p>
+        </div>
         <div class="chart-stack">
           <figure class="event-map-figure">
+            <p class="section-eyebrow chart01-figure-label">01 · Event locations</p>
             <div class="event-dashboard">
               <div class="event-map-panel">
                 <div class="event-panel-topline">
                   <span class="event-panel-label">Australian surfing event venues</span>
                   <span class="event-panel-year">2026 SEASON</span>
                 </div>
-                <div id="chart1" class="event-map" role="img" aria-label="Map of 2026 event venue references across Australia. Select an event from the list to highlight its marker; markers also show details on hover."></div>
+                <div class="story01-map-views">
+                  <div id="chart1" class="event-map" role="img" aria-label="Equal Earth map of seven 2026 event venue references across Australia. Use Explore Events to filter or select a venue; hover markers for details."></div>
+                  <aside class="story01-detail" aria-label="Eastern and southern venue detail">
+                    <p class="story01-detail__title">East &amp; south coast detail</p>
+                    <div id="chart1-inset" class="story01-detail__map" role="img" aria-label="Equal Earth detail map of the six mapped eastern and southern venues, using the same events as the national map. Hover a marker for event details."></div>
+                  </aside>
+                </div>
                 <div class="map-legend" aria-label="Map legend">
-                  <span class="map-legend__item"><i class="legend-dot" aria-hidden="true"></i> Mapped venue</span>
-                  <span class="map-legend__item"><i class="legend-dot legend-dot--hover" aria-hidden="true"></i> Selected / hovered</span>
+                  <span class="map-legend__item"><i class="legend-dot" aria-hidden="true"></i> Eastern or southern venue</span>
+                  <span class="map-legend__item"><i class="legend-dot legend-dot--outlier" aria-hidden="true"></i> Western outlier · Margaret River</span>
+                  <span class="map-legend__item"><i class="legend-dot legend-dot--selected" aria-hidden="true"></i> Selected or hovered</span>
                   <span id="map-boundary-note" class="map-boundary-note">Loading boundaries…</span>
                 </div>
               </div>
-              <aside class="event-sidebar" aria-label="Event locations and filters">
-                <p class="event-sidebar__eyebrow">Explore the 2026 circuit</p>
-                <h3>Coast to coast.</h3>
-                <div class="event-stats">
-                  <div class="event-stat"><span id="mapped-event-count" class="event-stat__value">—</span><span class="event-stat__label">Mapped venues</span></div>
-                  <div class="event-stat"><span id="mapped-state-count" class="event-stat__value">—</span><span class="event-stat__label">States with venues</span></div>
-                  <div class="event-stat"><span id="unmapped-event-count" class="event-stat__value">—</span><span class="event-stat__label">Not precisely mapped</span></div>
+              <aside class="story01-editorial-note" aria-labelledby="story01-takeaway-heading">
+                <p class="story01-note-label">The national circuit · 2026</p>
+                <p class="story01-big-number"><strong>6</strong><span class="story01-ratio">of <span id="mapped-event-count">—</span></span><span class="story01-big-number__label">mapped venues on Australia’s eastern or southern coasts</span></p>
+                <h3 id="story01-takeaway-heading">Australia's national surfing circuit follows the coast.</h3>
+                <p class="story01-finding">Margaret River, in Western Australia, is the circuit’s western outlier. The detail map repeats the same eastern and southern venues at a closer scale.</p>
+                <div class="story01-secondary-stats">
+                  <p><strong id="mapped-state-count">—</strong><span>states across the seven mapped venues</span></p>
+                  <p><strong id="unmapped-event-count">—</strong><span>entries not precisely mapped: one online, one in the broad Tweed Coast region</span></p>
                 </div>
-                <p id="event-filter-label" class="event-filter-label">Explore mapped venues</p>
-                <div id="event-state-filters" class="state-filters" role="group" aria-label="Filter event locations by state"></div>
-                <div id="event-list" class="event-list" aria-live="polite"></div>
-                <p class="sidebar-help">Choose a state to filter the map, or select an event to highlight its venue. Hover the map markers for full details.</p>
               </aside>
+            </div>
+            <div class="story01-explore">
+              <div class="story01-explore-bar">
+                <div><p class="event-filter-label" id="event-filter-label">Explore mapped venues</p><p class="sidebar-help">Filter by state or open the event list.</p></div>
+                <div id="event-state-filters" class="state-filters" role="group" aria-label="Filter event locations by state"></div>
+              </div>
+              <details class="story01-event-details">
+                <summary><span>Show event list</span><span class="story01-explore-action" aria-hidden="true"></span></summary>
+                <div class="story01-explore-content">
+                  <p class="sidebar-help">Select an event to highlight its venue in both maps. Hover a marker for event details.</p>
+                  <div id="event-list" class="event-list" aria-live="polite"></div>
+                </div>
+              </details>
             </div>
             <figcaption class="event-map-caption">
               <p>Points show listed event venues or locality references, not every surf beach in Australia.</p>
@@ -59,24 +80,32 @@
             <p class="section-eyebrow">02 · State distribution</p>
             <h3 id="chart02-heading" class="event-chart-heading">Where do the state-assigned events take place?</h3>
             <p class="event-chart-deck">Each shade shows a state's count among the eight state-assigned entries in the 2026 calendar. These totals describe this calendar, not surfing participation rates.</p>
-            <figure class="event-chart-figure">
-              <div id="chart2" class="state-count-map" role="img" aria-label="Interactive choropleth of 2026 Surfing Australia event counts by Australian state and territory. Hover over a region for its event count."></div>
-              <figcaption class="event-chart-caption">
+            <figure class="event-chart-figure event-chart-figure--state">
+              <div id="chart2" class="state-count-map" role="img" aria-label="Choropleth of 2026 Surfing Australia event counts by state and territory. Hover a region for its count; use the comparison buttons to highlight a state."></div>
+              <figcaption class="event-chart-caption chart02-panel">
+                <p class="chart02-panel__eyebrow">Key takeaway</p>
+                <h4>NSW leads the national circuit.</h4>
                 <p id="chart02-insight" class="chart-insight" aria-live="polite">Loading state counts…</p>
+                <div class="chart02-comparison" aria-labelledby="chart02-comparison-heading">
+                  <h5 id="chart02-comparison-heading">State event count · 2026</h5>
+                  <div id="chart02-bars" class="chart02-bars" aria-label="Select a state to highlight it on the map"></div>
+                  <p id="chart02-zero-note" class="chart02-zero-note"></p>
+                </div>
                 <p class="event-chart-note">Tweed Coast is counted under NSW despite lacking a precise map point. The online entry has no assigned state and is excluded from the map.</p>
                 <p class="event-chart-source">State boundaries: <a href="https://github.com/anthwri/GeoJson-Data/blob/master/australian-states.json" target="_blank" rel="noopener noreferrer">Australian state boundary GeoJSON</a>. Event source: <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/" target="_blank" rel="noopener noreferrer">Surfing Australia 2026 national calendar</a>.</p>
               </figcaption>
             </figure>
           </section>
-          <section class="event-chart-section" aria-labelledby="chart03-heading">
-            <p class="section-eyebrow">03 · Competition calendar</p>
-            <h3 id="chart03-heading" class="event-chart-heading">When are the events scheduled?</h3>
-            <p class="event-chart-deck">All nine 2026 entries appear in chronological order. Each bar spans its listed dates on a continuous calendar scale.</p>
+          <section class="event-chart-section chart03-section" aria-labelledby="chart03-heading">
+            <p class="section-eyebrow">03 / Season timeline</p>
+            <h3 id="chart03-heading" class="event-chart-heading">When do Australia's in-person national surfing events take place?</h3>
+            <p class="event-chart-deck">Eight in-person competitions span March to December 2026. Each line connects its actual start and end dates.</p>
             <figure class="event-chart-figure">
-              <div id="chart3" class="event-timeline" role="img" aria-label="Interactive chronological Gantt timeline showing all nine 2026 national calendar entries. Hover an event bar for dates, location, state, and inclusive duration."></div>
+              <ol id="chart03-mobile-key" class="chart03-mobile-key" aria-label="Numbered events and dates for the timeline" hidden></ol>
+              <div id="chart3" class="event-timeline" role="img" aria-label="Chronological connected-endpoint timeline showing eight in-person 2026 events. Two dots mark each event’s actual start and end dates. Hover for details and inclusive duration."></div>
               <figcaption class="event-chart-caption">
                 <p class="chart-insight">Wollongong starts 24 Aug, two days after Newcastle ends; the next listed event begins on 17 Nov.</p>
-                <p class="event-chart-note">This shows the Surfing Australia national competition calendar, not a general surfing season or local surf conditions.</p>
+                <p class="event-chart-note">The 2026 national calendar also includes one online event (1–31 January), excluded from this venue-based timeline. Hollow circles mark starts; filled circles mark ends. Inclusive durations are available in tooltips.</p>
                 <p class="event-chart-source">Dates and event details: <a href="https://surfingaustralia.com/surfing-australia-unveils-2026-national-events-calendar/" target="_blank" rel="noopener noreferrer">Surfing Australia 2026 national calendar</a>.</p>
               </figcaption>
             </figure>
@@ -85,9 +114,11 @@
       </section>
 
       <section class="story-section wave-story" aria-labelledby="waves-heading">
-        <p class="section-eyebrow">Story 02 · Wave conditions</p>
-        <h2 id="waves-heading">What are the waves like around the Gold Coast–Tweed region?</h2>
-        <p class="wave-story-intro">The first section followed Australia’s national event calendar; this one turns to measured conditions at three nearby monitoring sites. Wave buoys record ocean conditions. Significant wave height (Hs) is the average height of the highest third of waves in a recording interval; it describes wave size, not surfing quality.</p>
+        <div class="story-heading">
+          <p class="section-eyebrow">Chapter 02 / Australia’s wave conditions</p>
+          <h2 id="waves-heading">What are the waves like around the Gold Coast–Tweed region?</h2>
+          <p class="wave-story-intro">The first section followed Australia’s national event calendar; this one turns to measured conditions at three nearby monitoring sites. Wave buoys record ocean conditions. Significant wave height (Hs) is the average height of the highest third of waves in a recording interval; it describes wave size, not surfing quality.</p>
+        </div>
         <div class="chart-stack wave-chart-stack">
           <section class="wave-chart-section" aria-labelledby="chart04-heading">
             <p class="section-eyebrow">04 · Mean wave height by site</p>
@@ -138,6 +169,8 @@
             </figure>
           </section>
 
+          <div class="wave-subgroup">
+            <div class="wave-subgroup__intro"><h3>Variation and direction</h3><p>Compare the spread of wave heights and the directions from which waves arrive.</p></div>
           <section class="wave-chart-section" aria-labelledby="chart05-heading">
             <p class="section-eyebrow">05 · Wave-height distribution</p>
             <h3 id="chart05-heading" class="wave-chart-heading">How much did wave heights vary?</h3>
@@ -185,6 +218,9 @@
             </figure>
           </section>
 
+          </div>
+          <div class="wave-subgroup">
+            <div class="wave-subgroup__intro"><h3>Patterns through time and conditions</h3><p>Follow daily changes, then compare the height and period combinations recorded at each site.</p></div>
           <section class="wave-chart-section wave-chart-section--calendar" aria-labelledby="chart07-heading">
             <p class="section-eyebrow">07 · Daily wave height</p>
             <h3 id="chart07-heading" class="wave-chart-heading">When did daily wave heights rise and fall?</h3>
@@ -253,13 +289,16 @@
               </figcaption>
             </figure>
           </section>
+          </div>
         </div>
       </section>
 
       <section class="story-section" aria-labelledby="participation-heading">
-        <p class="section-eyebrow">Story 03 · Who surfs</p>
-        <h2 id="participation-heading">Who surfs in Australia?</h2>
-        <p class="participation-intro">AusPlay estimates show how surfing participation varies across the age groups in its adult table, differs by sex, and is split between overall and organised activity.</p>
+        <div class="story-heading">
+          <p class="section-eyebrow">Chapter 03 / Who surfs in Australia?</p>
+          <h2 id="participation-heading">Who participates in surfing, and how has participation changed?</h2>
+          <p class="participation-intro">AusPlay estimates show how surfing participation varies across the age groups in its adult table, differs by sex, and is split between overall and organised activity.</p>
+        </div>
         <div class="participation-stack">
           <section class="participation-chart-section" aria-labelledby="chart09-heading">
             <p class="section-eyebrow">09 · Age and participation</p>
@@ -333,7 +372,7 @@
       </section>
 
       <section class="story-section conclusion" aria-labelledby="conclusion-heading">
-        <p class="section-eyebrow">Story 04 · Why Australia stands out</p>
+        <p class="section-eyebrow">Conclusion / Australia’s surfing story</p>
         <h2 id="conclusion-heading">Why Australia Stands Out</h2>
         <p>Australia’s competition calendar spans established coastal destinations, while January measurements at three Gold Coast–Tweed stations show how wave height, period and direction varied across those monitored sites. AusPlay adds a national participation view: rates differ by age and sex, adult and child participant estimates moved in opposite directions from 2024 to 2025, and about one in seven estimated adult surfers took part in organised activity. The monitored stations and event locations offer focused views of Australia’s surf story, not a complete picture of every coast or destination.</p>
       </section>
@@ -359,6 +398,6 @@
     <script src="https://cdn.jsdelivr.net/npm/vega@5" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-lite@5" defer></script>
     <script src="https://cdn.jsdelivr.net/npm/vega-embed@6" defer></script>
-    <script src="js/main.js?v=hd-redesign-20261017" defer></script>
+    <script src="js/main.js?v=chart03-readable-20261027" defer></script>
   </body>
 </html>

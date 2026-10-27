@@ -30,7 +30,7 @@
         "align": "left",
         "baseline": "middle",
         "dx": 5,
-        "font": "Arial",
+        "font": "Segoe UI",
         "fontSize": 9,
         "fontWeight": 700,
         "color": "#314d55"
@@ -64,11 +64,11 @@
           40
         ],
         "labelExpr": "format(datum.value, '.0f') + '%'",
-        "labelFont": "Arial",
-        "labelFontSize": 9,
+        "labelFont": "Segoe UI",
+        "labelFontSize": 12,
         "labelColor": "#52616a",
-        "titleFont": "Arial",
-        "titleFontSize": 10,
+        "titleFont": "Segoe UI",
+        "titleFontSize": 12,
         "titleColor": "#344f57",
         "titlePadding": 7,
         "grid": true,
@@ -91,8 +91,8 @@
       ],
       "axis": {
         "title": null,
-        "labelFont": "Arial",
-        "labelFontSize": 10,
+        "labelFont": "Segoe UI",
+        "labelFontSize": 12,
         "labelColor": "#344f57",
         "labelPadding": 4,
         "ticks": false,
@@ -141,6 +141,23 @@
   "config": {
     "view": {
       "stroke": null
+    },
+    "font": "Segoe UI",
+    "axis": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
+    },
+    "legend": {
+      "labelFont": "Segoe UI",
+      "titleFont": "Segoe UI",
+      "labelFontSize": 12,
+      "titleFontSize": 12,
+      "labelColor": "#344e5b",
+      "titleColor": "#183d50"
     }
   }
 }
